@@ -63,7 +63,7 @@ import { onMounted, ref, watch } from "vue";
 let navHidden = ref(true); //控制返回控件的显示或隐藏（根据navArray个数）
 let navArray = ref([]);
 let nickNameVal = ref(""); //昵称
-let boxShow = ref(true); //box显示与否
+let boxShow = ref(true); //box显示与否,默认显示，目的是为了在onMounted里得到实际宽度
 let boxRef = ref(null);
 let userInfoDivRef = ref(null);
 let boxRight = ref("20px"); //box组件距离右边的值
@@ -111,43 +111,39 @@ const goback = () => {
 // eslint-disable-next-line @typescript-eslint/no-empty-function,no-redeclare
 onMounted(function () {
   console.log("onMounted被执行");
-  boxRight.value =
-    (
-      userInfoDivRef.value.offsetWidth +
-      20 -
-      boxRef.value.offsetWidth * 0.5 -
-      30 * 0.5
-    ).toString() + "px";
-  console.log(
-    "userInfoDiv宽度 -- " +
-      boxRef.value.offsetWidth +
-      "  box宽度---" +
-      boxRef.value.offsetWidth +
-      "  boxRight---" +
-      boxRight.value
-  );
+  // 加延迟是因为，直接获取到的userInfoDivRef宽度不对，可能是组件没有完全加载完
+  setTimeout(() => {
+    // 计算box组件的right值
+    // box.right = userInfoDiv 的宽度 + userInfoDiv.right - box.width * 0.5 - 头像宽度 * 0.5
+    boxRight.value =
+      (
+        userInfoDivRef.value.offsetWidth +
+        20 -
+        boxRef.value.offsetWidth * 0.5 -
+        30 * 0.5
+      ).toString() + "px";
+    console.log(
+      "userInfoDiv宽度 -- " +
+        userInfoDivRef.value.offsetWidth +
+        "  box宽度---" +
+        boxRef.value.offsetWidth +
+        "  boxRight---" +
+        boxRight.value
+    );
+    //到此，已经利用了，可以把它先隐藏起来
+    boxShow.value = false;
+  }, 0);
 }, undefined);
 
-// 鼠标移动到头像 ，显示展示列表
+// 鼠标移动入到头像 ，显示展示列表
 function mouthInto(val) {
-  console.log("鼠标 in");
+  // console.log("鼠标 in");
   boxShow.value = true;
-  // let h = boxRef.value.offsetHeight;
-  // 计算box组件的right值
-  // box.right = userInfoDiv 的宽度 + userInfoDiv.right - box.width * 0.5 - 头像宽度 * 0.5
-  console.log(
-    "userInfoDiv宽度 -- " +
-      boxRef.value.offsetWidth +
-      "  box宽度---" +
-      boxRef.value.offsetWidth +
-      "  box宽度---" +
-      boxRight.value
-  );
 }
 
-// 鼠标移除到头像 ，隐藏展示列表
+// 鼠标移出 ，隐藏展示列表
 function mouthLeave() {
-  console.log("鼠标 out");
+  // console.log("鼠标 out");
   boxShow.value = false;
 }
 
