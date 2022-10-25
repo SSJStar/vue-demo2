@@ -522,7 +522,7 @@ function zhedie() {
     displayValue.value = "block";
     foldImageName.value = require("/src/assets/menu/icon-menu-shouqi.png");
   }
-  //告诉调用者，展开还是收起
+  //告诉调用者，展开还是收起（即由当前组件，通知外面）
   emit("change", !isCollapse.value);
 }
 

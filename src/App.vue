@@ -3,7 +3,7 @@
   <div id="app">
     <div id="mainModule">
       <div>
-        <HeadNav></HeadNav>
+        <HeadNav ref="headNavRef"></HeadNav>
       </div>
       <div style="width: 100%; height: 100%; display: flex">
         <div class="left">
@@ -69,6 +69,7 @@ import SSJDialog from "@/components/SSJDialog"; //弹窗
 import Child from "@/components/ChildSSJ.vue";
 
 let dialogRef = ref(null);
+let headNavRef = ref(null);
 
 function showSSJDialog(title, subTitle) {
   console.log("showSSJDialog~~");
@@ -298,6 +299,8 @@ onMounted(() => {
   loginPageHidden.value = loginState;
 
   console.log("请先登录---" + loginState);
+
+  headNavRef.value.changeLoginName("王小健");
 });
 
 /**
