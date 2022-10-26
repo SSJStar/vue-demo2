@@ -1,80 +1,42 @@
-<!--<template>-->
-<!--&lt;!&ndash;  <suspense>&ndash;&gt;-->
-
-<!--    <div>-->
-<!--      <h1>这是Home.vue</h1>-->
-
-<!--&lt;!&ndash;      <PersonInfo/>&ndash;&gt;-->
-<!--&lt;!&ndash;      全局&ndash;&gt;-->
-<!--      <GlobalView/>-->
-<!--&lt;!&ndash;      局部&ndash;&gt;-->
-<!--      <PartView/>-->
-<!--    </div>-->
-
-<!--&lt;!&ndash;  </suspense>&ndash;&gt;-->
-
-<!--</template>-->
-
-<!--<script>-->
-<!--// @ is an alias to /src-->
-<!--// import PersonInfo from '@/components/PersonInfoView'-->
-<!--// 局部注册组件 - PersonInfo-->
-<!--import PartView from '@/components/PartView'-->
-<!--export  default {-->
-<!--  components: {PartView},-->
-<!--}-->
-<!--</script>-->
-
-<!--&lt;!&ndash;    <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">&ndash;&gt;-->
-<!--&lt;!&ndash;    </v-form-render>&ndash;&gt;-->
-<!--&lt;!&ndash;    <el-button type="primary" @click="submitForm">Submit</el-button>&ndash;&gt;-->
-<!--&lt;!&ndash;    <Test></Test>&ndash;&gt;-->
-
-<!--第二种-->
-
 <template>
-  <div class="home">
-    <div>
-      <HeadNav></HeadNav>
-    </div>
-    <!--    <el-row>-->
-    <div style="width: 100%; height: 100%; display: flex">
-      <div class="left">
-        <!--          <LeftMenu style="background-color: gray;  width: 200px;  height: 100%;" @change="childFoldAction" ref="leftmenuRef"></LeftMenu>-->
-        <LeftMenu
-          @change="childFoldAction"
-          @selected="childSelectAction"
-          ref="leftmenuRef"
-          v-bind:foldOn_width="foldOnW"
-          v-bind:foldOff_width="foldOffW"
-          v-bind:listJson="listJson"
-        ></LeftMenu>
+  <div id="app">
+    <div id="mainModule">
+      <!--  HeadNav（导航组件）  -->
+      <div>
+        <HeadNav ref="headNavRef"></HeadNav>
       </div>
-      <div class="router-div">
-        <!--          <MainView></MainView>-->
-        <!--          <PersonInfoView></PersonInfoView>-->
-        <router-view />
+
+      <div style="width: 100%; height: 100%; display: flex">
+        <!--  折叠菜单  -->
+        <div class="left">
+          <!--          <LeftMenu style="background-color: gray;  width: 200px;  height: 100%;" @change="childFoldAction" ref="leftmenuRef"></LeftMenu>-->
+          <LeftMenu
+            @change="childFoldAction"
+            @selected="childSelectAction"
+            ref="leftmenuRef"
+            v-bind:foldOn_width="foldOnW"
+            v-bind:foldOff_width="foldOffW"
+            v-bind:listJson="listJson"
+          ></LeftMenu>
+        </div>
+
+        <!--  router-view（路由）  -->
+        <div class="router-div">
+          <router-view />
+        </div>
       </div>
     </div>
-    <!--    </el-row>-->
   </div>
 </template>
 
-<!--<template>-->
-<!--<div class="home">-->
-<!--&lt;!&ndash;<HelloWorld msg="Welcome to Your Vue.js App"/>&ndash;&gt;\-->
-<!--  <PersonInfoView></PersonInfoView>-->
-
-<!--</div>-->
-<!--</template>-->
-
 <script>
-import HeadNav from "../components/HeadNav";
-import LeftMenu from "../components/LeftMenu";
+import HeadNav from "@/components/HeadNav";
+import LeftMenu from "@/components/LeftMenu";
 // import {nextTick, reactive} from "vue/dist/vue";
 // import HelloWorld from '@/components/HelloWorld.vue'
 import PersonInfoView from "@/views/PersonInfoView.vue";
 import MainView from "@/views/MainView.vue";
+
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Home",
@@ -85,21 +47,54 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     MainView,
   },
-
-  //   const state = reactive({
-  //     hHeight: 0
-  //   })
-  //   nextTick(()=>{
-  //   state.hHeight = document.documentElement.clientHeight;
-  //   console.log(document.documentElement.clientHeight)
-  // })
 };
 </script>
 
 <script setup>
-import { ref } from "vue";
+import { getCurrentInstance, onMounted, provide, ref } from "vue";
 import staticVars from "@/statics/global";
 import router from "@/router";
+import Login from "@/views/login/LoginView";
+import SSJDialog from "@/components/SSJDialog"; //弹窗
+import Child from "@/components/ChildSSJ.vue";
+import RegisterView from "@/views/login/RegisterView";
+
+let dialogRef = ref(null);
+let headNavRef = ref(null);
+
+/**
+ *  声明provide方法
+ *
+ * 作者: 小青龙
+ * 时间：2022/10/26 11:09:30
+ * @param title {string}  主标题
+ * @param subTitle {string}  副标题
+ * @return {void}
+ */
+function showSSJDialog(title, subTitle) {
+  console.log("showSSJDialog~~");
+  // dialogRef.value.show(true, "正在导出文件", "文件名")
+  dialogRef.value.show(true, title, subTitle);
+}
+
+/**
+ *  声明provide方法
+ *
+ * 作者: 小青龙
+ * 时间：2022/10/26 11:08:30
+ * @param showLogin {boolean}  是否展示登录页面，true：展示
+ * @return {void}
+ */
+function showLoginVuew(showLogin) {
+  console.log("showLoginVuew~~" + showLogin);
+  loginPageHidden.value = !showLogin;
+}
+
+//用provide声明这个方法，子组件可以通过inject来访问，哪怕这两个组件直接隔了n层，有点像iOS里的「通知」
+provide("showSSJDialogKEY", showSSJDialog);
+
+//用provide声明这个方法，子组件可以通过inject来访问，哪怕这两个组件直接隔了n层，有点像iOS里的「通知」
+provide("showLoginVueKEY", showLoginVuew);
 
 //菜单-展开宽度
 let foldOnW = staticVars.LEFTMENU_FOLDONW;
@@ -126,7 +121,6 @@ const listJson = {
       parent_id: "0",
       iconName: require("/src/assets/home/icon-home.png"),
       title: "浙江",
-      page: "/mainView",
       childrens: [
         {
           index: "1-1",
@@ -139,6 +133,7 @@ const listJson = {
               parent_id: "1-1",
               iconName: "",
               title: "西湖区",
+              page: "/mainView",
               childrens: [],
             },
             {
@@ -146,6 +141,7 @@ const listJson = {
               parent_id: "1-1",
               iconName: "",
               title: "滨江区",
+              page: "/mainView",
               childrens: [],
             },
             {
@@ -153,6 +149,7 @@ const listJson = {
               parent_id: "1-1",
               iconName: "",
               title: "上城区",
+              page: "/mainView",
               childrens: [],
             },
           ],
@@ -162,6 +159,7 @@ const listJson = {
           parent_id: "1",
           iconName: "",
           title: "绍兴",
+          page: "/mainView",
           childrens: [],
         },
         {
@@ -169,6 +167,7 @@ const listJson = {
           parent_id: "1",
           iconName: "",
           title: "宁波",
+          page: "/mainView",
           childrens: [],
         },
         {
@@ -182,6 +181,7 @@ const listJson = {
               parent_id: "1-1",
               iconName: "",
               title: "温岭",
+              page: "/mainView",
               childrens: [],
             },
             {
@@ -189,6 +189,7 @@ const listJson = {
               parent_id: "1-1",
               iconName: "",
               title: "临海",
+              page: "/mainView",
               childrens: [],
             },
           ],
@@ -208,13 +209,13 @@ const listJson = {
       iconName: require("/src/assets/home/icon-home.png"),
       parent_id: "0",
       title: "内蒙",
-      page: "/page3",
       childrens: [
         {
           index: "3-1",
           parent_id: "3",
           iconName: "",
           title: "呼和浩特",
+          page: "/mainView",
           childrens: [],
         },
         {
@@ -222,6 +223,7 @@ const listJson = {
           parent_id: "3",
           iconName: "",
           title: "包头",
+          page: "/mainView",
           childrens: [],
         },
         {
@@ -235,6 +237,7 @@ const listJson = {
               parent_id: "3-3",
               iconName: "",
               title: "乌海市博物馆",
+              page: "/mainView",
               childrens: [],
             },
             {
@@ -242,14 +245,75 @@ const listJson = {
               parent_id: "3-3",
               iconName: "",
               title: "黄河西行客栈",
+              page: "/mainView",
               childrens: [],
             },
           ],
         },
       ],
     },
+    {
+      index: "4",
+      iconName: require("/src/assets/home/icon-home.png"),
+      parent_id: "0",
+      title: "功能展示",
+      childrens: [
+        {
+          index: "4-1",
+          parent_id: "4",
+          iconName: "",
+          title: "xlsx解析和导出",
+          page: "/xlsxView",
+          childrens: [],
+        },
+        {
+          index: "4-2",
+          parent_id: "4",
+          iconName: "",
+          title: "双重直方图",
+          page: "/btChatView",
+          childrens: [],
+        },
+        {
+          index: "4-3",
+          parent_id: "4",
+          iconName: "",
+          title: "其它",
+          childrens: [
+            {
+              index: "4-3-1",
+              parent_id: "4-3",
+              iconName: "",
+              title: "弹窗",
+              page: "/test",
+              childrens: [],
+            },
+            // {
+            //   index: "4-3-2",
+            //   parent_id: "3-3",
+            //   iconName: "",
+            //   title: "黄河西行客栈",
+            //   page:"/mainView",
+            //   childrens: []
+            // }
+          ],
+        },
+      ],
+    },
   ],
 };
+
+let loginPageHidden = ref(true); //默认隐藏
+
+//页面加载完执行
+onMounted(() => {
+  const loginState =
+    getCurrentInstance().appContext.config.globalProperties.$loginState;
+  loginPageHidden.value = loginState;
+
+  console.log("请先登录---" + loginState);
+  headNavRef.value.changeLoginName("王小健");
+});
 
 /**
  * LeftMenu组件折叠动作，会给当前组件发送change指令，最终会调用这个方法
@@ -269,6 +333,7 @@ function childFoldAction(value) {
     // let b = currentInstance.appContext.config.globalProperties.$staticVars.leftMenu_foldOffW
   }
 }
+
 /**
  * 由LeftMenu组件发送seleted通知，最终会走到这里
  *
@@ -304,8 +369,13 @@ function childSelectAction(index) {
   );
 
   console.log("要跳转：" + resultItem.page);
-  // router.push(resultItem.page)
-  router.push("/home/myView");
+  if (resultItem.page !== undefined) {
+    router.push(resultItem.page + `?title=${resultItem.title}`);
+    // router.push("/myView")
+    // console.log("sssss---"+ resultItem.page + `?title=${resultItem.title}`)
+  } else {
+    console.log("page字段内容为空，跳转失败");
+  }
 }
 
 /**
@@ -319,29 +389,51 @@ function useChildMehtod() {
   // 调用LeftMenu组件的pubMethod方法，并传入参数 "外部参数12"
   leftmenuRef.value.pubMethod("外部参数123");
 }
+
+let pageContext = getCurrentInstance().appContext;
+//定义方法，并暴露给外界调用
+// 调用此方法来隐藏登录界面
+function closeLogin() {
+  const loginState = pageContext.config.globalProperties.$loginState;
+  loginPageHidden.value = loginState;
+  console.log("登录关闭:" + loginState);
+}
 </script>
 
 <style>
-.home {
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+#mainModule {
   width: 100%;
   height: 100%;
   overflow: hidden;
   position: absolute; /*不加这句，高度不能铺满*/
+  /*display: flex;*/
 }
 
+/*width: var(--global:leftWid);*/
 .left {
   background-color: white;
   width: v-bind(leftMenuWidth);
-  /*width: var(--global:leftWid);*/
   background-color: v-bind(leftMenuBgColor);
   height: 100%;
 }
 
 .router-div {
-  /*width: v-bind(100% - leftMenuWidth);*/
   flex: 1;
+  width: 200px;
   height: calc(100% - 71px);
-  background-color: gray;
-  /*position: relative;*/
+  background-color: white;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
 }
 </style>

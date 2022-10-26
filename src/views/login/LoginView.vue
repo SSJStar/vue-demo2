@@ -86,7 +86,7 @@ import { Avatar, Lock, Check } from "@element-plus/icons-vue";
 import imageValidate from "@/components/ssj-image-validate.vue";
 import { getRegisterCode, loginWithUNameAndPwd } from "@/api/api";
 import { getCurrentInstance, onMounted, ref } from "vue";
-import router from "../router";
+import router from "../../router";
 
 // 定义一个对象，用来存放输入的账号、密码、验证码
 let loginInput = {
@@ -112,7 +112,8 @@ function loginActionFunc() {
 
   // router.replace("/home")
   //告诉调用者，可以关闭当前页面来
-  emit("closePage");
+  // emit("closePage");
+  router.push("/layoutView"); //跳转布局页
   return;
   // const  e = ref(uName)
   // console.log("点击了按钮:"+e.value)
