@@ -71,14 +71,39 @@ import Child from "@/components/ChildSSJ.vue";
 let dialogRef = ref(null);
 let headNavRef = ref(null);
 
+/**
+ *  声明provide方法
+ *
+ * 作者: 小青龙
+ * 时间：2022/10/26 11:09:30
+ * @param title {string}  主标题
+ * @param subTitle {string}  副标题
+ * @return {void}
+ */
 function showSSJDialog(title, subTitle) {
   console.log("showSSJDialog~~");
   // dialogRef.value.show(true, "正在导出文件", "文件名")
   dialogRef.value.show(true, title, subTitle);
 }
 
+/**
+ *  声明provide方法
+ *
+ * 作者: 小青龙
+ * 时间：2022/10/26 11:08:30
+ * @param showLogin {boolean}  是否展示登录页面，true：展示
+ * @return {void}
+ */
+function showLoginVuew(showLogin) {
+  console.log("showLoginVuew~~" + showLogin);
+  loginPageHidden.value = !showLogin;
+}
+
 //用provide声明这个方法，子组件可以通过inject来访问，哪怕这两个组件直接隔了n层，有点像iOS里的「通知」
 provide("showSSJDialogKEY", showSSJDialog);
+
+//用provide声明这个方法，子组件可以通过inject来访问，哪怕这两个组件直接隔了n层，有点像iOS里的「通知」
+provide("showLoginVueKEY", showLoginVuew);
 
 //菜单-展开宽度
 let foldOnW = staticVars.LEFTMENU_FOLDONW;
@@ -291,9 +316,6 @@ let loginPageHidden = ref(true); //默认隐藏
 
 //页面加载完执行
 onMounted(() => {
-  // console.log("请先登录")
-  // loginPageHidden.value = false
-
   const loginState =
     getCurrentInstance().appContext.config.globalProperties.$loginState;
   loginPageHidden.value = loginState;
@@ -405,20 +427,20 @@ function closeLogin() {
   /*display: flex;*/
 }
 
+/*width: var(--global:leftWid);*/
 .left {
   background-color: white;
   width: v-bind(leftMenuWidth);
-  /*width: var(--global:leftWid);*/
   background-color: v-bind(leftMenuBgColor);
   height: 100%;
 }
 
+/*width: v-bind(100% - leftMenuWidth);*/
+/*position: relative;*/
 .router-div {
-  /*width: v-bind(100% - leftMenuWidth);*/
   flex: 1;
   height: calc(100% - 71px);
   background-color: white;
-  /*position: relative;*/
 }
 
 body {

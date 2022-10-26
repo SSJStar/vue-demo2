@@ -10,8 +10,8 @@
       <img
         src="@/assets/nav/people.png"
         alt=""
-        :onmouseenter="mouthInto"
-        :onmouseleave="mouthLeave"
+        :onmouseenter="mouthIntoHead"
+        :onmouseleave="mouthLeaveHead"
       />
       <!--  昵称  -->
       <label>
@@ -20,7 +20,13 @@
     </div>
 
     <!-- box列表    flex-shrink: 0-->
-    <div class="boxDiv" v-show="boxShow" ref="boxRef">
+    <div
+      class="boxDiv"
+      v-show="boxShow"
+      ref="boxRef"
+      :onmouseenter="mouthIntoBox"
+      :onmouseleave="mouthLeaveBox"
+    >
       <!--   个人信息   -->
       <label @click="userInfoClick"> 个人信息 </label>
       <!--   退出登录   -->
@@ -32,7 +38,7 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 import router from "@/router";
-import { onMounted, ref, watch } from "vue";
+import { inject, onMounted, ref, watch } from "vue";
 
 let navHidden = ref(true); //控制返回控件的显示或隐藏（根据navArray个数）
 let navArray = ref([]);
@@ -41,6 +47,7 @@ let boxShow = ref(true); //box显示与否,默认显示，目的是为了在onMo
 let boxRef = ref(null);
 let userInfoDivRef = ref(null);
 let boxRight = ref("20px"); //box组件距离右边的值
+let mouthInBox = false; //当前光标是否在列表上
 const route = useRoute();
 
 // // 监听函数监听路径的变化
@@ -104,22 +111,45 @@ onMounted(function () {
   }, 0);
 }, undefined);
 
-// 鼠标移动入到头像 ，显示展示列表
-function mouthInto(val) {
+/** 鼠标移动事件*/
+// 移入到头像 ，显示展示列表
+function mouthIntoHead(val) {
   boxShow.value = true;
 }
 
-// 鼠标移出 ，隐藏展示列表
-function mouthLeave() {
+// 移出头像 ，隐藏展示列表
+function mouthLeaveHead() {
+  // 1秒后判断：如果光标不在列表上就隐藏
+  setTimeout(() => {
+    console.log("mouthInBox---" + mouthInBox);
+    if (mouthInBox === false) {
+      boxShow.value = false;
+    }
+  }, 100);
+}
+
+// 移入到列表 ，显示展示列表
+function mouthIntoBox(val) {
+  mouthInBox = true;
+  boxShow.value = true;
+}
+
+// 移出列表 ，隐藏展示列表
+function mouthLeaveBox() {
+  mouthInBox = false;
   boxShow.value = false;
 }
 
 function userInfoClick() {
   console.log("点击了 个人信息");
+  boxShow.value = false;
 }
 
+const inj = inject("showLoginVueKEY");
 function unLoginClick() {
   console.log("点击了 退出登录");
+  boxShow.value = false;
+  inj(true); //告诉App.vue，展示登录页面
 }
 
 //修改的登录账户的昵称
