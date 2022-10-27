@@ -1,37 +1,3 @@
-<!--<template>-->
-<!--&lt;!&ndash;  <suspense>&ndash;&gt;-->
-
-<!--    <div>-->
-<!--      <h1>这是Home.vue</h1>-->
-
-<!--&lt;!&ndash;      <PersonInfo/>&ndash;&gt;-->
-<!--&lt;!&ndash;      全局&ndash;&gt;-->
-<!--      <GlobalView/>-->
-<!--&lt;!&ndash;      局部&ndash;&gt;-->
-<!--      <PartView/>-->
-<!--    </div>-->
-
-<!--&lt;!&ndash;  </suspense>&ndash;&gt;-->
-
-<!--</template>-->
-
-<!--<script>-->
-<!--// @ is an alias to /src-->
-<!--// import PersonInfo from '@/components/PersonInfoView'-->
-<!--// 局部注册组件 - PersonInfo-->
-<!--import PartView from '@/components/PartView'-->
-<!--export  default {-->
-<!--  components: {PartView},-->
-<!--}-->
-<!--</script>-->
-
-<!--&lt;!&ndash;    <v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">&ndash;&gt;-->
-<!--&lt;!&ndash;    </v-form-render>&ndash;&gt;-->
-<!--&lt;!&ndash;    <el-button type="primary" @click="submitForm">Submit</el-button>&ndash;&gt;-->
-<!--&lt;!&ndash;    <Test></Test>&ndash;&gt;-->
-
-<!--第二种-->
-
 <template>
   <div class="home">
     <div>
@@ -58,10 +24,10 @@
 </template>
 
 <script>
-import HeadNav from "../components/HeadNav";
-import LeftMenu from "../components/LeftMenu";
+import HeadNav from "../../components/HeadNav";
+import LeftMenu from "../../components/LeftMenu";
 import PersonInfoView from "@/views/PersonInfoView.vue";
-import BodyView from "@/views/BodyView.vue";
+import BodyView from "@/views/MenuBodyView.vue";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Home",

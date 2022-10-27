@@ -33,7 +33,7 @@
 import HeadNav from "@/components/HeadNav";
 import LeftMenu from "@/components/LeftMenu";
 import PersonInfoView from "@/views/PersonInfoView.vue";
-import BodyView from "@/views/BodyView.vue";
+import BodyView from "@/views/MenuBodyView.vue";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -263,7 +263,7 @@ const listJson = {
           parent_id: "4",
           iconName: "",
           title: "xlsx解析和导出",
-          page: "/xlsxView",
+          page: "/layoutView/xlsxView",
           childrens: [],
         },
         {
@@ -271,7 +271,7 @@ const listJson = {
           parent_id: "4",
           iconName: "",
           title: "双重直方图",
-          page: "/btChatView",
+          page: "/layoutView/btChatView",
           childrens: [],
         },
         {
@@ -285,7 +285,7 @@ const listJson = {
               parent_id: "4-3",
               iconName: "",
               title: "弹窗",
-              page: "/test",
+              page: "/layoutView/test",
               childrens: [],
             },
           ],
@@ -360,7 +360,11 @@ function childSelectAction(index) {
 
   console.log("要跳转：" + resultItem.page);
   if (resultItem.page !== undefined) {
-    router.push(resultItem.page + `?title=${resultItem.title}`);
+    // router.push(resultItem.page + `?title=${resultItem.title}`);
+    router.push({
+      name: "childBodyView",
+      query: { title: "事实上" },
+    });
   } else {
     console.log("page字段内容为空，跳转失败");
   }

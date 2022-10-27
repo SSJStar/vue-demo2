@@ -5,7 +5,7 @@ const routes = [
   {
     path: "/",
     name: "homeView",
-    component: () => import("../views/BodyView.vue"),
+    component: () => import("../views/MenuBodyView.vue"),
   },
   //注册
   {
@@ -35,59 +35,47 @@ const routes = [
         path: "bodyView",
         name: "childBodyView",
         component: () =>
-          import(/* webpackChunkName: "about" */ "../views/BodyView.vue"),
+          import(/* webpackChunkName: "about" */ "../views/MenuBodyView.vue"),
+      },
+      {
+        //xlsx文件的读取和导出
+        path: "xlsxView",
+        name: "xlsxView",
+        component: () =>
+          import(/* webpackChunkName: "about" */ "../views/XlsxView.vue"),
+      },
+      {
+        //直方图
+        path: "btChatView",
+        name: "btChatView",
+        component: () =>
+          import(/* webpackChunkName: "about" */ "../views/BTChatView.vue"),
       },
       {
         path: "myView",
         name: "mine",
         component: () =>
-          import(/* webpackChunkName: "about" */ "../views/MyView.vue"),
+          import(/* webpackChunkName: "about" */ "../views/other/MyView.vue"),
+      },
+      {
+        path: "test",
+        name: "test",
+        component: () =>
+          import(/* webpackChunkName: "about" */ "../views/other/TestSSJ.vue"),
       },
     ],
-  },
-  {
-    path: "/home",
-    name: "home",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/HomeView.vue"),
-  },
-  {
-    path: "/test",
-    name: "test",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/TestSSJ.vue"),
   },
   {
     path: "/test2",
     name: "test2",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Test2SSJ.vue"),
+      import(/* webpackChunkName: "about" */ "../views/other/Test2SSJ.vue"),
   },
   {
     path: "/personInfo",
     name: "personInfo",
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/PersonInfoView.vue"),
-  },
-  {
-    path: "/father",
-    name: "father",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/FatherView.vue"),
-  },
-  {
-    //xlsx文件的读取和导出
-    path: "/xlsxView",
-    name: "xlsxView",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/XlsxView.vue"),
-  },
-  {
-    //直方图
-    path: "/btChatView",
-    name: "btChatView",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/BTChatView.vue"),
   },
 ];
 

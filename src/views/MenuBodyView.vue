@@ -1,7 +1,7 @@
 <template>
   <div class="main-div">
     <!--    <h1>这是主页（Main）</h1>-->
-    <h1>当前页：{{ route.query["title"] }}</h1>
+    <h1>当前页1：{{ route.query["title"] }}</h1>
   </div>
 </template>
 
@@ -13,7 +13,8 @@ const route = useRoute();
 console.log("route.query:", route.query);
 console.log("title:", route.query["title"]);
 onMounted(() => {
-  console.log("aaa----");
+  console.log("aaa1----" + route.params.keys);
+  console.log("aaa2----" + route.params.title);
 });
 </script>
 
