@@ -7,14 +7,18 @@
 
 <script setup>
 import { useRoute } from "vue-router";
+import { onMounted } from "vue";
 
 const route = useRoute();
 console.log("route.query:", route.query);
 console.log("title:", route.query["title"]);
+onMounted(() => {
+  console.log("aaa----");
+});
 </script>
 
 <style>
-.main-div {
+. main-div {
   width: 100%;
   height: 100%;
   background-color: burlywood;

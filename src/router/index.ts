@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-// import LoginView from "@/views/Login";
 
 const routes = [
   {
@@ -16,6 +15,19 @@ const routes = [
     path: "/layoutView",
     name: "layoutView",
     component: import("../views/LayoutView.vue"),
+    children: [
+      {
+        path: "",
+        component: () =>
+          import(/* webpackChunkName: "about" */ "../views/FirstView.vue"),
+      },
+      {
+        path: "mainView",
+        name: "childMainView",
+        component: () =>
+          import(/* webpackChunkName: "about" */ "../views/MainView.vue"),
+      },
+    ],
   },
   {
     path: "/myView",
@@ -52,12 +64,6 @@ const routes = [
     name: "father",
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/FatherView.vue"),
-  },
-  {
-    path: "/mainView",
-    name: "mainView",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/MainView.vue"),
   },
   {
     //xlsx文件的读取和导出

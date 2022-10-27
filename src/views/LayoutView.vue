@@ -133,7 +133,7 @@ const listJson = {
               parent_id: "1-1",
               iconName: "",
               title: "西湖区",
-              page: "/mainView",
+              page: "/layoutView/mainView",
               childrens: [],
             },
             {
@@ -141,7 +141,7 @@ const listJson = {
               parent_id: "1-1",
               iconName: "",
               title: "滨江区",
-              page: "/mainView",
+              page: "/layoutView/mainView",
               childrens: [],
             },
             {
@@ -149,7 +149,7 @@ const listJson = {
               parent_id: "1-1",
               iconName: "",
               title: "上城区",
-              page: "/mainView",
+              page: "/layoutView/mainView",
               childrens: [],
             },
           ],
@@ -159,7 +159,7 @@ const listJson = {
           parent_id: "1",
           iconName: "",
           title: "绍兴",
-          page: "/mainView",
+          page: "/layoutView/mainView",
           childrens: [],
         },
         {
@@ -167,7 +167,7 @@ const listJson = {
           parent_id: "1",
           iconName: "",
           title: "宁波",
-          page: "/mainView",
+          page: "/layoutView/mainView",
           childrens: [],
         },
         {
@@ -181,7 +181,7 @@ const listJson = {
               parent_id: "1-1",
               iconName: "",
               title: "温岭",
-              page: "/mainView",
+              page: "/layoutView/mainView",
               childrens: [],
             },
             {
@@ -189,7 +189,7 @@ const listJson = {
               parent_id: "1-1",
               iconName: "",
               title: "临海",
-              page: "/mainView",
+              page: "/layoutView/mainView",
               childrens: [],
             },
           ],
@@ -201,7 +201,7 @@ const listJson = {
       parent_id: "0",
       iconName: require("/src/assets/home/icon-home.png"),
       title: "上海",
-      page: "/myView",
+      page: "/layoutView/mainView",
       childrens: [],
     },
     {
@@ -215,7 +215,7 @@ const listJson = {
           parent_id: "3",
           iconName: "",
           title: "呼和浩特",
-          page: "/mainView",
+          page: "/layoutView/mainView",
           childrens: [],
         },
         {
@@ -223,7 +223,7 @@ const listJson = {
           parent_id: "3",
           iconName: "",
           title: "包头",
-          page: "/mainView",
+          page: "/layoutView/mainView",
           childrens: [],
         },
         {
@@ -237,7 +237,7 @@ const listJson = {
               parent_id: "3-3",
               iconName: "",
               title: "乌海市博物馆",
-              page: "/mainView",
+              page: "/layoutView/mainView",
               childrens: [],
             },
             {
@@ -245,7 +245,7 @@ const listJson = {
               parent_id: "3-3",
               iconName: "",
               title: "黄河西行客栈",
-              page: "/mainView",
+              page: "/layoutView/mainView",
               childrens: [],
             },
           ],
@@ -335,7 +335,8 @@ function childFoldAction(value) {
 }
 
 /**
- * 由LeftMenu组件发送seleted通知，最终会走到这里
+ * 点击了某个菜单
+ *  由LeftMenu组件发送seleted通知，最终会走到这里
  *
  * 作者: 小青龙
  * 时间：2022/09/08 14:21:47
@@ -427,7 +428,6 @@ function closeLogin() {
 
 .router-div {
   flex: 1;
-  width: 200px;
   height: calc(100% - 71px);
   background-color: white;
 }
