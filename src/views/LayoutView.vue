@@ -363,7 +363,7 @@ function childSelectAction(index) {
     // router.push(resultItem.page + `?title=${resultItem.title}`);
     router.push({
       name: "childBodyView",
-      query: { title: "事实上" },
+      query: { title: resultItem.title },
     });
   } else {
     console.log("page字段内容为空，跳转失败");
