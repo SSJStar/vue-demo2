@@ -40,7 +40,6 @@
     <!--    <el-row>-->
     <div style="width: 100%; height: 100%; display: flex">
       <div class="left">
-        <!--          <LeftMenu style="background-color: gray;  width: 200px;  height: 100%;" @change="childFoldAction" ref="leftmenuRef"></LeftMenu>-->
         <LeftMenu
           @change="childFoldAction"
           @selected="childSelectAction"
@@ -51,8 +50,6 @@
         ></LeftMenu>
       </div>
       <div class="router-div">
-        <!--          <MainView></MainView>-->
-        <!--          <PersonInfoView></PersonInfoView>-->
         <router-view />
       </div>
     </div>
@@ -60,21 +57,11 @@
   </div>
 </template>
 
-<!--<template>-->
-<!--<div class="home">-->
-<!--&lt;!&ndash;<HelloWorld msg="Welcome to Your Vue.js App"/>&ndash;&gt;\-->
-<!--  <PersonInfoView></PersonInfoView>-->
-
-<!--</div>-->
-<!--</template>-->
-
 <script>
 import HeadNav from "../components/HeadNav";
 import LeftMenu from "../components/LeftMenu";
-// import {nextTick, reactive} from "vue/dist/vue";
-// import HelloWorld from '@/components/HelloWorld.vue'
 import PersonInfoView from "@/views/PersonInfoView.vue";
-import MainView from "@/views/MainView.vue";
+import BodyView from "@/views/BodyView.vue";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Home",
@@ -83,7 +70,7 @@ export default {
     LeftMenu,
     // HelloWorld
     // eslint-disable-next-line vue/no-unused-components
-    MainView,
+    BodyView,
   },
 
   //   const state = reactive({
@@ -126,7 +113,7 @@ const listJson = {
       parent_id: "0",
       iconName: require("/src/assets/home/icon-home.png"),
       title: "浙江",
-      page: "/mainView",
+      page: "/bodyView",
       childrens: [
         {
           index: "1-1",

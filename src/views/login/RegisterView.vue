@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div style="padding: 0px 20%">
+    <h1>注 册</h1>
     <v-form-render
       :form-json="formJson"
       :form-data="formData"
@@ -7,7 +8,7 @@
       ref="vFormRef"
     >
     </v-form-render>
-    <el-button type="primary" @click="submitForm">Submit</el-button>
+    <el-button type="primary" @click="submitForm">提 交</el-button>
   </div>
 </template>
 

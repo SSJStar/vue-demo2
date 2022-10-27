@@ -68,22 +68,9 @@
   </div>
 </template>
 
-<!--<script>-->
-<!--export default {-->
-<!--  data() {-->
-<!--    return {-->
-<!--      //这里一定要记得返回v-model中绑定的值！-->
-<!--      nameValue: '',-->
-<!--      pwdValue:'',-->
-<!--      codeInputValue:'',-->
-<!--    }-->
-<!--  }-->
-<!--}-->
-<!--</script>-->
-
 <script setup>
 import { Avatar, Lock, Check } from "@element-plus/icons-vue";
-import imageValidate from "@/components/ssj-image-validate.vue";
+import imageValidate from "@/components/ssj-image-validate.vue"; //图形验证码组件
 import { getRegisterCode, loginWithUNameAndPwd } from "@/api/api";
 import { getCurrentInstance, onMounted, ref } from "vue";
 import router from "../../router";
@@ -100,19 +87,13 @@ const emit = defineEmits(["closePage"]);
 
 // 图形验证码
 let identifyCodes = "1234567890abcdefghijklmnopqrstuvwxyz"; //随机数-数据源
-let identifyCode = ref("3212"); //当前随机数，初始值为3212
-
-// let codeInputRef = ref(null)
-
+let identifyCode = ref("3212"); //当前随机数，初始值为3212，identifyCode用于存放随机数值
+//获取上下文
 const proxy = getCurrentInstance().appContext;
 
 //登录按钮 - 点击
 function loginActionFunc() {
-  proxy.config.globalProperties.$loginState = true;
-
-  // router.replace("/home")
-  //告诉调用者，可以关闭当前页面来
-  // emit("closePage");
+  proxy.config.globalProperties.$loginState = true; //修改全局变量-登录状态
   router.push("/layoutView"); //跳转布局页
   return;
   // const  e = ref(uName)
@@ -136,7 +117,6 @@ function loginActionFunc() {
         alert("登录成功，即将跳转首页");
         router.push("/home");
       }).catch((err) => {
-        // console.log("请求错误信息："+ err.message)
         if (err.message.includes("code 500")) {
           alert("500错误，请联系管理员");
         } else {
@@ -156,6 +136,7 @@ function loginActionFunc() {
 
 //注册按钮-点击
 function registerActionFunc() {
+  router.push("registerView");
   return;
 
   // eslint-disable-next-line no-unreachable
@@ -221,14 +202,9 @@ const makeCode = (o, l) => {
   console.log("刷新后验证码是:" + identifyCode.value);
 };
 
-// return {
-//   codeInput,
-//   childRef,//记得要返回子组件的ref，不然访问不到
-// };
-
-onMounted(() => {
-  console.log("onMounted---codeInputRef---", loginInput.codeInputValue.value);
-});
+// onMounted(() => {
+//   console.log("onMounted---codeInputRef---", loginInput.codeInputValue.value);
+// });
 </script>
 
 <style>
@@ -307,16 +283,6 @@ onMounted(() => {
   float: right;
 }
 
-/*>>> .el-input__inner{*/
-/*  width: 190px;*/
-/*  height: 500px;*/
-/*}*/
-
-/*#inputPwd{*/
-/*  !*margin-top: 20px;*!*/
-/*  !*width: 200px;*!*/
-/*}*/
-
 /* 登录按钮 */
 #login-module-div .login-button-div {
   width: 100%;
@@ -329,7 +295,6 @@ onMounted(() => {
   margin-top: 48px;
   width: 45%;
   height: 47px;
-  /*transform: translate(-50%,-50%)*/
 }
 
 /* 注册按钮 */
@@ -343,42 +308,3 @@ onMounted(() => {
   font-size: 14px;
 }
 </style>
-
-<!--<template>-->
-<!--  <div id="test">-->
-<!--    <SSJButton title="测试一下" @btnClick="doSome" />-->
-<!--  </div>-->
-
-<!--</template>-->
-<!--<script>-->
-<!--import SSJButton from "../components/SSJButton";-->
-<!--export default {-->
-<!--  components: {SSJButton},-->
-<!--  methods: {-->
-<!--    doSome(val){-->
-<!--      alert("父组件打印："+val)-->
-<!--    }-->
-<!--  }-->
-<!--}-->
-<!--</script>-->
-
-<!--&lt;!&ndash;    <p>&ndash;&gt;-->
-<!--&lt;!&ndash;      <router-link to="home">进入首页</router-link>&ndash;&gt;-->
-<!--&lt;!&ndash;    </p>&ndash;&gt;-->
-
-<!--&lt;!&ndash;    <el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;      <el-button type="primary">主要num按钮</el-button>&ndash;&gt;-->
-<!--&lt;!&ndash;    </el-row>&ndash;&gt;-->
-
-<!--&lt;!&ndash;    <SSJButton title="自定义按钮" @btnClick="customBtnAction"></SSJButton>&ndash;&gt;-->
-
-<!--图形验证码-->
-<!--        <div style="width: 120px;height: 40px;display: inline-block;position: relative;">-->
-<!--          <img src="@/assets/keji_bg.png" @click="imgValidateFunc($event)" style="width: calc(100% - 20px);height:100%;position: relative;left: 10px"/>-->
-<!--          <label style="color: rgba(255, 255, 255, 0.9) ;left: 42%;top: 30%;position:absolute;">A F C</label>-->
-<!--        </div>-->
-
-<!--function imgValidateFunc(e){-->
-<!--//切换验证码图片-->
-<!--console.log("切换验证码图片");-->
-<!--}-->

@@ -32,10 +32,8 @@
 <script>
 import HeadNav from "@/components/HeadNav";
 import LeftMenu from "@/components/LeftMenu";
-// import {nextTick, reactive} from "vue/dist/vue";
-// import HelloWorld from '@/components/HelloWorld.vue'
 import PersonInfoView from "@/views/PersonInfoView.vue";
-import MainView from "@/views/MainView.vue";
+import BodyView from "@/views/BodyView.vue";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -43,9 +41,8 @@ export default {
   components: {
     HeadNav,
     LeftMenu,
-    // HelloWorld
     // eslint-disable-next-line vue/no-unused-components
-    MainView,
+    BodyView,
   },
 };
 </script>
@@ -87,7 +84,10 @@ function showSSJDialog(title, subTitle) {
  */
 function showLoginVuew(showLogin) {
   console.log("showLoginVuew~~" + showLogin);
-  loginPageHidden.value = !showLogin;
+  router.go(-1); //后退、并刷新
+  router.go(0); //刷新
+  router.go(1); //前进
+  router.back(); //后退、不刷新
 }
 
 //用provide声明这个方法，子组件可以通过inject来访问，哪怕这两个组件直接隔了n层，有点像iOS里的「通知」
@@ -133,7 +133,7 @@ const listJson = {
               parent_id: "1-1",
               iconName: "",
               title: "西湖区",
-              page: "/layoutView/mainView",
+              page: "/layoutView/myView",
               childrens: [],
             },
             {
@@ -141,7 +141,7 @@ const listJson = {
               parent_id: "1-1",
               iconName: "",
               title: "滨江区",
-              page: "/layoutView/mainView",
+              page: "/layoutView/bodyView",
               childrens: [],
             },
             {
@@ -149,7 +149,7 @@ const listJson = {
               parent_id: "1-1",
               iconName: "",
               title: "上城区",
-              page: "/layoutView/mainView",
+              page: "/layoutView/bodyView",
               childrens: [],
             },
           ],
@@ -159,7 +159,7 @@ const listJson = {
           parent_id: "1",
           iconName: "",
           title: "绍兴",
-          page: "/layoutView/mainView",
+          page: "/layoutView/bodyView",
           childrens: [],
         },
         {
@@ -167,7 +167,7 @@ const listJson = {
           parent_id: "1",
           iconName: "",
           title: "宁波",
-          page: "/layoutView/mainView",
+          page: "/layoutView/bodyView",
           childrens: [],
         },
         {
@@ -181,7 +181,7 @@ const listJson = {
               parent_id: "1-1",
               iconName: "",
               title: "温岭",
-              page: "/layoutView/mainView",
+              page: "/layoutView/bodyView",
               childrens: [],
             },
             {
@@ -189,7 +189,7 @@ const listJson = {
               parent_id: "1-1",
               iconName: "",
               title: "临海",
-              page: "/layoutView/mainView",
+              page: "/layoutView/bodyView",
               childrens: [],
             },
           ],
@@ -201,7 +201,7 @@ const listJson = {
       parent_id: "0",
       iconName: require("/src/assets/home/icon-home.png"),
       title: "上海",
-      page: "/layoutView/mainView",
+      page: "/layoutView/bodyView",
       childrens: [],
     },
     {
@@ -215,7 +215,7 @@ const listJson = {
           parent_id: "3",
           iconName: "",
           title: "呼和浩特",
-          page: "/layoutView/mainView",
+          page: "/layoutView/bodyView",
           childrens: [],
         },
         {
@@ -223,7 +223,7 @@ const listJson = {
           parent_id: "3",
           iconName: "",
           title: "包头",
-          page: "/layoutView/mainView",
+          page: "/layoutView/bodyView",
           childrens: [],
         },
         {
@@ -237,7 +237,7 @@ const listJson = {
               parent_id: "3-3",
               iconName: "",
               title: "乌海市博物馆",
-              page: "/layoutView/mainView",
+              page: "/layoutView/bodyView",
               childrens: [],
             },
             {
@@ -245,7 +245,7 @@ const listJson = {
               parent_id: "3-3",
               iconName: "",
               title: "黄河西行客栈",
-              page: "/layoutView/mainView",
+              page: "/layoutView/bodyView",
               childrens: [],
             },
           ],
@@ -288,14 +288,6 @@ const listJson = {
               page: "/test",
               childrens: [],
             },
-            // {
-            //   index: "4-3-2",
-            //   parent_id: "3-3",
-            //   iconName: "",
-            //   title: "黄河西行客栈",
-            //   page:"/mainView",
-            //   childrens: []
-            // }
           ],
         },
       ],
@@ -303,13 +295,10 @@ const listJson = {
   ],
 };
 
-let loginPageHidden = ref(true); //默认隐藏
-
 //页面加载完执行
 onMounted(() => {
   const loginState =
     getCurrentInstance().appContext.config.globalProperties.$loginState;
-  loginPageHidden.value = loginState;
 
   console.log("请先登录---" + loginState);
   headNavRef.value.changeLoginName("王小健");
@@ -372,8 +361,6 @@ function childSelectAction(index) {
   console.log("要跳转：" + resultItem.page);
   if (resultItem.page !== undefined) {
     router.push(resultItem.page + `?title=${resultItem.title}`);
-    // router.push("/myView")
-    // console.log("sssss---"+ resultItem.page + `?title=${resultItem.title}`)
   } else {
     console.log("page字段内容为空，跳转失败");
   }
@@ -386,19 +373,12 @@ function childSelectAction(index) {
  * 时间：2022/09/05 16:39:58
  * @return {void}
  */
-function useChildMehtod() {
-  // 调用LeftMenu组件的pubMethod方法，并传入参数 "外部参数12"
-  leftmenuRef.value.pubMethod("外部参数123");
-}
+// function useChildMehtod() {
+//   // 调用LeftMenu组件的pubMethod方法，并传入参数 "外部参数12"
+//   leftmenuRef.value.pubMethod("外部参数123");
+// }
 
 let pageContext = getCurrentInstance().appContext;
-//定义方法，并暴露给外界调用
-// 调用此方法来隐藏登录界面
-function closeLogin() {
-  const loginState = pageContext.config.globalProperties.$loginState;
-  loginPageHidden.value = loginState;
-  console.log("登录关闭:" + loginState);
-}
 </script>
 
 <style>

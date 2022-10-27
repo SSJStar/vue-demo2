@@ -1,16 +1,25 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
 const routes = [
+  //根目录 暂时没用到
   {
     path: "/",
     name: "homeView",
-    component: () => import("../views/MainView.vue"),
+    component: () => import("../views/BodyView.vue"),
   },
+  //注册
+  {
+    path: "/registerView",
+    name: "registerView",
+    component: import("../views/login/RegisterView.vue"),
+  },
+  //登录
   {
     path: "/loginView",
     name: "loginView",
     component: import("../views/login/LoginView.vue"),
   },
+  //主页，又名"布局组件"，包含组件：HeadNav、LeftMenu、router-view
   {
     path: "/layoutView",
     name: "layoutView",
@@ -21,19 +30,20 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "about" */ "../views/FirstView.vue"),
       },
+      // 子路由
       {
-        path: "mainView",
-        name: "childMainView",
+        path: "bodyView",
+        name: "childBodyView",
         component: () =>
-          import(/* webpackChunkName: "about" */ "../views/MainView.vue"),
+          import(/* webpackChunkName: "about" */ "../views/BodyView.vue"),
+      },
+      {
+        path: "myView",
+        name: "mine",
+        component: () =>
+          import(/* webpackChunkName: "about" */ "../views/MyView.vue"),
       },
     ],
-  },
-  {
-    path: "/myView",
-    name: "我",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/MySSJ.vue"),
   },
   {
     path: "/home",
@@ -78,13 +88,6 @@ const routes = [
     name: "btChatView",
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/BTChatView.vue"),
-  },
-  {
-    //登录
-    path: "/loginView",
-    name: "loginView",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/login/LoginView.vue"),
   },
 ];
 

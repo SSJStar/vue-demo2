@@ -1,6 +1,6 @@
 <template>
   <div style="background-color: #42b983; width: 100%; height: 100%">
-    <h1>我自己的页面</h1>
+    <h1>个人详情</h1>
     <button @click="btnClick">来点我啊</button>
   </div>
 </template>
