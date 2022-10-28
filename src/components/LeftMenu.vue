@@ -443,7 +443,7 @@ import {
 import { onUnmounted, onUpdated, ref } from "vue";
 import staticVars from "@/statics/global";
 
-console.log(staticVars.LEFTMENU_FOLDONW);
+// console.log(staticVars.LEFTMENU_FOLDONW);
 // 折叠还是展开
 let isCollapse = ref(false);
 

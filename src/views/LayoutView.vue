@@ -51,7 +51,8 @@ export default {
 import { getCurrentInstance, onMounted, provide, ref } from "vue";
 import staticVars from "@/statics/global";
 import router from "@/router";
-import SSJDialog from "@/components/SSJDialog"; //弹窗
+import SSJDialog from "@/components/SSJDialog";
+import { useRoute } from "vue-router/dist/vue-router"; //弹窗
 
 let dialogRef = ref(null);
 let headNavRef = ref(null);
@@ -297,8 +298,11 @@ onMounted(() => {
   const loginState =
     getCurrentInstance().appContext.config.globalProperties.$loginState;
 
+  const route = useRoute();
   console.log("请先登录---" + loginState);
-  headNavRef.value.changeLoginName("王小健");
+  console.log("title22222:", route.query["title"]);
+  // headNavRef.value.changeLoginName("王小健");
+  headNavRef.value.changeLoginName(route.query["title"]);
 });
 
 /**
@@ -357,11 +361,11 @@ function childSelectAction(index) {
 
   console.log("要跳转：" + resultItem.page);
   if (resultItem.page !== undefined) {
-    // router.push(resultItem.page + `?title=${resultItem.title}`);
-    router.push({
-      name: "childBodyView",
-      query: { title: resultItem.title },
-    });
+    router.push(resultItem.page + `?title=${resultItem.title}`);
+    // router.push({
+    //   name: "childBodyView",
+    //   query: { title: resultItem.title },
+    // });
   } else {
     console.log("page字段内容为空，跳转失败");
   }

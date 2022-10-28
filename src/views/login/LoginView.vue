@@ -91,7 +91,8 @@ const proxy = getCurrentInstance().appContext;
 //登录按钮 - 点击
 function loginActionFunc() {
   proxy.config.globalProperties.$loginState = true; //修改全局变量-登录状态
-  router.push("/layoutView"); //跳转布局页
+  let n = "汤姆森.金";
+  router.push(`/layoutView?title=${n}`); //跳转布局页
   return;
   // const  e = ref(uName)
   // console.log("点击了按钮:"+e.value)
@@ -134,6 +135,7 @@ function loginActionFunc() {
 //注册按钮-点击
 function registerActionFunc() {
   router.push("registerView");
+
   return;
 
   // eslint-disable-next-line no-unreachable

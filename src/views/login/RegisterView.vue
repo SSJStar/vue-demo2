@@ -14,7 +14,9 @@
 
 <script setup>
 import { ref, reactive } from "vue";
+// import { validatorPhone } from "@/statics/ssj-validate-rule"; //校验输入类型
 import { ElMessage } from "element-plus";
+import router from "@/router";
 // import { zhCn } from "element-plus/es/locale"; //引入element-plus中文样式(针对日历)
 // let localeValue = zhCn;
 // :locale="localeValue"
@@ -44,8 +46,8 @@ const formJson = reactive({
         showPassword: false,
         required: true,
         requiredHint: "请输入手机号",
-        validation: "",
-        validationHint: "",
+        validation: "mobilePhone",
+        validationHint: "请输入正确的手机号码",
         customClass: [],
         labelIconClass: null,
         labelIconPosition: "rear",
@@ -264,12 +266,26 @@ const formData = reactive({});
 const optionData = reactive({});
 const vFormRef = ref(null);
 
+// console.log(staticVars.LEFTMENU_FOLDONW);
 const submitForm = () => {
   vFormRef.value
     .getFormData()
     .then((formData) => {
       // Form Validation OK
-      alert(JSON.stringify(formData));
+      alert("表单数据已经获取：" + JSON.stringify(formData));
+
+      // console.log("手机号：" + JSON.stringify(formData["input18546"]));
+      // console.log("密码：" + JSON.stringify(formData["input90602"]));
+      // console.log("确认密码：" + JSON.stringify(formData["input34654"]));
+      // validatorPhone(formData["input18546"]).then((value) => {
+      //   if (value) {
+      //     console.log("手机号校验通过   " + value);
+      //   } else {
+      //     console.log("手机号校验失败   " + value);
+      //   }
+      // });
+      let n = "Tom";
+      router.push(`/layoutView?title=${n}`);
     })
     .catch((error) => {
       // Form Validation failed
