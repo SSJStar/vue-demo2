@@ -15,6 +15,9 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { ElMessage } from "element-plus";
+// import { zhCn } from "element-plus/es/locale"; //引入element-plus中文样式(针对日历)
+// let localeValue = zhCn;
+// :locale="localeValue"
 
 const formJson = reactive({
   widgetList: [

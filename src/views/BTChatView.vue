@@ -54,7 +54,6 @@ onMounted(() => {
 // 读取xlsx文件
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const XLSX = require("xlsx");
-let contentValue = {};
 
 function readXlsxFile() {
   //模拟延迟加载 （setTimeout）
@@ -72,7 +71,6 @@ function readXlsxFile() {
         let wb = XLSX.read(data, { type: "array" });
         let sheets = wb.Sheets;
         let content = transformSheets(sheets); // 整理xlsx返回的数据
-        contentValue = content; //  复制给contentValue
         console.log("content:");
         console.log(content); //content内容是从表格，逐行读取
         let list = [];

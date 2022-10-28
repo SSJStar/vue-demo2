@@ -32,7 +32,7 @@
 <script>
 import HeadNav from "@/components/HeadNav";
 import LeftMenu from "@/components/LeftMenu";
-import PersonInfoView from "@/views/PersonInfoView.vue";
+// import PersonInfoView from "@/views/PersonInfoView.vue";
 import BodyView from "@/views/MenuBodyView.vue";
 
 export default {
@@ -51,10 +51,7 @@ export default {
 import { getCurrentInstance, onMounted, provide, ref } from "vue";
 import staticVars from "@/statics/global";
 import router from "@/router";
-import Login from "@/views/login/LoginView";
 import SSJDialog from "@/components/SSJDialog"; //弹窗
-import Child from "@/components/ChildSSJ.vue";
-import RegisterView from "@/views/login/RegisterView";
 
 let dialogRef = ref(null);
 let headNavRef = ref(null);
@@ -382,7 +379,7 @@ function childSelectAction(index) {
 //   leftmenuRef.value.pubMethod("外部参数123");
 // }
 
-let pageContext = getCurrentInstance().appContext;
+// let pageContext = getCurrentInstance().appContext;
 </script>
 
 <style>

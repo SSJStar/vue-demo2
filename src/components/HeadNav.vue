@@ -36,12 +36,11 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from "vue-router";
-import router from "@/router";
+import { useRoute } from "vue-router";
 import { inject, onMounted, ref, watch } from "vue";
 
-let navHidden = ref(true); //控制返回控件的显示或隐藏（根据navArray个数）
-let navArray = ref([]);
+// let navHidden = ref(true); //控制返回控件的显示或隐藏（根据navArray个数）
+// let navArray = ref([]);
 let nickNameVal = ref(""); //昵称
 let boxShow = ref(true); //box显示与否,默认显示，目的是为了在onMounted里得到实际宽度
 let boxRef = ref(null);
@@ -75,13 +74,6 @@ const route = useRoute();
 //     console.log("newValue: " + newValue + " oldValue: " + oldValue);
 //   }
 // );
-
-// 返回上一页，调用的组件 router.back();
-// const goback = () => {
-//   //点击了返回按钮
-//   router.back();
-//   console.log("后退后navArray个数->" + navArray.value.length);
-// };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function,no-redeclare
 onMounted(function () {
@@ -128,13 +120,13 @@ function mouthLeaveHead() {
   }, 100);
 }
 
-// 移入到列表 ，显示展示列表
-function mouthIntoBox(val) {
+// 鼠标移入列表 ，显示展示列表
+function mouthIntoBox() {
   mouthInBox = true;
   boxShow.value = true;
 }
 
-// 移出列表 ，隐藏展示列表
+// 鼠标移出列表 ，隐藏展示列表
 function mouthLeaveBox() {
   mouthInBox = false;
   boxShow.value = false;

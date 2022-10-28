@@ -79,7 +79,7 @@ import { useDialog } from "@/components/servicedialog/useDialog";
 
 // let emit = defineEmits("showSSJDialog")
 
-let contentValue = {};
+// let contentValue = {};
 
 function created() {
   let url = "/高中二班女子800米成绩统计.xlsx"; //放在public目录下可以直接访问
@@ -91,7 +91,7 @@ function created() {
       let wb = XLSX.read(data, { type: "array" });
       let sheets = wb.Sheets;
       let content = transformSheets(sheets); // 整理xlsx返回的数据
-      contentValue = content; //  复制给contentValue
+      // contentValue = content; //  复制给contentValue
       console.log("content:");
       console.log(content);
       let list = [];

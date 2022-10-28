@@ -20,12 +20,9 @@ import { getCurrentInstance, onMounted, provide, ref } from "vue";
 // import router from "@/router";
 // import Login from "@/views/login/LoginView";
 // import SSJDialog from "@/components/SSJDialog"; //弹窗
-// import Child from "@/components/ChildSSJ.vue";
-// import LoginView from "@/views/login/LoginView";
 import router from "@/router";
 
 let dialogRef = ref(null);
-let headNavRef = ref(null);
 
 /**
  *  声明provide方法
@@ -69,8 +66,6 @@ onMounted(() => {
     getCurrentInstance().appContext.config.globalProperties.$loginState;
   loginPageHidden.value = loginState;
 
-  // console.log("请先登录---" + loginState);
-  // headNavRef.value.changeLoginName("王小健");
   if (loginState === false) {
     console.log("请先登录---" + loginState);
     router.push("/loginView");
@@ -88,15 +83,6 @@ onMounted(() => {
 //   // 调用LeftMenu组件的pubMethod方法，并传入参数 "外部参数12"
 //   leftmenuRef.value.pubMethod("外部参数123");
 // }
-
-let pageContext = getCurrentInstance().appContext;
-//定义方法，并暴露给外界调用
-// 调用此方法来隐藏登录界面
-function closeLogin() {
-  const loginState = pageContext.config.globalProperties.$loginState;
-  loginPageHidden.value = loginState;
-  console.log("登录关闭:" + loginState);
-}
 </script>
 
 <style>

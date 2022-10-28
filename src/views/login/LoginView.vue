@@ -72,7 +72,7 @@
 import { Avatar, Lock, Check } from "@element-plus/icons-vue";
 import imageValidate from "@/components/ssj-image-validate.vue"; //图形验证码组件
 import { getRegisterCode, loginWithUNameAndPwd } from "@/api/api";
-import { getCurrentInstance, onMounted, ref } from "vue";
+import { getCurrentInstance, ref } from "vue";
 import router from "../../router";
 
 // 定义一个对象，用来存放输入的账号、密码、验证码
@@ -81,9 +81,6 @@ let loginInput = {
   pwdValue: "",
   codeInputValue: "",
 };
-
-// eslint-disable-next-line no-undef
-const emit = defineEmits(["closePage"]);
 
 // 图形验证码
 let identifyCodes = "1234567890abcdefghijklmnopqrstuvwxyz"; //随机数-数据源
@@ -201,10 +198,6 @@ const makeCode = (o, l) => {
   }
   console.log("刷新后验证码是:" + identifyCode.value);
 };
-
-// onMounted(() => {
-//   console.log("onMounted---codeInputRef---", loginInput.codeInputValue.value);
-// });
 </script>
 
 <style>
