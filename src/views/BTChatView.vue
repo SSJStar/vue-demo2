@@ -13,7 +13,7 @@ import { ref, onMounted } from "vue";
 import transformSheets from "./read_xlsx";
 import SSJHistogramView from "@/components/chats/SSJHistogramView";
 import SSJEchatConfig from "@/components/chats/ssjChatClass";
-
+import axios from "axios";
 // 拿到SSJHistogramView组件实例
 const doubleHistogram = ref(null);
 
@@ -63,7 +63,6 @@ function readXlsxFile() {
     console.log("开始读取数据");
     let url = "/高中二班女子800米成绩统计.xlsx"; //放在public目录下可以直接访问
     //读取二进制excel文件,参考https://github.com/SheetJS/js-xlsx#utility-functions
-    // eslint-disable-next-line no-undef
     axios
       .get(url, { responseType: "arraybuffer" })
       .then((res) => {

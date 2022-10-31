@@ -34,7 +34,6 @@ function show(show: boolean, title: string, subtitle: string) {
   formSubTitle.value = subtitle;
 }
 //对外抛出方法
-// eslint-disable-next-line no-undef
 defineExpose({ show });
 
 let dialogFormVisible = ref(false); //是否显示弹窗

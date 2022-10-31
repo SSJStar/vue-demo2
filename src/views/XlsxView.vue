@@ -3,7 +3,7 @@
     <h1 @click="created">读取文件《高中二班女子800米成绩统计.xlsx》1</h1>
     <br />
     <h1 @click="ExportXlsx">导出数据到xlsx文件</h1>
-    <!--    <TableView />-->
+    <TableView ref="tbViewRef" :titles="titles" :list-data="listData" />
   </div>
 </template>
 
@@ -13,6 +13,7 @@ import axios from "axios";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const XLSX = require("xlsx");
 import transformSheets from "@/views/read_xlsx.js";
+
 // import {inject, reactive} from "vue";    //导入转制函数
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -22,13 +23,18 @@ import transformSheets from "@/views/read_xlsx.js";
 import ChildDemo from "@/components/servicedialog/ChildDemo.vue";
 import { useDialog } from "@/components/servicedialog/useDialog";
 import TableView from "@/views/List/TableView.vue";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 
+let tbViewRef: any = ref(null); //定义列表ref标记
+let titles: any = ref([]); //定义列表头部标题
+let listData = ref([]); //定义列表数据
 // let emit = defineEmits("showSSJDialog")
 
 // let contentValue = {};
 onMounted(() => {
   console.log("content:1212121");
+  // let arr: Array<string> = ["姓名", "身高", "体重", "外貌", "800跑步", "性别"];
+  // titles.value = arr;
 });
 
 function created() {
@@ -45,6 +51,9 @@ function created() {
       // contentValue = content; //  复制给contentValue
       console.log("content:");
       console.log(content);
+
+      titles.value = content[1]; //因为content第一个元素是[Sheet1]，使用要取索引1的元素
+      let listDataValue: any = []; //用来存放列表元素数组，每个元素都是一个Obj对象
       let list = [];
       let arr = content.slice(1);
 
@@ -54,6 +63,7 @@ function created() {
 
       for (let i = 0; i < arr.length; i++) {
         let obj: Obj = {};
+        let obj2: Obj = {};
         arr[i].forEach((item: any, index: number) => {
           // let key:keyof Obj = ""
           let key = String("data") + String(index + 1);
@@ -63,11 +73,26 @@ function created() {
             // obj['data'+(index+1)] = this.formatExcelDate(item);
             obj["data" + (index + 1)] = formatExcelDate(item);
           }
+          // if (index > 0) {
+          //key 要从titles里取
+          obj2[titles.value[index]] = item;
+          // }
         });
         list.push(obj);
+        listDataValue.push(obj2);
       }
-      console.log("list:");
+      console.log("list:" + list);
       console.log(list);
+      console.log("titles:" + titles.value);
+      console.log("listDataValue:");
+      console.log(listDataValue);
+      listDataValue.splice(0, 1);
+      console.log("listDataValue删除第一个元素后:");
+      console.log(listDataValue);
+      listData.value = listDataValue; //复制给响应式变量listData
+      if (tbViewRef.value) {
+        tbViewRef.value.myReload("123");
+      }
     })
     .catch((err) => {
       // this.err = err;

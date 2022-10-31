@@ -149,7 +149,7 @@ function changeLoginName(nickName) {
   console.log("接收外界nickName:" + nickName);
   nickNameVal.value = nickName;
 }
-// eslint-disable-next-line no-undef
+
 defineExpose({ changeLoginName });
 </script>
 

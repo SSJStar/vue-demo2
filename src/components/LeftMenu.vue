@@ -458,9 +458,7 @@ let foldIconColor = staticVars.BACKGROUNBD_COLOR;
 /* 在 <script setup> 中必须使用 defineProps 和 defineEmits API 来声明 props 和 emits ，
  * 它们具备完整的类型推断并且在 <script setup> 中是直接可用的：
  */
-// eslint-disable-next-line no-undef
 const emit = defineEmits(["change", "selected"]);
-// eslint-disable-next-line no-undef
 const props = defineProps({
   foo: String,
   foldOn_width: String, //展开时的宽度
@@ -531,7 +529,6 @@ function pubMethod(value) {
   console.log("接收外界value:" + value);
 }
 // 暴露给外界调用
-// eslint-disable-next-line no-undef
 defineExpose({ pubMethod });
 </script>
 

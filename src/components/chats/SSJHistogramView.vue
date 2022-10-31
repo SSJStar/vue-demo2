@@ -5,10 +5,8 @@ import SSJEchatConfig from "@/components/chats/ssjChatClass"; //引入自定义�
 
 let myChart = null; //图表对象
 
-// eslint-disable-next-line no-undef
 const emit = defineEmits(["click"]); //声明接口
 
-// eslint-disable-next-line no-undef
 const props = defineProps({
   //暴露属性
   config: SSJEchatConfig,
@@ -117,7 +115,6 @@ function initChart() {
 }
 
 // 暴露给外界调用
-// eslint-disable-next-line no-undef
 defineExpose({ updateChat });
 </script>
 

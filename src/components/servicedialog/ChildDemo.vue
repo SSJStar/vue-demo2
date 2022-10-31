@@ -47,7 +47,6 @@ const form = reactive({
   desc: "",
 });
 
-// eslint-disable-next-line no-undef
 const props = defineProps<{
   close: (msg?: any) => void;
   params: any;

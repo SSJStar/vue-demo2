@@ -11,7 +11,6 @@
 <script setup>
 import { onMounted, watch } from "vue";
 
-// eslint-disable-next-line no-undef
 const props = defineProps({
   identifyCode: {
     type: String,
