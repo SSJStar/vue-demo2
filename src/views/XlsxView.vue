@@ -1,89 +1,40 @@
 <template>
   <div>
-    <h1 @click="created">读取文件《高中二班女子800米成绩统计.xlsx》</h1>
+    <h1 @click="created">读取文件《高中二班女子800米成绩统计.xlsx》1</h1>
     <br />
     <h1 @click="ExportXlsx">导出数据到xlsx文件</h1>
+    <!--    <TableView />-->
   </div>
 </template>
-
-<!--<script setup lang="ts">-->
-<!--function dd(){-->
-<!--  console.log("This is dd.")-->
-<!--}-->
-
-<!--const { proxy }: any = getCurrentInstance();-->
-<!-- class OperateStepsPage {-->
-<!--   private static jsUse: OperateStepsPage;-->
-<!--   private operateStepsPage: OperateStepsPage | undefined;-->
-
-<!--   // constructor(-->
-<!--   //     public alertController: AlertController,-->
-<!--   //     public activatedRoute: ActivatedRoute,-->
-<!--   //     public router: Router,-->
-<!--   //     public eventService: EventService,-->
-<!--   // )-->
-
-<!--   public init() {   // 做一个全局注册-->
-<!--     OperateStepsPage.jsUse = this;-->
-<!--     // 若下面window['operateStepsPage']提示：object access via string literals is disallowed（不允许通过字符串文本访问对象），可先定义再访问-->
-<!--     // 若不提示错误，可省略定义：const operateStepsPage= 'operateStepsPage';直接window['operateStepsPage']-->
-<!--     const operateStepsPage = 'operateStepsPage';-->
-<!--     window['operateStepsPage'] = OperateStepsPage.jsUse;-->
-<!--   }-->
-
-<!--  public aa() {-->
-<!--    console.log("This is aa.")-->
-<!--    // proxy.$subDialog({-->
-<!--    //   title: "title",-->
-<!--    //   width: "550px",-->
-<!--    //   option: {-->
-<!--    //-->
-<!--    //   },-->
-<!--    //   cancelClick: () => {},-->
-<!--    //   saveClick: async (val: any) => {-->
-<!--    //     console.log(val)-->
-<!--    //   },-->
-<!--    // });-->
-<!--  }-->
-<!--}-->
-
-<!--</script>-->
-
-<!--<script setup>-->
-
-<!--// import {getCurrentInstance} from "vue";-->
-<!--// const currentInstance = getCurrentInstance()-->
-<!--// const { proxy }: any = getCurrentInstance();-->
-
-<!--// function bb() {-->
-<!--//   console.log("This is bb.")-->
-<!--//   require(this.aa())-->
-<!--// }-->
-
-<!--</script>-->
 
 <script setup lang="ts">
 import axios from "axios";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const XLSX = require("xlsx");
-// import transformSheets from '@/views/read_xlsx';
+import transformSheets from "@/views/read_xlsx.js";
 // import {inject, reactive} from "vue";    //导入转制函数
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const transformSheets: any = require("./read_xlsx");
+// const transformSheets: any = require("./read_xlsx");
 
 // 弹窗需要用到useDialog跟自定义组件ChildDemo
 import ChildDemo from "@/components/servicedialog/ChildDemo.vue";
 import { useDialog } from "@/components/servicedialog/useDialog";
+import TableView from "@/views/List/TableView.vue";
+import { onMounted } from "vue";
 
 // let emit = defineEmits("showSSJDialog")
 
 // let contentValue = {};
+onMounted(() => {
+  console.log("content:1212121");
+});
 
 function created() {
   let url = "/高中二班女子800米成绩统计.xlsx"; //放在public目录下可以直接访问
   //读取二进制excel文件,参考https://github.com/SheetJS/js-xlsx#utility-functions
+  console.log("content123456:");
   axios
     .get(url, { responseType: "arraybuffer" })
     .then((res) => {
