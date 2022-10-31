@@ -3,17 +3,14 @@
   {{ pro.listData }}<br />
   <!--  {{ listData }}<br /><br />-->
   <el-table v-bind:data="pro.listData" border style="width: 100%">
-    <!--    <el-table-column prop="date" label="Date" width="180" />-->
-    <!--    <el-table-column prop="name" label="Name" width="180" />-->
-    <!--    <el-table-column prop="address" label="Address" />-->
-    <!--    <el-table-column prop="time" label="Time" width="180" />-->
-
     <!--    <el-table-column v-bind:prop="pro.titles[0]" label="姓名" width="180" />-->
-    <div v-bind:v-for="item in pro.titles" :key="item.key">
-      <!--      item:{{ item }}<br />-->
-      <el-table-column prop="姓名" :label="item" width="180" />
+    <div v-for="item in pro.titles" :key="item.key">
+      item~:{{ item }}<br />
+      <!--      <el-table-column prop="姓名" :label="item" width="180" />-->
     </div>
   </el-table>
+
+  <!--  <div v-for="item in pro.titles" :key="item.key">item:{{ item }}</div>-->
 </template>
 
 <script lang="ts" setup>
@@ -76,3 +73,7 @@ function myReload(an: any) {
 
 defineExpose({ myReload });
 </script>
+<!--    <el-table-column prop="date" label="Date" width="180" />-->
+<!--    <el-table-column prop="name" label="Name" width="180" />-->
+<!--    <el-table-column prop="address" label="Address" />-->
+<!--    <el-table-column prop="time" label="Time" width="180" />-->
