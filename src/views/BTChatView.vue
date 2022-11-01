@@ -47,12 +47,12 @@ onMounted(() => {
       [legend_left_value.value, legend_right_value.value],
       ["ml", "斤"]
     );
+    // 更新图标
     doubleHistogram.value.updateChat(conf);
   });
 });
 
 // 读取xlsx文件
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const XLSX = require("xlsx");
 
 function readXlsxFile() {
@@ -84,6 +84,7 @@ function readXlsxFile() {
             if (index + 1 == 9) {
               obj["data" + (index + 1)] = formatExcelDate(item);
             }
+            //逐行遍历，i表示第几行，index表示第几列
             //第0行是标题 不需要遍历
             if (i > 0) {
               if (index == 0) {

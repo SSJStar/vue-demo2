@@ -159,7 +159,7 @@ defineExpose({ changeLoginName });
 <style>
 .head-nav {
   width: 100%;
-  height: 71px;
+  height: 51px;
   overflow: hidden;
   background-color: cadetblue;
   display: flex;
@@ -189,7 +189,7 @@ defineExpose({ changeLoginName });
 /* 列表 */
 .boxDiv {
   display: flex;
-  top: 71px;
+  top: 51px;
   right: v-bind(boxRight);
   background-color: #333333;
   position: absolute;

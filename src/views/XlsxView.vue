@@ -1,12 +1,11 @@
 <template>
-  <div>
+  <div class="XlsxViewClass">
     <!--  读取xlsx文件内容，并以列表展示 -->
-    <h1 @click="readFileFunc">读取文件《高中二班女子800米成绩统计.xlsx》</h1>
-    <br />
-    <!--  导出到电脑  -->
-    <h1 v-show="isShpwExport" @click="ExportXlsx">
-      导出数据到电脑（xlsx格式）
+    <h1 v-show="isShowRead" @click="readFileFunc">
+      读取文件《高中二班女子800米成绩统计.xlsx》
     </h1>
+    <br />
+
     <!--  列表  -->
     <TableView
       style="width: 100%; height: 250px"
@@ -14,6 +13,15 @@
       :titles="titles"
       :list-data="listData"
     />
+
+    <!--  导出到电脑  -->
+    <div class="toolsView" v-show="isShowExport">
+      <el-button class="ExportView" @click="ExportXlsx">导出</el-button>
+      <el-button class="ChatView" @click="showChart">生成柱状图</el-button>
+    </div>
+
+    <!--  柱状图  -->
+    <BTChatView v-show="isShowChart"></BTChatView>
   </div>
 </template>
 
@@ -27,6 +35,7 @@ import { useDialog } from "@/components/servicedialog/useDialog";
 // 表格组件
 import TableView from "@/views/List/TableView.vue";
 import { ref } from "vue";
+import BTChatView from "@/views/BTChatView.vue";
 
 let tbViewRef: any = ref(null); //定义列表ref标记
 let titles: any = ref([]); //定义列表头标题
@@ -35,8 +44,9 @@ let listData = ref([]); //定义列表数据
  * contentValue数据格式：[["姓名","身高","体重"],["张三","172","110"],["李四","182","135"]]
  * */
 let contentValue: any = null; //用于接收xlsx文件内容，后面导出的时候要用到这个变量
-let isShpwExport = ref(false); //是否展示"导出按钮"
-
+let isShowRead = ref(true); //是否展示"读取文件xxx"，默认true
+let isShowExport = ref(false); //是否展示"导出按钮",默认false
+let isShowChart = ref(false); //是否展示"图标",默认false
 /**
  * 读取xlsx文件，给响应式变量titles、listDataValue赋值，表格自动刷新数据
  *
@@ -87,9 +97,11 @@ function readFileFunc() {
       listData.value = listDataValue; //listDataValue赋值给响应式变量listData
       //展示或隐藏 导出按钮
       if (listData.value.length > 0) {
-        isShpwExport.value = true;
+        isShowExport.value = true;
+        isShowRead.value = false;
       } else {
-        isShpwExport.value = false;
+        isShowExport.value = false;
+        isShowRead.value = true;
       }
     })
     .catch((err) => {
@@ -138,6 +150,9 @@ const ExportXlsx = () => {
     params: { title: "导出中", subTitle: "文件名" },
   }).then((msg: any) => {
     console.log("关闭后得到值：", msg); //msg就是输入的新文件名字
+    if (msg === undefined || msg === null || msg === "") {
+      return;
+    }
     // 创建工作表
     const data = XLSX.utils.json_to_sheet(contentValue);
     // 创建工作簿
@@ -148,4 +163,42 @@ const ExportXlsx = () => {
     XLSX.writeFile(wb, msg + ".xlsx");
   });
 };
+
+/**
+ * 展示图表
+ *
+ * 作者: 小青龙
+ * 时间：2022/11/01 17:24:56
+ * @return {void}
+ */
+function showChart() {
+  isShowChart.value = true;
+}
 </script>
+
+<style>
+/*希望页面在超出屏幕高度的时候，可以滚动。需要设置高度height和overflow-y模式*/
+.XlsxViewClass {
+  height: calc(100%);
+  overflow-y: scroll;
+}
+
+.toolsView {
+  margin-top: 40px;
+  width: 100%;
+  height: 50px;
+  /*background-color: #2c3e50;*/
+}
+.toolsView .ExportView {
+  display: inline-block;
+  float: left;
+  margin-left: 20px;
+  /*background-color: #42b983;*/
+}
+.toolsView .ChatView {
+  display: inline-block;
+  float: right;
+  margin-right: 20px;
+  /*background-color: orange;*/
+}
+</style>
