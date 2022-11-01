@@ -73,7 +73,7 @@ export class OverlayService {
         h(
           ElDialog,
           {
-            //默认在弹窗关闭时销毁子组件
+            //默认在弹窗关闭g时销毁子组件
             destroyOnClose: true,
             ...this.options,
             modelValue: this.show.value,

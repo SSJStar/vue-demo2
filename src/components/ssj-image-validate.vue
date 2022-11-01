@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { onMounted, watch } from "vue";
+import { onMounted } from "vue";
 
 const props = defineProps({
   identifyCode: {
@@ -145,12 +145,12 @@ const drawPic = () => {
   drawDot(ctx);
 };
 
-watch(
-  () => props.identifyCode,
-  (newValue, oldValue) => {
-    drawPic();
-  }
-);
+// watch(
+//   () => props.identifyCode,
+//   (newValue, oldValue) => {
+//     drawPic();
+//   }
+// );
 
 onMounted(() => {
   drawPic();

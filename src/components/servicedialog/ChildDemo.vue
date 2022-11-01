@@ -9,7 +9,8 @@
       <input placeholder="请输入" v-model="form.name" />
     </div>
     <!--    <input placeholder="请输入" v-model="form.name"/>-->
-    <button @click="close('关闭了弹窗')">关闭弹窗</button>
+    <!--    <button @click="close('关闭了弹窗')">关闭弹窗</button>-->
+    <button @click="close(form.name)">确定</button>
   </div>
 
   <!--  <el-dialog :title="formTitle">-->
@@ -34,7 +35,6 @@ import { onMounted, reactive, ref } from "vue";
 
 let formTitle = ref("111"); //弹窗标题
 let formSubTitle = ref("222"); //弹窗副标题
-const formLabelWidth = "140px";
 
 const form = reactive({
   name: "",

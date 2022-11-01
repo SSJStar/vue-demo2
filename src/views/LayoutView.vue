@@ -51,7 +51,6 @@ export default {
 import { getCurrentInstance, onMounted, provide, ref } from "vue";
 import staticVars from "@/statics/global";
 import router from "@/router";
-import SSJDialog from "@/components/SSJDialog";
 import { useRoute } from "vue-router/dist/vue-router"; //弹窗
 
 let dialogRef = ref(null);
@@ -283,7 +282,7 @@ const listJson = {
               parent_id: "4-3",
               iconName: "",
               title: "弹窗",
-              page: "/layoutView/test",
+              page: "",
               childrens: [],
             },
           ],

@@ -338,7 +338,7 @@
     <img @click="zhedie" v-bind:src="foldImageName" />
   </div>
   <el-container>
-    <el-aside :width="isCollapse ? foldOff_width : foldOn_width">
+    <el-aside :width="isCollapse ? props.foldOff_width : props.foldOn_width">
       <el-menu
         active-text-color="#ffd04b"
         v-bind:background-color="staticVars.BACKGROUNBD_COLOR"
@@ -354,7 +354,11 @@
         <!--这是一个for循环，遍历第一级-->
         <!-- 针对每一个item、item2，要判断它下面有没有子菜单，如果有就用el-sub-menu创建它，如果没有就用el-menu-创建它 -->
         <!-- 注意：item3作为第三级菜单，不再往下拓展-->
-        <div :index="item.index" v-for="item in listJson.list" :key="item.key">
+        <div
+          :index="item.index"
+          v-for="item in props.listJson.list"
+          :key="item.key"
+        >
           <!--能进入这个v-if，表示这个一级菜单下面还有子菜单（二级菜单）-->
           <div v-if="item.childrens.length > 0">
             <el-sub-menu :index="item.index" :key="item.id">
@@ -433,14 +437,8 @@
 </template>
 
 <script setup>
-import {
-  HomeFilled,
-  Document,
-  Menu as IconMenu,
-  Location,
-  Setting,
-} from "@element-plus/icons-vue"; //引入图标
-import { onUnmounted, onUpdated, ref } from "vue";
+import { Location, Setting } from "@element-plus/icons-vue"; //引入图标
+import { ref } from "vue";
 import staticVars from "@/statics/global";
 
 // console.log(staticVars.LEFTMENU_FOLDONW);
@@ -460,7 +458,6 @@ let foldIconColor = staticVars.BACKGROUNBD_COLOR;
  */
 const emit = defineEmits(["change", "selected"]);
 const props = defineProps({
-  foo: String,
   foldOn_width: String, //展开时的宽度
   foldOff_width: String, //收起时的宽度
   listJson: Object, //菜单数据源

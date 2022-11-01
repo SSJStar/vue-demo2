@@ -36,8 +36,8 @@
 </template>
 
 <script setup>
-import { useRoute } from "vue-router";
-import { inject, onMounted, ref, watch } from "vue";
+// import { useRoute } from "vue-router";
+import { inject, onMounted, ref } from "vue";
 
 // let navHidden = ref(true); //控制返回控件的显示或隐藏（根据navArray个数）
 // let navArray = ref([]);
@@ -47,7 +47,7 @@ let boxRef = ref(null);
 let userInfoDivRef = ref(null);
 let boxRight = ref("20px"); //box组件距离右边的值
 let mouthInBox = false; //当前光标是否在列表上
-const route = useRoute();
+// const route = useRoute();
 
 // // 监听函数监听路径的变化
 // watch(
@@ -82,22 +82,25 @@ onMounted(function () {
   setTimeout(() => {
     // 计算box组件的right值
     // box.right = userInfoDiv 的宽度 + userInfoDiv.right - box.width * 0.5 - 头像宽度 * 0.5
-    boxRight.value =
-      (
-        userInfoDivRef.value.offsetWidth +
-        20 -
-        boxRef.value.offsetWidth * 0.5 -
-        30 * 0.5
-      ).toString() + "px";
-    // 控制台 - 打印宽度
-    console.log(
-      "userInfoDiv宽度 -- " +
-        userInfoDivRef.value.offsetWidth +
-        "  box宽度---" +
-        boxRef.value.offsetWidth +
-        "  boxRight---" +
-        boxRight.value
-    );
+    // action: 头像 - 退出登录，会进入这里且userInfoDivRef.value为空
+    if (userInfoDivRef.value) {
+      boxRight.value =
+        (
+          userInfoDivRef.value.offsetWidth +
+          20 -
+          boxRef.value.offsetWidth * 0.5 -
+          30 * 0.5
+        ).toString() + "px";
+      // 控制台 - 打印宽度
+      // console.log(
+      //   "userInfoDiv宽度 -- " +
+      //     userInfoDivRef.value.offsetWidth +
+      //     "  box宽度---" +
+      //     boxRef.value.offsetWidth +
+      //     "  boxRight---" +
+      //     boxRight.value
+      // );
+    }
     //到此，已经利用了，可以把它先隐藏起来
     boxShow.value = false;
   }, 0);
@@ -105,7 +108,7 @@ onMounted(function () {
 
 /** 鼠标移动事件*/
 // 移入到头像 ，显示展示列表
-function mouthIntoHead(val) {
+function mouthIntoHead() {
   boxShow.value = true;
 }
 

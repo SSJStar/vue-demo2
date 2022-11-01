@@ -11,65 +11,47 @@ const routes = [
   {
     path: "/registerView",
     name: "registerView",
-    component: import("../views/login/RegisterView.vue"),
+    component: () => import("../views/login/RegisterView.vue"),
   },
   //登录
   {
     path: "/loginView",
     name: "loginView",
-    component: import("../views/login/LoginView.vue"),
+    component: () => import("../views/login/LoginView.vue"),
   },
   //主页，又名"布局组件"，包含组件：HeadNav、LeftMenu、router-view
   {
     path: "/layoutView",
-    name: "layoutView",
-    component: import("../views/LayoutView.vue"),
+    component: () => import("../views/LayoutView.vue"),
     children: [
       {
         path: "",
-        component: () =>
-          import(/* webpackChunkName: "about" */ "../views/FirstView.vue"),
+        component: () => import("../views/FirstView.vue"),
       },
       // 子路由
       {
         path: "bodyView",
         name: "childBodyView",
-        component: () =>
-          import(/* webpackChunkName: "about" */ "../views/MenuBodyView.vue"),
+        component: () => import("../views/MenuBodyView.vue"),
       },
       {
         //xlsx文件的读取和导出
         path: "xlsxView",
         name: "xlsxView",
-        component: () =>
-          import(/* webpackChunkName: "about" */ "../views/XlsxView.vue"),
+        component: () => import("../views/XlsxView.vue"),
       },
       {
         //直方图
         path: "btChatView",
         name: "btChatView",
-        component: () =>
-          import(/* webpackChunkName: "about" */ "../views/BTChatView.vue"),
+        component: () => import("../views/BTChatView.vue"),
       },
       {
         path: "myView",
         name: "mine",
-        component: () =>
-          import(/* webpackChunkName: "about" */ "../views/other/MyView.vue"),
-      },
-      {
-        path: "test",
-        name: "test",
-        component: () =>
-          import(/* webpackChunkName: "about" */ "../views/other/TestSSJ.vue"),
+        component: () => import("../views/other/MyView.vue"),
       },
     ],
-  },
-  {
-    path: "/test2",
-    name: "test2",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/other/Test2SSJ.vue"),
   },
   {
     path: "/personInfo",
