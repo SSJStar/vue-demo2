@@ -16,11 +16,14 @@ import "element-plus/dist/index.css"; //引入element-plus样式
 // @ts-ignore
 import ssjDialog from "@/components/SSJDialog.js";
 
+import Tip from "@/components/servicedialog/toastTS";
+
 const app = createApp(App);
 
 app.use(VForm3); //全局注册VForm3(同时注册了v-form-designe、v-form-render等组件)
 app.use(ElementPlus); //全局注册ElementPlus
 app.use(ssjDialog); //全局注册弹窗
+app.use(Tip);
 // app.use(ElementPlus, { locale: zhCn });
 // app.use(SubDialog)
 

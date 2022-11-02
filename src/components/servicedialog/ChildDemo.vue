@@ -12,29 +12,12 @@
     <!--    <button @click="close('关闭了弹窗')">关闭弹窗</button>-->
     <button @click="close(form.name)">确定</button>
   </div>
-
-  <!--  <el-dialog :title="formTitle">-->
-  <!--    <el-form :model="form">-->
-  <!--      &lt;!&ndash;  输入框  &ndash;&gt;-->
-  <!--      <el-form-item :label="formSubTitle" :label-width="formLabelWidth">-->
-  <!--        <el-input v-model="form.name" autocomplete="off" />-->
-  <!--      </el-form-item>-->
-
-  <!--    </el-form>-->
-  <!-- 弹窗尾部，确定/取消 -->
-  <!--    <template #footer>-->
-  <!--      <span class="dialog-footer">-->
-  <!--        <el-button @click="close('关闭了弹窗')">取消</el-button>-->
-  <!--        <el-button type="primary" @click="close('关闭了弹窗')">确定</el-button>-->
-  <!--      </span>-->
-  <!--    </template>-->
-  <!--  </el-dialog>-->
 </template>
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from "vue";
 
-let formTitle = ref("111"); //弹窗标题
-let formSubTitle = ref("222"); //弹窗副标题
+let formTitle = ref("弹窗标题"); //弹窗标题
+let formSubTitle = ref("弹窗副标题"); //弹窗副标题
 
 const form = reactive({
   name: "",
@@ -69,3 +52,18 @@ onMounted(() => {
   box-sizing: border-box;
 }
 </style>
+
+<!--ChildDemo.vue -->
+<!--<template>-->
+<!--  <div>-->
+<!--    {{ params }}-->
+
+<!--    <button @click="close('关闭了弹窗')">关闭弹窗</button>-->
+<!--  </div>-->
+<!--</template>-->
+<!--<script lang="ts" setup>-->
+<!--const props = defineProps<{-->
+<!--  close: (msg?: any) => void;-->
+<!--  params: any;-->
+<!--}>();-->
+<!--</script>-->

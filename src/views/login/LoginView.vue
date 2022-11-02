@@ -74,6 +74,7 @@ import imageValidate from "@/components/ssj-image-validate.vue"; //图形验证�
 import { getRegisterCode, loginWithUNameAndPwd } from "@/api/api";
 import { getCurrentInstance, ref } from "vue";
 import router from "../../router";
+import { tip } from "@/components/servicedialog/toastTS";
 
 // 定义一个对象，用来存放输入的账号、密码、验证码
 let loginInput = {
@@ -134,8 +135,8 @@ function loginActionFunc() {
 
 //注册按钮-点击
 function registerActionFunc() {
-  router.push("registerView");
-
+  // router.push("registerView");
+  tip();
   return;
 
   // eslint-disable-next-line no-unreachable

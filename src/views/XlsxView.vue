@@ -36,6 +36,8 @@ import { useDialog } from "@/components/servicedialog/useDialog";
 import TableView from "@/views/List/TableView.vue";
 import { ref } from "vue";
 import BTChatView from "@/views/BTChatView.vue";
+import Notice from "./src/index.vue";
+import { tip } from "@/components/servicedialog/toastTS"; //
 
 let tbViewRef: any = ref(null); //定义列表ref标记
 let titles: any = ref([]); //定义列表头标题
@@ -140,6 +142,23 @@ function readFileFunc() {
 const { open } = useDialog();
 //将contentValue这个json变量，写入xlsx文件
 const ExportXlsx = () => {
+  // //创建一个input框
+  // const input = document.createElement("input");
+  // //将指定的DOM节点添加到body的末尾
+  // document.body.appendChild(input);
+  // //设置input框的value值为直播地址
+  // input.setAttribute("value", "哈哈哈");
+  // input.setAttribute(
+  //   "style",
+  //   "width:200px; height:50px; background-color: red"
+  // );
+  //
+  // const showtip =
+  //   getCurrentInstance()?.appContext.config.globalProperties.$loadingTip;
+  // showtip().show();
+  // return;
+
+  // eslint-disable-next-line no-unreachable
   if (contentValue === null) {
     alert("文件内容为空，导出失败");
     return;

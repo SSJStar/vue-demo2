@@ -195,6 +195,7 @@ defineExpose({ changeLoginName });
   position: absolute;
   flex-direction: column;
   padding: 10px 8px;
+  z-index: 999;
 }
 .boxDiv label {
   color: white;
