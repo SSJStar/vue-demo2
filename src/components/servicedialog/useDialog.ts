@@ -9,6 +9,7 @@ import {
 } from "vue";
 
 import { ElDialog } from "element-plus";
+import ToastView from "@/components/servicedialog/ssj-dialog-child.vue";
 
 import type { App, Component, ComputedOptions, MethodOptions } from "vue";
 //引入dialog的类型
@@ -71,7 +72,7 @@ export class OverlayService {
    *
    * 1: 创建OverlayInstance实例
    * 2:   创建节点 this.childrenComponent
-   * 3:     h函数有3个参数，分别是要插入的标签（组件）、属性、插入的内容
+   * 3:     h函数有3个参数，分别是要插入的标签（组件）、属性、插入的内容(可以是子组件)
    *        比如：const props = { style: { color: "red" } };
    *        h("h2", props, "123456789");
    */
@@ -80,7 +81,8 @@ export class OverlayService {
     const vm = defineComponent(() => {
       return () =>
         h(
-          ElDialog,
+          // ElDialog,
+          ToastView,
           {
             //默认在弹窗关闭g时销毁子组件
             destroyOnClose: true,
@@ -103,6 +105,9 @@ export class OverlayService {
     if (this.overlayElement) {
       this.OverlayInstance = createApp(vm);
       this.OverlayInstance.mount(this.overlayElement);
+      //console.log("this.overlayElement is not null");
+    } else {
+      //console.log("this.overlayElement is null");
     }
   }
   //打开弹窗的方法 返回promsie
@@ -137,10 +142,8 @@ export class OverlayService {
     this.show.value = false;
     if (msg) {
       this._resolve(msg);
-      console.log("111:" + msg);
     } else {
       this._resolve();
-      console.log("222:" + msg);
     }
   }
 }
@@ -159,19 +162,23 @@ export const useDialog = () => {
 };
 
 /***  分析 useDialog.ts的流程及原理
- * 1、当调用这句代码：const { open } = useDialog(); 会进入export const useDialog = () => {}方法，
- *    useDialog会调用OverlayService（）方法，进而触发constructor()方法
- * 2、constructor()方法 =》初始化this.overlayElement，并将它添加到document.body，并且onUnmounted里写明会注销overlayElement
- * 。。。
+ * 1、当调用这句代码：const { open } = useDialog();
+ *    会进入export const useDialog = () => {}方法，
+ *    useDialog会调用OverlayService（）方法实例化overlayService，进而触发constructor()方法
+ *
+ * 2、constructor()方法 =》初始化this.overlayElement，并将它添加到document.body，并且onUnmounted里写明会注销overlayElement，
+ *    然后useDialog()返回open跟close两个方法。
+ *
  * 3、其它页面调用open方法，会传入component, params, options，并将这三个赋值给3个this.XX全局变量；
- *    3.1 返回Promise,并将resolve、reject赋值给this._resolve、this._reject
+ *    3.1 返回一个Promise,并将resolve、reject赋值给this._resolve、this._reject
  *    3.2 调用createdOverlay()方法初始化this.OverlayInstance
  *      3.2.1 createdOverlay()干了什么？
- *        初始化this.OverlayInstance需要用到createApp()方法，这个方法又调用h函数；
+ *        调用createApp()方法初始化this.OverlayInstance并将它挂载到this.overlayElement。createApp()这个方法又调用了h函数；
  *      3.2.2 h函数干了啥？
  *        绑定this.options、this.show响应式变量、this.close方法到ElDialog组件，创建节点this.childrenComponent作为ElDialog的子组件
- *        将this.OverlayInstance挂载到this.overlayElement
  *    3.3 将响应式变量this.show设置为true.
+ *
  * 4、点击关闭，会触发OverlayService里面的close方法，
- *    close方法会调用this._resolve从而把值传给Promise，在外面的表现形式就是.then{}代码块被触发
+ *    close方法会将响应式变量this.show设置为false.
+ *    然后调用this._resolve从而把值（由子组件带过来）传给Promise，在外面的表现形式就是.then{}代码块被触发
  */

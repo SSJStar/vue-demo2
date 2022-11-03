@@ -14,16 +14,15 @@ import "element-plus/dist/index.css"; //引入element-plus样式
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import ssjDialog from "@/components/SSJDialog.js";
+// import ssjDialog from "@/components/SSJDialog.js";
 
-import Tip from "@/components/servicedialog/toastTS";
+import Tip from "@/components/servicedialog/ssj-dialog";
 
 const app = createApp(App);
 
 app.use(VForm3); //全局注册VForm3(同时注册了v-form-designe、v-form-render等组件)
 app.use(ElementPlus); //全局注册ElementPlus
-app.use(ssjDialog); //全局注册弹窗
-app.use(Tip);
+app.use(Tip); //全局注册弹窗
 // app.use(ElementPlus, { locale: zhCn });
 // app.use(SubDialog)
 

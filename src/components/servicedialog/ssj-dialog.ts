@@ -1,5 +1,5 @@
 // import { createVNode, render } from "vue";
-// import Notice from "./ssj-dialog-child.vue";
+// import Notice from "./src/index.vue";
 // interface IOptions {
 //   message: string;
 //   toast_type?: "success" | "alert" | "warning" | "error";
@@ -32,3 +32,72 @@
 //   //然后把转换成真实DOM的Notice组件插入到body里
 //   document.body.appendChild(mountNode);
 // };
+
+import { App, createVNode, render, VNode } from "vue";
+import Tip from "./ssj-dialog-child.vue";
+
+/*
+对象：Vue会自动注入到install 方法
+function： 就直接在页面使用
+*/
+// 全局注册
+export default {
+  install(app: App) {
+    // 创建虚拟dom
+    const tipVnode: VNode = createVNode(Tip);
+    // render函数生成真实DOM，
+    render(tipVnode, document.body);
+    console.log(tipVnode);
+
+    // Vue 全局配置
+    app.config.globalProperties.$loadingTip = {
+      show: () => tipVnode.component?.exposed?.show(),
+      hide: () => tipVnode.component?.exposed?.hide(),
+    };
+  },
+};
+
+//弹窗的关闭方法,可以传参触发open的promise下一步
+// function close(msg?: any) {
+//   // if (!this.overlayElement) return;
+//   // this.show.value = false;
+//   // if (msg) {
+//   //   this._resolve(msg);
+//   // } else {
+//   //   this._resolve();
+//   // }
+//   console.log("close function ~~" + msg);
+// }
+
+// // 页面中引入---函数式返回
+// export function tip() {
+//   const tipInstance: VNode = createVNode(Tip);
+//   render(tipInstance, document.body);
+//   console.log(tipInstance);
+//   tipInstance.component?.exposed?.show();
+// }
+
+// 页面中引入---函数式返回
+export function ssjTip(vars: any) {
+  return new Promise((resolve, reject) => {
+    const tipInstance: VNode = createVNode(Tip, {
+      close: (msg?: any) => {
+        console.log("close self function ~~" + msg);
+        //调用resolve 告诉外层
+        resolve(msg);
+      },
+      params: vars,
+    });
+    render(tipInstance, document.body);
+    console.log(tipInstance);
+    tipInstance.component?.exposed?.show();
+  });
+}
+
+// // 页面中引入---函数式返回
+// export function hideTip() {
+//   const tipInstance: VNode = createVNode(Tip);
+//   render(tipInstance, document.body);
+//   console.log(tipInstance);
+//   tipInstance.component?.exposed?.hide();
+// }

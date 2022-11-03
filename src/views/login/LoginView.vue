@@ -74,7 +74,9 @@ import imageValidate from "@/components/ssj-image-validate.vue"; //图形验证�
 import { getRegisterCode, loginWithUNameAndPwd } from "@/api/api";
 import { getCurrentInstance, ref } from "vue";
 import router from "../../router";
-import { tip } from "@/components/servicedialog/toastTS";
+import { createVNode, render, VNode } from "vue";
+import { tip, ssjTip } from "@/components/servicedialog/ssj-dialog";
+import Tip from "@/components/servicedialog/ssj-dialog-child.vue";
 
 // 定义一个对象，用来存放输入的账号、密码、验证码
 let loginInput = {
@@ -136,7 +138,14 @@ function loginActionFunc() {
 //注册按钮-点击
 function registerActionFunc() {
   // router.push("registerView");
-  tip();
+  // tip();
+  let vars = {
+    title: "友情提示",
+    subtitle: "这是一个自定义弹窗",
+  };
+  ssjTip(vars).then((msg) => {
+    console.log("我是loginView 我是then方法 " + msg);
+  });
   return;
 
   // eslint-disable-next-line no-unreachable
