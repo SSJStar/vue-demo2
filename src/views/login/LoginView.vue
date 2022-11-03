@@ -141,7 +141,7 @@ function registerActionFunc() {
   // tip();
   let vars = {
     title: "友情提示",
-    subtitle: "这是一个自定义弹窗",
+    subTitle: "这是一个自定义弹窗",
   };
   ssjTip(vars).then((msg) => {
     console.log("我是loginView 我是then方法 " + msg);

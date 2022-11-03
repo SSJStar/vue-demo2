@@ -79,6 +79,8 @@ export default {
 
 // 页面中引入---函数式返回
 export function ssjTip(vars: any) {
+  console.log("close self function vars ~~");
+  console.log(vars);
   return new Promise((resolve, reject) => {
     const tipInstance: VNode = createVNode(Tip, {
       close: (msg?: any) => {
@@ -86,7 +88,7 @@ export function ssjTip(vars: any) {
         //调用resolve 告诉外层
         resolve(msg);
       },
-      params: vars,
+      params: vars, //{ title: "导出中", subTitle: "文件名" }
     });
     render(tipInstance, document.body);
     console.log(tipInstance);

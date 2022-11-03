@@ -15,19 +15,20 @@ import { onMounted, reactive, ref } from "vue";
 let isShow = ref(false);
 
 // //定义类型 Obj
-// export interface SSJDialogParams {
-//   [key: string]: string | number;
-// }
+export interface SSJDialogParams {
+  // [key: string]: string | number;
+  [key: string]: string;
+}
 // const form = reactive({
 //   title: "",
 //   subTitle: "",
 // });
-const titleValue = ref("");
-const subTitleValue = ref("");
+let titleValue = ref("");
+let subTitleValue = ref("");
 
-const props = defineProps<{
+let props = defineProps<{
   close: (msg?: any) => void;
-  params: any;
+  params: SSJDialogParams;
 }>();
 
 const show = () => {
@@ -44,8 +45,11 @@ defineExpose({
 });
 
 onMounted(() => {
+  // console.log("props.params --- ");
+  // console.log(props.params);
+  // console.log("title --- " + props.params["title"]);
+  // console.log("subTitle --- " + props.params["subTitle"]);
   titleValue.value = props.params["title"];
-  subTitleValue.value = props.params["subTitle"];
 });
 </script>
 
