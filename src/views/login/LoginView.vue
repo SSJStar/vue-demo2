@@ -140,11 +140,11 @@ function registerActionFunc() {
   // router.push("registerView");
   // tip();
   let vars = {
-    title: "友情提示",
-    subTitle: "这是一个自定义弹窗",
+    title: "温馨提示",
+    subTitle: "请输入新的昵称",
   };
   ssjTip(vars).then((msg) => {
-    console.log("我是loginView.then方法 " + msg);
+    console.log("ssjTip.then打印吧-----" + msg);
   });
   return;
 

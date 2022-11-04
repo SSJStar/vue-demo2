@@ -1,9 +1,24 @@
 <template>
   <div class="tip" v-if="isShow">
     <div class="bgView">
-      <label>{{ titleValue }}</label>
-      <!--      <h3>{{ subTitleValue }}</h3>-->
+      <!--    标题    -->
+      <label class="title-label">{{ titleValue }}</label>
+
+      <!--    副标题    -->
+      <!--   <label class="subTitle-label">{{ subTitleValue }}</label>   -->
+
+      <!--    输入框    -->
+      <div class="input-div">
+        <input
+          type="text"
+          :placeholder="subTitleValue"
+          v-model="form.inputValue"
+        />
+      </div>
+
       <div class="actionView">
+        <!--    分割线    -->
+        <div class="row-line"></div>
         <button class="leftButton" @click="cancel">取消</button>
         <button class="rightButton" @click="confirm">确定</button>
       </div>
@@ -26,10 +41,9 @@ let isShow = ref(false);
 //   subTitle: string;
 // };
 
-// const form = reactive({
-//   title: "",
-//   subTitle: "",
-// });
+const form = reactive({
+  inputValue: "",
+});
 let titleValue = ref("");
 let subTitleValue = ref("");
 
@@ -40,8 +54,6 @@ const props = defineProps<{
 
 const show = () => {
   isShow.value = true;
-  console.log("~~props.params --- ");
-  console.log(props.params);
   titleValue.value = props.params["title"];
   subTitleValue.value = props.params["subTitle"];
 };
@@ -57,9 +69,9 @@ const show = () => {
 const hide = (btnIndex: number) => {
   isShow.value = false;
   if (btnIndex === 0) {
-    props.close(btnIndex, "点击取消");
+    props.close(btnIndex, "");
   } else if (btnIndex === 1) {
-    props.close(btnIndex, "点击确定");
+    props.close(btnIndex, form.inputValue);
   }
 };
 
@@ -91,9 +103,7 @@ onMounted(() => {
   inset: 0;
   width: 100%;
   height: 100%;
-  /*background-color: rgba(95, 157, 160, 0.8);*/
-  background-color: rgba(0, 0, 0, 0.7); /*设置北京颜色*/
-  font-size: 32px;
+  background-color: rgba(0, 0, 0, 0.7); /*设置颜色*/
   justify-content: center;
   align-items: center;
 }
@@ -105,14 +115,47 @@ onMounted(() => {
   height: auto;
   display: flex;
   flex-direction: column;
-  padding: 10px 10px 10px 10px;
+  padding: 0px 5px 5px 5px;
   border-radius: 10px;
 }
 /* 标题 */
-.tip .bgView label {
+.tip .bgView .title-label {
+  padding: 0;
+  font-size: 28px;
   width: 100%;
   text-align: center;
-  background-color: #42b983;
+  color: #333333;
+}
+/* 副标题 */
+.tip .bgView .subTitle-label {
+  font-size: 24px;
+  width: 100%;
+  text-align: center;
+  color: #666666;
+}
+
+/* 输入区域 */
+.tip .bgView .input-div {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+}
+.tip .bgView .input-div input {
+  font-size: 24px;
+  width: 70%;
+  height: 30px;
+  margin-top: 20px;
+  display: inline-block;
+  justify-items: center;
+  color: #666666;
+}
+
+/* 虚线 */
+.tip .bgView .actionView .row-line {
+  border: 1px dashed #999999;
+  height: 0px;
+  width: 100%;
 }
 
 /* 取消、确定 - 父视图 */
@@ -120,23 +163,32 @@ onMounted(() => {
   width: 100%;
   height: auto;
   margin-top: 40px;
+  /*background-color: #42b983;*/
 }
 
 /* 左边按钮 */
 .tip .bgView .leftButton {
+  margin-top: 20px;
+  margin-left: 10px;
   display: inline-block;
   float: left;
   background-color: cadetblue;
   font-size: 18px;
   width: 100px;
+  border-radius: 10px;
+  border-color: rgba(0, 0, 0, 0);
 }
 
 /* 右边按钮 */
 .tip .bgView .rightButton {
+  margin-top: 20px;
+  margin-right: 10px;
   display: inline-block;
   float: right;
   background-color: cadetblue;
   font-size: 18px;
   width: 100px;
+  border-radius: 10px;
+  border-color: rgba(0, 0, 0, 0);
 }
 </style>
