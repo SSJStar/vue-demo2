@@ -37,7 +37,7 @@ import TableView from "@/views/List/TableView.vue";
 import { ref } from "vue";
 import BTChatView from "@/views/BTChatView.vue";
 import Notice from "./src/index.vue";
-import { tip } from "@/components/servicedialog/ssj-dialog"; //
+// import { tip } from "@/components/servicedialog/ssj-dialog";
 
 let tbViewRef: any = ref(null); //定义列表ref标记
 let titles: any = ref([]); //定义列表头标题

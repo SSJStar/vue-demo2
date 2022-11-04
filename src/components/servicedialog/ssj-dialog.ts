@@ -35,7 +35,6 @@
 
 import { App, createVNode, render, VNode } from "vue";
 import Tip from "./ssj-dialog-child.vue";
-
 /*
 对象：Vue会自动注入到install 方法
 function： 就直接在页面使用
@@ -81,14 +80,15 @@ export default {
 export function ssjTip(vars: any) {
   console.log("close self function vars ~~");
   console.log(vars);
+  // const aa = { title: "导出中", subTitle: "文件名" };
   return new Promise((resolve, reject) => {
     const tipInstance: VNode = createVNode(Tip, {
-      close: (msg?: any) => {
+      close: (btnIndex: number, msg?: any) => {
         console.log("close self function ~~" + msg);
         //调用resolve 告诉外层
         resolve(msg);
       },
-      params: vars, //{ title: "导出中", subTitle: "文件名" }
+      params: { title: "导出中", subTitle: "文件名" },
     });
     render(tipInstance, document.body);
     console.log(tipInstance);

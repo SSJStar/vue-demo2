@@ -75,7 +75,7 @@ import { getRegisterCode, loginWithUNameAndPwd } from "@/api/api";
 import { getCurrentInstance, ref } from "vue";
 import router from "../../router";
 import { createVNode, render, VNode } from "vue";
-import { tip, ssjTip } from "@/components/servicedialog/ssj-dialog";
+import { ssjTip } from "@/components/servicedialog/ssj-dialog";
 import Tip from "@/components/servicedialog/ssj-dialog-child.vue";
 
 // 定义一个对象，用来存放输入的账号、密码、验证码
@@ -134,7 +134,7 @@ function loginActionFunc() {
     );
   }
 }
-
+// import { SSJDialogParams } from "@/components/servicedialog/ssj-dialog-child.vue";
 //注册按钮-点击
 function registerActionFunc() {
   // router.push("registerView");
@@ -144,7 +144,7 @@ function registerActionFunc() {
     subTitle: "这是一个自定义弹窗",
   };
   ssjTip(vars).then((msg) => {
-    console.log("我是loginView 我是then方法 " + msg);
+    console.log("我是loginView.then方法 " + msg);
   });
   return;
 
