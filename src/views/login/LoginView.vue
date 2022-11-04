@@ -75,8 +75,8 @@ import { getRegisterCode, loginWithUNameAndPwd } from "@/api/api";
 import { getCurrentInstance, ref } from "vue";
 import router from "../../router";
 import { createVNode, render, VNode } from "vue";
-import { ssjTip } from "@/components/servicedialog/ssj-dialog";
-import Tip from "@/components/servicedialog/ssj-dialog-child.vue";
+import ssjTip from "@/components/servicedialog/ssj-dialog";
+// import Tip from "@/components/servicedialog/ssj-dialog-child.vue";
 
 // 定义一个对象，用来存放输入的账号、密码、验证码
 let loginInput = {

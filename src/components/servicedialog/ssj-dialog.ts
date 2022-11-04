@@ -5,20 +5,20 @@ import Tip from "./ssj-dialog-child.vue";
 function： 就直接在页面使用
 */
 // 全局注册
-export default {
-  install(app: App) {
-    // 创建虚拟dom
-    const tipVnode: VNode = createVNode(Tip);
-    // render函数生成真实DOM，
-    render(tipVnode, document.body);
-
-    // Vue 全局配置
-    app.config.globalProperties.$loadingTip = {
-      show: () => tipVnode.component?.exposed?.show(),
-      hide: () => tipVnode.component?.exposed?.hide(),
-    };
-  },
-};
+// export default {
+//   install(app: App) {
+//     // 创建虚拟dom
+//     const tipVnode: VNode = createVNode(Tip);
+//     // render函数生成真实DOM，
+//     render(tipVnode, document.body);
+//
+//     // Vue 全局配置
+//     app.config.globalProperties.$loadingTip = {
+//       show: () => tipVnode.component?.exposed?.show(),
+//       hide: () => tipVnode.component?.exposed?.hide(),
+//     };
+//   },
+// };
 
 // 页面中引入---函数式返回
 export function ssjTip(vars: any) {

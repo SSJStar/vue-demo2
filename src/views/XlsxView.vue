@@ -30,8 +30,8 @@ import axios from "axios";
 const XLSX = require("xlsx");
 import transformSheets from "@/views/read_xlsx.js";
 // 弹窗需要用到useDialog跟自定义组件ChildDemo
-import ChildDemo from "@/components/servicedialog/ChildDemo.vue";
-import { useDialog } from "@/components/servicedialog/useDialog";
+import ChildDemo from "@/components/servicedialog/demo/ChildDemo.vue";
+import { useDialog } from "@/components/servicedialog/demo/useDialog";
 // 表格组件
 import TableView from "@/views/List/TableView.vue";
 import { ref } from "vue";

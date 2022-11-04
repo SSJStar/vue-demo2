@@ -3,8 +3,8 @@
 </template>
 
 <script lang="ts" setup>
-import ChildDemo from "@/components/servicedialog/ChildDemo.vue";
-import { useDialog } from "@/components/servicedialog/useDialog";
+import ChildDemo from "@/components/servicedialog/demo/ChildDemo.vue";
+import { useDialog } from "@/components/servicedialog/demo/useDialog";
 
 const { open } = useDialog();
 
