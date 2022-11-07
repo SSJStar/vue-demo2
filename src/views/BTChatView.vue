@@ -34,11 +34,26 @@ let conf = new SSJEchatConfig(
 );
 let histogram_config = ref(conf);
 
+/** 定义属性 */
+// interface Props {
+//   xAxis_value: string; //x轴
+//   yAxisArray_value: Array<any>; //y轴
+// }
+// const pro = defineProps<Props>();
+
+const props = defineProps({
+  xAxis_value: { type: String }, //x轴
+  yAxisArray_value: { type: Array }, //y轴
+});
+
 //页面加载完执行
 onMounted(() => {
   //readXlsxFile执行完，再执行then语句块
   Promise.all([readXlsxFile()]).then(() => {
     console.log("xmsl数据读取完成，开始刷新图标");
+    console.log(xAxis_data_value.value);
+    console.log(yAxis_data_left_value.value);
+    console.log(yAxis_data_right_value.value);
     // 配置图表信息和展示数据，并调用updateChatCustom刷新图表
     conf = new SSJEchatConfig(
       "高中二班女子身高体重",

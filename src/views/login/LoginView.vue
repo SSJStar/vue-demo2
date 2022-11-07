@@ -74,9 +74,6 @@ import imageValidate from "@/components/ssj-image-validate.vue"; //图形验证�
 import { getRegisterCode, loginWithUNameAndPwd } from "@/api/api";
 import { getCurrentInstance, ref } from "vue";
 import router from "../../router";
-import { createVNode, render, VNode } from "vue";
-import ssjTip from "@/components/servicedialog/ssj-dialog";
-// import Tip from "@/components/servicedialog/ssj-dialog-child.vue";
 
 // 定义一个对象，用来存放输入的账号、密码、验证码
 let loginInput = {
@@ -137,15 +134,7 @@ function loginActionFunc() {
 // import { SSJDialogParams } from "@/components/servicedialog/ssj-dialog-child.vue";
 //注册按钮-点击
 function registerActionFunc() {
-  // router.push("registerView");
-  // tip();
-  let vars = {
-    title: "温馨提示",
-    subTitle: "请输入新的昵称",
-  };
-  ssjTip(vars).then((msg) => {
-    console.log("ssjTip.then打印吧-----" + msg);
-  });
+  router.push("registerView");
   return;
 
   // eslint-disable-next-line no-unreachable

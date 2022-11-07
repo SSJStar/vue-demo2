@@ -21,7 +21,7 @@ function： 就直接在页面使用
 // };
 
 // 页面中引入---函数式返回
-export function ssjTip(vars: any) {
+export default function ssjTip(vars: any) {
   return new Promise((resolve, reject) => {
     const tipInstance: VNode = createVNode(Tip, {
       close: (btnIndex: number, msg?: any) => {

@@ -13,6 +13,45 @@
       :titles="titles"
       :list-data="listData"
     />
+    <!--  选择X轴  -->
+    <div style="display: inline-block">
+      <el-select
+        v-model="value_x"
+        class="m-2"
+        size="large"
+        multiple
+        collapse-tags
+        collapse-tags-tooltip
+        placeholder="请选择X轴显示数据"
+      >
+        <el-option
+          v-for="item in x_options"
+          :key="item.value"
+          :label="item.value"
+          :value="item.value"
+        />
+      </el-select>
+    </div>
+
+    <!--  选择Y轴  -->
+    <div style="display: inline-block">
+      <el-select
+        v-model="value_y"
+        class="m-3"
+        size="large"
+        multiple
+        collapse-tags
+        collapse-tags-tooltip
+        placeholder="请选择Y轴显示数据"
+      >
+        <el-option
+          v-for="item in y_options"
+          :key="item.value"
+          :label="item.value"
+          :value="item.value"
+        />
+      </el-select>
+    </div>
 
     <!--  导出到电脑  -->
     <div class="toolsView" v-show="isShowExport">
@@ -21,7 +60,11 @@
     </div>
 
     <!--  柱状图  -->
-    <BTChatView v-show="isShowChart"></BTChatView>
+    <BTChatView
+      v-show="isShowChart"
+      xAxis_value=""
+      yAxisArray_value=""
+    ></BTChatView>
   </div>
 </template>
 
@@ -36,8 +79,7 @@ import { useDialog } from "@/components/servicedialog/demo/useDialog";
 import TableView from "@/views/List/TableView.vue";
 import { ref } from "vue";
 import BTChatView from "@/views/BTChatView.vue";
-import Notice from "./src/index.vue";
-// import { tip } from "@/components/servicedialog/ssj-dialog";
+import ssjTip from "@/components/servicedialog/ssj-dialog";
 
 let tbViewRef: any = ref(null); //定义列表ref标记
 let titles: any = ref([]); //定义列表头标题
@@ -49,6 +91,39 @@ let contentValue: any = null; //用于接收xlsx文件内容，后面导出的�
 let isShowRead = ref(true); //是否展示"读取文件xxx"，默认true
 let isShowExport = ref(false); //是否展示"导出按钮",默认false
 let isShowChart = ref(false); //是否展示"图标",默认false
+
+const value_x = ref("");
+const value_y = ref("");
+const x_options = [
+  {
+    value: "姓名",
+    label: "Option1",
+  },
+  {
+    value: "学号",
+    label: "Option2",
+  },
+  {
+    value: "身份证号",
+    label: "Option3",
+  },
+];
+
+const y_options = [
+  {
+    value: "身高",
+    label: "Option1",
+  },
+  {
+    value: "体重",
+    label: "Option2",
+  },
+  {
+    value: "百米赛跑",
+    label: "Option3",
+  },
+];
+
 /**
  * 读取xlsx文件，给响应式变量titles、listDataValue赋值，表格自动刷新数据
  *
@@ -163,23 +238,32 @@ const ExportXlsx = () => {
     alert("文件内容为空，导出失败");
     return;
   }
-  open({
-    component: ChildDemo,
-    options: { title: "正在导出" },
-    params: { title: "导出中", subTitle: "文件名" },
-  }).then((msg: any) => {
-    console.log("关闭后得到值：", msg); //msg就是输入的新文件名字
-    if (msg === undefined || msg === null || msg === "") {
-      return;
-    }
-    // 创建工作表
-    const data = XLSX.utils.json_to_sheet(contentValue);
-    // 创建工作簿
-    const wb = XLSX.utils.book_new();
-    // 将工作表放入工作簿中
-    XLSX.utils.book_append_sheet(wb, data, "data");
-    // 生成文件并下载
-    XLSX.writeFile(wb, msg + ".xlsx");
+  // open({
+  //   component: ChildDemo,
+  //   options: { title: "正在导出" },
+  //   params: { title: "导出中", subTitle: "文件名" },
+  // }).then((msg: any) => {
+  //   console.log("关闭后得到值：", msg); //msg就是输入的新文件名字
+  //   if (msg === undefined || msg === null || msg === "") {
+  //     return;
+  //   }
+  //   // 创建工作表
+  //   const data = XLSX.utils.json_to_sheet(contentValue);
+  //   // 创建工作簿
+  //   const wb = XLSX.utils.book_new();
+  //   // 将工作表放入工作簿中
+  //   XLSX.utils.book_append_sheet(wb, data, "data");
+  //   // 生成文件并下载
+  //   XLSX.writeFile(wb, msg + ".xlsx");
+  // });
+
+  //这里采用自定义弹窗
+  let vars = {
+    title: "温馨提示",
+    subTitle: "请输入新的昵称",
+  };
+  ssjTip(vars).then((msg) => {
+    console.log("ssjTip.then打印吧-----" + msg);
   });
 };
 
@@ -193,6 +277,12 @@ const ExportXlsx = () => {
 function showChart() {
   isShowChart.value = true;
 }
+
+const activeIndex = ref("1");
+const activeIndex2 = ref("1");
+const handleSelect = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath);
+};
 </script>
 
 <style>
@@ -220,4 +310,78 @@ function showChart() {
   margin-right: 20px;
   /*background-color: orange;*/
 }
+
+/*.el-menu--collapse .el-menu .el-submenu,*/
+/*.el-menu--popup {*/
+/*  min-width: 120px !important;*/
+/*}*/
 </style>
+
+<!--&lt;!&ndash;  二级下拉列表  &ndash;&gt;-->
+<!--<el-dropdown trigger="click">-->
+<!--<div>-->
+<!--  <span>张三</span>-->
+<!--  <el-avatar-->
+<!--    :size="24"-->
+<!--    :src="require('../assets/account_icon.png')"-->
+<!--  ></el-avatar>-->
+<!--</div>-->
+<!--<template #dropdown>-->
+<!--  <el-dropdown-menu>-->
+<!--    <el-dropdown-item>-->
+<!--      <el-popover placement="left-start" trigger="hover" :offset="15">-->
+<!--        <template #reference>-->
+<!--          <span>个人中心</span>-->
+<!--        </template>-->
+<!--        <el-menu-->
+<!--          mode="vertical"-->
+<!--          :default-active="$route.meta.route"-->
+<!--          router-->
+<!--        >-->
+<!--          <el-menu-item index="/usercenter/users">用户</el-menu-item>-->
+<!--          <el-menu-item index="/usercenter/nft">NFTs</el-menu-item>-->
+<!--          <el-menu-item index="/usercenter/contract">合同</el-menu-item>-->
+<!--        </el-menu>-->
+<!--      </el-popover>-->
+<!--    </el-dropdown-item>-->
+<!--    <el-dropdown-item @click="go('/usercenter/reset')"-->
+<!--    >修改密码</el-dropdown-item-->
+<!--    >-->
+<!--    <el-dropdown-item @click="go('/usercenter/info')"-->
+<!--    >修改资料</el-dropdown-item-->
+<!--    >-->
+<!--    <el-dropdown-item @click="isLogout">退出登录</el-dropdown-item>-->
+<!--  </el-dropdown-menu>-->
+<!--</template>-->
+<!--</el-dropdown>-->
+
+<!--&lt;!&ndash; 官网 - 二级下拉列表  &ndash;&gt;-->
+<!--<el-menu-->
+<!--  :default-active="activeIndex2"-->
+<!--  class="el-menu-demo"-->
+<!--  mode="horizontal"-->
+<!--  background-color="#545c64"-->
+<!--  text-color="#fff"-->
+<!--  active-text-color="#ffd04b"-->
+<!--  @select="handleSelect"-->
+<!--  style="width: 200px; height: 60px"-->
+<!--&gt;-->
+<!--<el-sub-menu index="1">-->
+<!--  <template #title>Workspace</template>-->
+<!--  <el-menu-item index="1-1">item one</el-menu-item>-->
+<!--  <el-menu-item index="1-2">item two</el-menu-item>-->
+<!--  <el-menu-item index="1-3">item three</el-menu-item>-->
+<!--  <el-sub-menu index="1-4">-->
+<!--    <template #title>item four</template>-->
+<!--    <el-menu-item index="2-4-1">item one</el-menu-item>-->
+<!--    <el-menu-item index="2-4-2">item two</el-menu-item>-->
+<!--    <el-menu-item index="2-4-3">item three</el-menu-item>-->
+<!--  </el-sub-menu>-->
+<!--</el-sub-menu>-->
+<!--</el-menu>-->
+
+<!--const activeIndex = ref("1");-->
+<!--const activeIndex2 = ref("1");-->
+<!--const handleSelect = (key: string, keyPath: string[]) => {-->
+<!--console.log(key, keyPath);-->
+<!--};-->

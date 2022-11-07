@@ -38,6 +38,7 @@
 <script setup>
 // import { useRoute } from "vue-router";
 import { inject, onMounted, ref } from "vue";
+import router from "@/router";
 
 // let navHidden = ref(true); //控制返回控件的显示或隐藏（根据navArray个数）
 // let navArray = ref([]);
@@ -138,6 +139,7 @@ function mouthLeaveBox() {
 function userInfoClick() {
   console.log("点击了 个人信息");
   boxShow.value = false;
+  // router.push("/testSSJ");
 }
 
 const inj = inject("showLoginVueKEY");
