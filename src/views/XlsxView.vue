@@ -1,18 +1,11 @@
 <template>
   <div class="XlsxViewClass">
     <!--  读取xlsx文件内容，并以列表展示 -->
-    <h1 v-show="isShowRead" @click="readFileFunc">
-      读取文件《高中二班女子800米成绩统计.xlsx》
-    </h1>
+    <!--    <h1 v-show="isShowRead" @click="readFileFunc">-->
+    <!--      读取文件《高中二班女子800米成绩统计.xlsx》-->
+    <!--    </h1>-->
     <br />
 
-    <!--  列表  -->
-    <TableView
-      style="width: 100%; height: 250px"
-      ref="tbViewRef"
-      :titles="titles"
-      :list-data="listData"
-    />
     <!--  选择X轴  -->
     <div style="display: inline-block">
       <el-select
@@ -26,9 +19,9 @@
       >
         <el-option
           v-for="item in x_options"
-          :key="item.value"
-          :label="item.value"
-          :value="item.value"
+          :key="item"
+          :label="item"
+          :value="item"
         />
       </el-select>
     </div>
@@ -46,18 +39,41 @@
       >
         <el-option
           v-for="item in y_options"
-          :key="item.value"
-          :label="item.value"
-          :value="item.value"
+          :key="item"
+          :label="item"
+          :value="item"
         />
       </el-select>
     </div>
+
+    <!--  导入文件  -->
+    <el-upload
+      class="upload-demo"
+      action=""
+      drag
+      :auto-upload="false"
+      accept=".xlsx, .xls"
+      :on-change="uploadChange"
+      :show-file-list="true"
+      :limit="1"
+    >
+      <i class="el-icon-upload"></i>
+      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+    </el-upload>
 
     <!--  导出到电脑  -->
     <div class="toolsView" v-show="isShowExport">
       <el-button class="ExportView" @click="ExportXlsx">导出</el-button>
       <el-button class="ChatView" @click="showChart">生成柱状图</el-button>
     </div>
+
+    <!--  列表  -->
+    <TableView
+      style="width: 100%; height: 250px"
+      ref="tbViewRef"
+      :titles="titles"
+      :list-data="listData"
+    />
 
     <!--  柱状图  -->
     <BTChatView
@@ -70,7 +86,6 @@
 
 <script setup lang="ts">
 import axios from "axios";
-const XLSX = require("xlsx");
 import transformSheets from "@/views/read_xlsx.js";
 // 弹窗需要用到useDialog跟自定义组件ChildDemo
 import ChildDemo from "@/components/servicedialog/demo/ChildDemo.vue";
@@ -80,6 +95,8 @@ import TableView from "@/views/List/TableView.vue";
 import { ref } from "vue";
 import BTChatView from "@/views/BTChatView.vue";
 import ssjTip from "@/components/servicedialog/ssj-dialog";
+
+const XLSX = require("xlsx");
 
 let tbViewRef: any = ref(null); //定义列表ref标记
 let titles: any = ref([]); //定义列表头标题
@@ -92,37 +109,132 @@ let isShowRead = ref(true); //是否展示"读取文件xxx"，默认true
 let isShowExport = ref(false); //是否展示"导出按钮",默认false
 let isShowChart = ref(false); //是否展示"图标",默认false
 
-const value_x = ref("");
-const value_y = ref("");
-const x_options = [
-  {
-    value: "姓名",
-    label: "Option1",
-  },
-  {
-    value: "学号",
-    label: "Option2",
-  },
-  {
-    value: "身份证号",
-    label: "Option3",
-  },
-];
+const value_x = ref(""); //x轴选择展示哪个字段
+const value_y = ref(""); //y轴选择展示哪几个字段
 
-const y_options = [
-  {
-    value: "身高",
-    label: "Option1",
-  },
-  {
-    value: "体重",
-    label: "Option2",
-  },
-  {
-    value: "百米赛跑",
-    label: "Option3",
-  },
-];
+const x_options: any = ref([]); //x轴下拉框数据
+const y_options: any = ref([]); //y轴下拉框数据
+
+//由于设置了:auto-upload="false"，导致beforeUpload和uploadChange方法冲突，所以beforeUpload不会被执行
+// function beforeUpload(file: any) {
+//   const isText = "application/vnd.ms-excel";
+//   const isTextComputer =
+//     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+//   const isExcel = !(file.raw.type != isText && file.raw.type != isTextComputer);
+//   if (!isExcel) {
+//     alert("上传文件的格式不正确!");
+//     console.log("格式不正确");
+//   } else {
+//     console.log("格式正确");
+//   }
+//   const isLt2M = file.size / 1024 / 1024 < 20;
+//   if (!isLt2M) {
+//     alert("上传文件大小不能超过 20MB!");
+//   }
+//   return isExcel && isLt2M;
+// }
+
+function uploadChange(this: any, file: any, fileList: any) {
+  console.log("file~~");
+  console.log(file);
+  console.log("fileList~~");
+  console.log(fileList);
+  console.log(this.uploadFiles);
+  let isLt2M = file.size / 1024 / 1024 <= 20;
+  if (!isLt2M) {
+    alert(`上传文件大小不能超过20MB!`);
+    this.fileList = [];
+    return false;
+  }
+  const reader = new FileReader();
+  reader.readAsArrayBuffer(file.raw);
+  reader.onload = (e) => {
+    let data = e.target?.result;
+    afterGetContent(data);
+  };
+}
+
+// 导入文件
+// const ImportXlsx = (e: { target: { files: any[] } }) => {
+//   const file = e.target.files[0];
+//   const reader = new FileReader();
+//   reader.readAsArrayBuffer(file);
+//   reader.onload = (e) => {
+//     let data = e.target?.result;
+//     const constworkbook = XLSX.read(data, { type: "binary", cellDates: true });
+//     // eslint-disable-next-line no-undef
+//     const wsname = workbook.SheetNames[0];
+//     // eslint-disable-next-line no-undef
+//     const outdata = XLSX.utils.sheet_to_json(workbook.Sheets[wsname]);
+//     console.log(outdata);
+//   };
+// };
+
+/**
+ * 获取data后的逻辑
+ * 可以是本项目本身就存在的文件，也可以是由电脑上导入的文件，在获取data后就可以调用本方法
+ *
+ * 作者: 小青龙
+ * 时间：2022/11/08 13:59:50
+ * @param 参数名 {参数类型}  描述信息
+ * @return {返回类型}
+ */
+function afterGetContent(data: any) {
+  let wb = XLSX.read(data, { type: "array" });
+  let sheets = wb.Sheets;
+  let content = transformSheets(sheets); // 整理xlsx返回的数据
+  contentValue = content.slice(1); // 删除第一行"sheet1"，然后复制给contentValue
+  console.log("content:");
+  console.log(content);
+
+  titles.value = content[1]; //因为content第0个元素是[Sheet1]，使用要取索引1的元素
+  let listDataValue: any = []; //用来存放列表元素数组，每个元素都是一个Obj对象
+  let arr = content.slice(1);
+  //定义类型 Obj
+  interface Obj {
+    [key: string]: string | number;
+  }
+  //获取字段名（比如：学号、姓名）赋值给x_options、y_options
+  const menuArray: any[] = arr[0];
+  x_options.value = menuArray;
+  y_options.value = menuArray;
+
+  // 添加列表数据给listDataValue
+  for (let i = 0; i < arr.length; i++) {
+    let listDataItem: Obj = {};
+    arr[i].forEach((item: any, index: number) => {
+      // let key:keyof Obj = ""
+      // let key = String("data") + String(index + 1);
+      // type fromkey = key
+      // obj[key] = item;
+      // if (index + 1 == 9) {
+      //   // obj['data'+(index+1)] = this.formatExcelDate(item);
+      //   obj["data" + (index + 1)] = formatExcelDate(item);
+      // }
+      //key 要从titles里取
+      listDataItem[titles.value[index]] = item;
+    });
+    listDataValue.push(listDataItem);
+  }
+  //删除第一个元素（删除的内容是列表头，比"姓名"、"性别"）
+  listDataValue.splice(0, 1); //从第0个位置可以删除，删除总个数为1
+  listData.value = listDataValue; //listDataValue赋值给响应式变量listData
+
+  console.log("listDataValue:");
+  console.log(listDataValue);
+
+  console.log("menuArray:");
+  console.log(menuArray);
+
+  //展示或隐藏 导出按钮
+  if (listData.value.length > 0) {
+    isShowExport.value = true;
+    isShowRead.value = false;
+  } else {
+    isShowExport.value = false;
+    isShowRead.value = true;
+  }
+}
 
 /**
  * 读取xlsx文件，给响应式变量titles、listDataValue赋值，表格自动刷新数据
@@ -138,48 +250,7 @@ function readFileFunc() {
     .get(url, { responseType: "arraybuffer" })
     .then((res) => {
       let data = new Uint8Array(res.data);
-      let wb = XLSX.read(data, { type: "array" });
-      let sheets = wb.Sheets;
-      let content = transformSheets(sheets); // 整理xlsx返回的数据
-      contentValue = content.slice(1); // 删除第一行"sheet1"，然后复制给contentValue
-      console.log("content:");
-      console.log(content);
-
-      titles.value = content[1]; //因为content第0个元素是[Sheet1]，使用要取索引1的元素
-      let listDataValue: any = []; //用来存放列表元素数组，每个元素都是一个Obj对象
-      let arr = content.slice(1);
-      //定义类型 Obj
-      interface Obj {
-        [key: string]: string | number;
-      }
-      // 添加列表数据给listDataValue
-      for (let i = 0; i < arr.length; i++) {
-        let listDataItem: Obj = {};
-        arr[i].forEach((item: any, index: number) => {
-          // let key:keyof Obj = ""
-          // let key = String("data") + String(index + 1);
-          // type fromkey = key
-          // obj[key] = item;
-          // if (index + 1 == 9) {
-          //   // obj['data'+(index+1)] = this.formatExcelDate(item);
-          //   obj["data" + (index + 1)] = formatExcelDate(item);
-          // }
-          //key 要从titles里取
-          listDataItem[titles.value[index]] = item;
-        });
-        listDataValue.push(listDataItem);
-      }
-      //删除第一个元素（删除的内容是列表头，比"姓名"、"性别"）
-      listDataValue.splice(0, 1); //从第0个位置可以删除，删除总个数为1
-      listData.value = listDataValue; //listDataValue赋值给响应式变量listData
-      //展示或隐藏 导出按钮
-      if (listData.value.length > 0) {
-        isShowExport.value = true;
-        isShowRead.value = false;
-      } else {
-        isShowExport.value = false;
-        isShowRead.value = true;
-      }
+      afterGetContent(data);
     })
     .catch((err) => {
       console.log("err is:" + err);

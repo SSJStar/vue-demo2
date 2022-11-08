@@ -10,6 +10,15 @@ const staticVars = {
   run() {
     console.log("Are you ok? I'm fine,thank you.");
   },
+  readFile(file) {
+    return new Promise((resolve) => {
+      let reader = new FileReader();
+      reader.readAsBinaryString(file.raw);
+      reader.onload = (ev) => {
+        resolve(ev.target.result);
+      };
+    });
+  },
 };
 
 export default staticVars;

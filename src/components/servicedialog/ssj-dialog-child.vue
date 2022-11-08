@@ -106,6 +106,7 @@ onMounted(() => {
   background-color: rgba(0, 0, 0, 0.7); /*设置颜色*/
   justify-content: center;
   align-items: center;
+  z-index: 999; /** 设置层级最高 */
 }
 
 /* 中间背景 */
