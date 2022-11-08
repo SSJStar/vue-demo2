@@ -78,8 +78,9 @@
     <!--  柱状图  -->
     <BTChatView
       v-show="isShowChart"
-      xAxis_value=""
+      xAxis_value="姓名"
       yAxisArray_value=""
+      ref="btChatRef"
     ></BTChatView>
   </div>
 </template>
@@ -101,6 +102,7 @@ const XLSX = require("xlsx");
 let tbViewRef: any = ref(null); //定义列表ref标记
 let titles: any = ref([]); //定义列表头标题
 let listData = ref([]); //定义列表数据
+let dataPublic: any = null; //全局变量 - data
 /**
  * contentValue数据格式：[["姓名","身高","体重"],["张三","172","110"],["李四","182","135"]]
  * */
@@ -114,6 +116,8 @@ const value_y = ref(""); //y轴选择展示哪几个字段
 
 const x_options: any = ref([]); //x轴下拉框数据
 const y_options: any = ref([]); //y轴下拉框数据
+// const btChatRef = ref(null);
+const btChatRef = ref<InstanceType<typeof BTChatView>>(); //标记图表组件
 
 //由于设置了:auto-upload="false"，导致beforeUpload和uploadChange方法冲突，所以beforeUpload不会被执行
 // function beforeUpload(file: any) {
@@ -180,6 +184,7 @@ function uploadChange(this: any, file: any, fileList: any) {
  * @return {返回类型}
  */
 function afterGetContent(data: any) {
+  dataPublic = data; //赋值给全局变量dataPublic
   let wb = XLSX.read(data, { type: "array" });
   let sheets = wb.Sheets;
   let content = transformSheets(sheets); // 整理xlsx返回的数据
@@ -347,6 +352,8 @@ const ExportXlsx = () => {
  */
 function showChart() {
   isShowChart.value = true;
+
+  btChatRef.value.showUIFromData(dataPublic);
 }
 
 const activeIndex = ref("1");

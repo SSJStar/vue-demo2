@@ -49,88 +49,117 @@ const props = defineProps({
 //页面加载完执行
 onMounted(() => {
   //readXlsxFile执行完，再执行then语句块
-  Promise.all([readXlsxFile()]).then(() => {
-    console.log("xmsl数据读取完成，开始刷新图标");
-    console.log(xAxis_data_value.value);
-    console.log(yAxis_data_left_value.value);
-    console.log(yAxis_data_right_value.value);
-    // 配置图表信息和展示数据，并调用updateChatCustom刷新图表
-    conf = new SSJEchatConfig(
-      "高中二班女子身高体重",
-      xAxis_data_value.value,
-      [yAxis_data_left_value.value, yAxis_data_right_value.value],
-      [legend_left_value.value, legend_right_value.value],
-      ["ml", "斤"]
-    );
-    // 更新图标
-    doubleHistogram.value.updateChat(conf);
-  });
+  // Promise.all([readXlsxFile()]).then(() => {
+  //   console.log("xmsl数据读取完成，开始刷新图标");
+  //   console.log(xAxis_data_value.value);
+  //   console.log(yAxis_data_left_value.value);
+  //   console.log(yAxis_data_right_value.value);
+  //   // 配置图表信息和展示数据，并调用updateChatCustom刷新图表
+  //   conf = new SSJEchatConfig(
+  //     "高中二班女子身高体重",
+  //     xAxis_data_value.value,
+  //     [yAxis_data_left_value.value, yAxis_data_right_value.value],
+  //     [legend_left_value.value, legend_right_value.value],
+  //     ["ml", "斤"]
+  //   );
+  //   // 更新图标
+  //   doubleHistogram.value.updateChat(conf);
+  // });
 });
 
 // 读取xlsx文件
 const XLSX = require("xlsx");
-
-function readXlsxFile() {
+/**
+ * 根据data参数生成柱状图（此由外部调用）
+ *
+ * 作者: 小青龙
+ * 时间：2022/11/08 16:49:44
+ * @param 参数名 {参数类型}  描述信息
+ * @return {返回类型}
+ */
+function showUIFromData(data) {
   //模拟延迟加载 （setTimeout）
   // setTimeout(function (){
+  let wb = XLSX.read(data, { type: "array" });
+  let sheets = wb.Sheets;
+  let content = transformSheets(sheets); // 整理xlsx返回的数据
+  console.log("props.xAxis_value:");
+  console.log(props.xAxis_value);
+  console.log("content:");
+  console.log(content); //content内容是从表格，逐行读取
+  let list = [];
+  let arr = content.slice(1);
+  let xAxis_data_array = [];
+  let yAxis_data_h = []; //身高
+  let yAxis_data_w = []; //体重
+  let xAxis_data_array_index = -1;
+  console.log("arr:");
+  console.log(arr);
+  for (let i = 0; i < arr.length; i++) {
+    let obj = {};
+    arr[i].forEach((item, index) => {
+      //i代表第几行，index代表第几列，item就是"i行，index列"对应的数据
+      obj["data" + (index + 1)] = item;
+      if (index + 1 == 9) {
+        obj["data" + (index + 1)] = formatExcelDate(item);
+      }
+      //逐行遍历，i表示第几行，index表示第几列
+      //第0行是标题 不需要遍历
 
-  return new Promise((resolve, reject) => {
-    console.log("开始读取数据");
-    let url = "/高中二班女子800米成绩统计.xlsx"; //放在public目录下可以直接访问
-    //读取二进制excel文件,参考https://github.com/SheetJS/js-xlsx#utility-functions
-    axios
-      .get(url, { responseType: "arraybuffer" })
-      .then((res) => {
-        let data = new Uint8Array(res.data);
-        let wb = XLSX.read(data, { type: "array" });
-        let sheets = wb.Sheets;
-        let content = transformSheets(sheets); // 整理xlsx返回的数据
-        console.log("content:");
-        console.log(content); //content内容是从表格，逐行读取
-        let list = [];
-        let arr = content.slice(1);
-        let xAxis_data_array = [];
-        let yAxis_data_h = []; //身高
-        let yAxis_data_w = []; //体重
-        for (let i = 0; i < arr.length; i++) {
-          let obj = {};
-          arr[i].forEach((item, index) => {
-            obj["data" + (index + 1)] = item;
-            if (index + 1 == 9) {
-              obj["data" + (index + 1)] = formatExcelDate(item);
-            }
-            //逐行遍历，i表示第几行，index表示第几列
-            //第0行是标题 不需要遍历
-            if (i > 0) {
-              if (index == 0) {
-                xAxis_data_array.push(item);
-              }
-              if (index == 1) {
-                yAxis_data_h.push(item);
-              }
-              if (index == 2) {
-                yAxis_data_w.push(item);
-              }
-            }
-          });
-          list.push(obj);
+      // xAxis_data_array存放的是x轴展示的数据，xAxis_value存放的是要展示的字段名，
+      // 我们需要通过xAxis_value找到是哪一列数据（也就是哪个index）
+
+      // i=0表示第一行，这一行数据展示的所有列的字段名
+      if (i == 0) {
+        //此处的item就是第0行，第index列对应的字段名，我们需要进行匹配，并且找到最终需要赋值给xAxis_data_array的那一列序号
+        if (item === props.xAxis_data_value) {
+          //找到了，此时的index就是我们要传给X轴的那一列数据的列.序号
+          xAxis_data_array_index = index;
+          console.log(`找到了 ${index} ${item}`);
+        } else {
+          console.log(`没找到 ${index} ${item}`);
         }
+      }
 
-        xAxis_data_value.value = xAxis_data_array; //x轴数据
-        yAxis_data_left_value.value = yAxis_data_h; //y轴数据 - 左边
-        yAxis_data_right_value.value = yAxis_data_w; //y轴数据 - 右边
+      if (i > 0) {
+        console.log("index:");
+        console.log(index);
+        console.log("item:");
+        console.log(item);
 
-        console.log("readXlsxFile执行完了");
-        // console.log("开始二次渲染")
-        resolve();
-      })
-      .catch((err) => {
-        console.log("err is:" + err);
+        if (index == xAxis_data_array_index) {
+          xAxis_data_array.push(item);
+        }
+        if (index == 1) {
+          yAxis_data_h.push(item);
+        }
+        if (index == 2) {
+          yAxis_data_w.push(item);
+        }
+      }
+    });
+    list.push(obj);
+  }
 
-        reject();
-      });
-    // },2000)
-  });
+  xAxis_data_value.value = xAxis_data_array; //x轴数据
+  yAxis_data_left_value.value = yAxis_data_h; //y轴数据 - 左边
+  yAxis_data_right_value.value = yAxis_data_w; //y轴数据 - 右边
+
+  console.log("readXlsxFile执行完了");
+  console.log("xmsl数据读取完成，开始刷新图标");
+  console.log(xAxis_data_value.value);
+  console.log(yAxis_data_left_value.value);
+  console.log(yAxis_data_right_value.value);
+  // 配置图表信息和展示数据，并调用updateChatCustom刷新图表
+  conf = new SSJEchatConfig(
+    "高中二班女子身高体重",
+    xAxis_data_value.value,
+    [yAxis_data_left_value.value, yAxis_data_right_value.value],
+    [legend_left_value.value, legend_right_value.value],
+    ["ml", "斤"]
+  );
+  // 更新图标
+  doubleHistogram.value.updateChat(conf);
 }
 
 // 处理表格中的日期时间
@@ -158,4 +187,7 @@ function formatExcelDate(numb, format = "-") {
     year + (month < 10 ? "0" + month : month) + (date < 10 ? "0" + date : date)
   );
 }
+
+//对外抛出方法，用于接收数据并刷新UI
+defineExpose({ showUIFromData });
 </script>
