@@ -282,7 +282,7 @@ const listJson = {
               parent_id: "4-3",
               iconName: "",
               title: "弹窗",
-              page: "",
+              page: "/layoutView/bTChatViewOld",
               childrens: [],
             },
           ],

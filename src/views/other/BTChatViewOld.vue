@@ -11,7 +11,7 @@
 <script setup>
 // import声明
 import { ref, onMounted } from "vue";
-import transformSheets from "./read_xlsx";
+import transformSheets from "@/views/read_xlsx";
 import SSJHistogramView from "@/components/chats/SSJHistogramView";
 import SSJEchatConfig from "@/components/chats/ssjChatClass";
 import axios from "axios";

@@ -78,8 +78,8 @@
     <!--  柱状图  -->
     <BTChatView
       v-show="isShowChart"
-      xAxis_value="姓名"
-      yAxisArray_value=""
+      :xFieldName="xFieldNamesValue"
+      :yFieldNames="yFieldNamesValue"
       ref="btChatRef"
     ></BTChatView>
   </div>
@@ -119,6 +119,8 @@ const y_options: any = ref([]); //y轴下拉框数据
 // const btChatRef = ref(null);
 const btChatRef = ref<InstanceType<typeof BTChatView>>(); //标记图表组件
 
+const xFieldNamesValue = ref<string>("");
+const yFieldNamesValue = ref<string[]>([]); //y坐标要展示的字段名，比如 ["身高","体重"]
 //由于设置了:auto-upload="false"，导致beforeUpload和uploadChange方法冲突，所以beforeUpload不会被执行
 // function beforeUpload(file: any) {
 //   const isText = "application/vnd.ms-excel";
@@ -351,8 +353,9 @@ const ExportXlsx = () => {
  * @return {void}
  */
 function showChart() {
+  xFieldNamesValue.value = "学号";
+  yFieldNamesValue.value = ["身高", "体重"];
   isShowChart.value = true;
-
   btChatRef.value.showUIFromData(dataPublic);
 }
 

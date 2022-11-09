@@ -1,5 +1,7 @@
 <template>
   <div id="main" style="width: 600px; height: 400px">
+    <!--    <h5>111:{{ props.xFieldName }}</h5>-->
+    <!--    <h5>222:{{ props.yFieldNames }}</h5>-->
     <SSJHistogramView
       ref="doubleHistogram"
       :config="histogram_config"
@@ -15,7 +17,7 @@ import SSJHistogramView from "@/components/chats/SSJHistogramView";
 import SSJEchatConfig from "@/components/chats/ssjChatClass";
 import axios from "axios";
 // 拿到SSJHistogramView组件实例
-const doubleHistogram = ref(null);
+const doubleHistogram = ref < SSJHistogramView > null;
 
 // 定义一些变量
 let xAxis_data_value = ref(["正在初始化数据"]); //x轴数据  数据加载中，请等待
@@ -36,14 +38,14 @@ let histogram_config = ref(conf);
 
 /** 定义属性 */
 // interface Props {
-//   xAxis_value: string; //x轴
-//   yAxisArray_value: Array<any>; //y轴
+//   xFieldName: string; //x轴
+//   yFieldNames: Array<any>; //y轴
 // }
 // const pro = defineProps<Props>();
 
 const props = defineProps({
-  xAxis_value: { type: String }, //x轴
-  yAxisArray_value: { type: Array }, //y轴
+  xFieldName: { type: String }, //x轴 xAxis_value
+  yFieldNames: { type: Array }, //y轴 yAxisArray_value
 });
 
 //页面加载完执行
@@ -79,87 +81,144 @@ const XLSX = require("xlsx");
  */
 function showUIFromData(data) {
   //模拟延迟加载 （setTimeout）
-  // setTimeout(function (){
-  let wb = XLSX.read(data, { type: "array" });
-  let sheets = wb.Sheets;
-  let content = transformSheets(sheets); // 整理xlsx返回的数据
-  console.log("props.xAxis_value:");
-  console.log(props.xAxis_value);
-  console.log("content:");
-  console.log(content); //content内容是从表格，逐行读取
-  let list = [];
-  let arr = content.slice(1);
-  let xAxis_data_array = [];
-  let yAxis_data_h = []; //身高
-  let yAxis_data_w = []; //体重
-  let xAxis_data_array_index = -1;
-  console.log("arr:");
-  console.log(arr);
-  for (let i = 0; i < arr.length; i++) {
-    let obj = {};
-    arr[i].forEach((item, index) => {
-      //i代表第几行，index代表第几列，item就是"i行，index列"对应的数据
-      obj["data" + (index + 1)] = item;
-      if (index + 1 == 9) {
-        obj["data" + (index + 1)] = formatExcelDate(item);
-      }
-      //逐行遍历，i表示第几行，index表示第几列
-      //第0行是标题 不需要遍历
+  setTimeout(function () {
+    let wb = XLSX.read(data, { type: "array" });
+    let sheets = wb.Sheets;
+    let content = transformSheets(sheets); // 整理xlsx返回的数据
+    console.log("props.xFieldName:");
+    console.log(props.xFieldName);
+    console.log("content:");
+    console.log(content); //content内容是从表格，逐行读取
+    let list = [];
+    let arr = content.slice(1);
+    let xAxis_data_array = [];
+    let yAxis_data_h = []; //身高
+    let yAxis_data_w = []; //体重
 
-      // xAxis_data_array存放的是x轴展示的数据，xAxis_value存放的是要展示的字段名，
-      // 我们需要通过xAxis_value找到是哪一列数据（也就是哪个index）
+    // 比如xFieldName值为"姓名"，"姓名"在整个xslx表格里处于第2列，那么xFieldName_index就等于2
+    // yFieldName_index有些特殊，因为它展示左右两条数据（比如身高和体重），所以这是一个数组序号，比如[2,3]
+    let xFieldName_index = -1; //通过xFieldName属性，找到对应的那一列序号
+    let yFieldName_indexs = []; //通过yFieldName属性，找到对应的那一列序号
 
-      // i=0表示第一行，这一行数据展示的所有列的字段名
-      if (i == 0) {
-        //此处的item就是第0行，第index列对应的字段名，我们需要进行匹配，并且找到最终需要赋值给xAxis_data_array的那一列序号
-        if (item === props.xAxis_data_value) {
-          //找到了，此时的index就是我们要传给X轴的那一列数据的列.序号
-          xAxis_data_array_index = index;
-          console.log(`找到了 ${index} ${item}`);
-        } else {
-          console.log(`没找到 ${index} ${item}`);
+    console.log("props.xFieldNames:");
+    console.log(props.xFieldNames);
+    console.log("props.yFieldNames:");
+    console.log(props.yFieldNames);
+
+    console.log("arr:");
+    console.log(arr);
+    for (let i = 0; i < arr.length; i++) {
+      let obj = {};
+      arr[i].forEach((item, index) => {
+        //i代表第几行，index代表第几列，item就是"i行，index列"对应的数据
+        obj["data" + (index + 1)] = item;
+        if (index + 1 == 9) {
+          obj["data" + (index + 1)] = formatExcelDate(item);
         }
-      }
+        //逐行遍历，i表示第几行，index表示第几列
+        //第0行是标题 不需要遍历
 
-      if (i > 0) {
-        console.log("index:");
-        console.log(index);
-        console.log("item:");
-        console.log(item);
+        // xAxis_data_array存放的是x轴展示的数据，xFieldName存放的是要展示的字段名，
+        // 我们需要通过xFieldName找到是哪一列数据（也就是哪个index）
 
-        if (index == xAxis_data_array_index) {
-          xAxis_data_array.push(item);
+        // i=0表示第一行，这一行数据展示的所有列的字段名
+        if (i == 0) {
+          //此处的item就是第0行，第index列对应的字段名，我们需要进行匹配，并且找到最终需要赋值给xAxis_data_array的那一列序号
+          if (item.toString() === props.xFieldName.toString()) {
+            //找到了，此时的index就是我们要传给X轴的那一列数据的列.序号
+            xFieldName_index = index;
+            console.log(
+              `xFieldName_index找到了 ${index} ${item} ${props.xFieldName}`
+            );
+          } else {
+            console.log(
+              `xFieldName_index没找到 ${index} ${item} ${props.xFieldName}`
+            );
+          }
+          // yFieldNames数据模版 ["身高","体重"]
+
+          // let a = ["a", "b", "c"];
+          // a.forEach((itema, indexa) => {
+          //   console.log("itema:" + itema);
+          //   console.log("indexa:" + indexa);
+          // });
+          props.yFieldNames.forEach((yFieldName, indexa) => {
+            // console.log("itema:" + itema);
+            // console.log("indexa:" + indexa);
+            if (item.toString() === yFieldName) {
+              //找到了，此时的index就是我们要传给X轴的那一列数据的列.序号
+              yFieldName_indexs.push(index);
+              console.log(
+                `yFieldName_indexs找到了 ${index} ${item} ${yFieldName}`
+              );
+            } else {
+              console.log(
+                `yFieldName_indexs没找到 ${index} ${item} ${yFieldName}`
+              );
+            }
+          });
         }
-        if (index == 1) {
-          yAxis_data_h.push(item);
-        }
-        if (index == 2) {
-          yAxis_data_w.push(item);
-        }
-      }
-    });
-    list.push(obj);
-  }
 
-  xAxis_data_value.value = xAxis_data_array; //x轴数据
-  yAxis_data_left_value.value = yAxis_data_h; //y轴数据 - 左边
-  yAxis_data_right_value.value = yAxis_data_w; //y轴数据 - 右边
+        if (i > 0) {
+          // console.log("index:");
+          // console.log(index);
+          // console.log("item:");
+          // console.log(item);
 
-  console.log("readXlsxFile执行完了");
-  console.log("xmsl数据读取完成，开始刷新图标");
-  console.log(xAxis_data_value.value);
-  console.log(yAxis_data_left_value.value);
-  console.log(yAxis_data_right_value.value);
-  // 配置图表信息和展示数据，并调用updateChatCustom刷新图表
-  conf = new SSJEchatConfig(
-    "高中二班女子身高体重",
-    xAxis_data_value.value,
-    [yAxis_data_left_value.value, yAxis_data_right_value.value],
-    [legend_left_value.value, legend_right_value.value],
-    ["ml", "斤"]
-  );
-  // 更新图标
-  doubleHistogram.value.updateChat(conf);
+          if (index == xFieldName_index) {
+            xAxis_data_array.push(item);
+          }
+
+          // yFieldName_indexs数据模版 [2,3]
+          yFieldName_indexs.forEach((itemY2, itemY1) => {
+            console.log("itemY1~~");
+            console.log(itemY1);
+            console.log("itemY2~~");
+            console.log(itemY2);
+            console.log("-----------");
+            // if (index === 0) {
+            //   //第1个y轴字段名索引
+            //   yAxis_data_h.push(item);
+            // }
+            // if (index === 1) {
+            //   //第2个y轴字段名
+            //   yAxis_data_w.push(item);
+            // }
+          });
+          // for (number i=0;i<props.yFieldNames.length ;i++) {
+          //   item in props.yFieldNames
+          // }
+          if (index == 2) {
+            yAxis_data_h.push(item);
+          }
+          if (index == 3) {
+            yAxis_data_w.push(item);
+          }
+        }
+      });
+      list.push(obj);
+    }
+
+    xAxis_data_value.value = xAxis_data_array; //x轴数据
+    yAxis_data_left_value.value = yAxis_data_h; //y轴数据 - 左边
+    yAxis_data_right_value.value = yAxis_data_w; //y轴数据 - 右边
+
+    console.log("readXlsxFile执行完了");
+    console.log("xmsl数据读取完成，开始刷新图标");
+    console.log(xAxis_data_array);
+    console.log(yAxis_data_h);
+    console.log(yAxis_data_w);
+    // 配置图表信息和展示数据，并调用updateChatCustom刷新图表
+    conf = new SSJEchatConfig(
+      "高中二班女子身高体重",
+      xAxis_data_value.value,
+      [yAxis_data_left_value.value, yAxis_data_right_value.value],
+      [legend_left_value.value, legend_right_value.value],
+      ["ml", "斤"]
+    );
+    // 更新图标
+    doubleHistogram.value.updateChat(conf);
+  }, 1);
 }
 
 // 处理表格中的日期时间

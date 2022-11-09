@@ -51,6 +51,12 @@ const routes = [
         name: "mine",
         component: () => import("../views/other/MyView.vue"),
       },
+      {
+        //原来的柱状图
+        path: "bTChatViewOld",
+        name: "bTChatViewOld",
+        component: () => import("../views/other/BTChatViewOld.vue"),
+      },
     ],
   },
   {
