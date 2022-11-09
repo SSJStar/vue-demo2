@@ -267,19 +267,11 @@ const listJson = {
           index: "4-2",
           parent_id: "4",
           iconName: "",
-          title: "双重直方图",
-          page: "/layoutView/btChatView",
-          childrens: [],
-        },
-        {
-          index: "4-3",
-          parent_id: "4",
-          iconName: "",
           title: "其它",
           childrens: [
             {
-              index: "4-3-1",
-              parent_id: "4-3",
+              index: "4-2-1",
+              parent_id: "4-2",
               iconName: "",
               title: "弹窗",
               page: "/layoutView/bTChatViewOld",

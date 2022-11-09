@@ -1,9 +1,7 @@
 <template>
   <div id="main" style="width: 600px; height: 400px">
-    <!--    <h5>111:{{ props.xFieldName }}</h5>-->
-    <!--    <h5>222:{{ props.yFieldNames }}</h5>-->
     <SSJHistogramView
-      ref="doubleHistogram"
+      ref="doubleHistogramRef"
       :config="histogram_config"
     ></SSJHistogramView>
   </div>
@@ -11,62 +9,36 @@
 
 <script setup>
 // import声明
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import transformSheets from "./read_xlsx";
-import SSJHistogramView from "@/components/chats/SSJHistogramView";
+import SSJHistogramView from "@/components/chats/SSJHistogramView.vue";
 import SSJEchatConfig from "@/components/chats/ssjChatClass";
-import axios from "axios";
+// import axios from "axios";
+
 // 拿到SSJHistogramView组件实例
-const doubleHistogram = ref < SSJHistogramView > null;
+// const doubleHistogramRef = ref <InstanceType<typeof SSJHistogramView>> ();
+const doubleHistogramRef = ref(null);
 
 // 定义一些变量
 let xAxis_data_value = ref(["正在初始化数据"]); //x轴数据  数据加载中，请等待
 let yAxis_data_left_value = ref([0]); //y轴数据 - 左边
 let yAxis_data_right_value = ref([0]); //y轴数据 - 右边
-let legend_left_value = ref("身高"); //图例 - 左
-let legend_right_value = ref("体重"); //图例 - 右
 
 // 定义配置数据，用于页面初始化SSJHistogramView传参数、updateChat刷新传参数
 let conf = new SSJEchatConfig(
   "数据加载中",
   xAxis_data_value.value,
   [yAxis_data_left_value.value, yAxis_data_right_value.value],
-  [legend_left_value.value, legend_right_value.value],
+  props.yFieldNames,
   ["ml", "斤"]
 );
 let histogram_config = ref(conf);
 
 /** 定义属性 */
-// interface Props {
-//   xFieldName: string; //x轴
-//   yFieldNames: Array<any>; //y轴
-// }
-// const pro = defineProps<Props>();
-
 const props = defineProps({
   xFieldName: { type: String }, //x轴 xAxis_value
   yFieldNames: { type: Array }, //y轴 yAxisArray_value
-});
-
-//页面加载完执行
-onMounted(() => {
-  //readXlsxFile执行完，再执行then语句块
-  // Promise.all([readXlsxFile()]).then(() => {
-  //   console.log("xmsl数据读取完成，开始刷新图标");
-  //   console.log(xAxis_data_value.value);
-  //   console.log(yAxis_data_left_value.value);
-  //   console.log(yAxis_data_right_value.value);
-  //   // 配置图表信息和展示数据，并调用updateChatCustom刷新图表
-  //   conf = new SSJEchatConfig(
-  //     "高中二班女子身高体重",
-  //     xAxis_data_value.value,
-  //     [yAxis_data_left_value.value, yAxis_data_right_value.value],
-  //     [legend_left_value.value, legend_right_value.value],
-  //     ["ml", "斤"]
-  //   );
-  //   // 更新图标
-  //   doubleHistogram.value.updateChat(conf);
-  // });
+  yFieldUnits: { type: Array }, //y轴单位 yAxisArray_value
 });
 
 // 读取xlsx文件
@@ -92,21 +64,43 @@ function showUIFromData(data) {
     let list = [];
     let arr = content.slice(1);
     let xAxis_data_array = [];
-    let yAxis_data_h = []; //身高
-    let yAxis_data_w = []; //体重
+    let yAxis_data_one = []; //身高
+    let yAxis_data_two = []; //体重
+    let yAxis_data_three = []; //体重
 
     // 比如xFieldName值为"姓名"，"姓名"在整个xslx表格里处于第2列，那么xFieldName_index就等于2
     // yFieldName_index有些特殊，因为它展示左右两条数据（比如身高和体重），所以这是一个数组序号，比如[2,3]
     let xFieldName_index = -1; //通过xFieldName属性，找到对应的那一列序号
     let yFieldName_indexs = []; //通过yFieldName属性，找到对应的那一列序号
 
-    console.log("props.xFieldNames:");
-    console.log(props.xFieldNames);
-    console.log("props.yFieldNames:");
-    console.log(props.yFieldNames);
+    // console.log("props.xFieldNames:");
+    // console.log(props.xFieldNames);
+    // console.log("props.yFieldNames:");
+    // console.log(props.yFieldNames);
+    // console.log("props.yFieldUnits:");
+    // console.log(props.yFieldUnits);
+    //
+    // console.log("props.yFieldUnits.length:");
+    // console.log(props.yFieldUnits.length);
+    // console.log("props.yFieldNames.length:");
+    // console.log(props.yFieldNames.length);
 
-    console.log("arr:");
-    console.log(arr);
+    //自动补全 - 缺少的单位
+    //比如y轴需要显示三条数据，单位只给了2个，那么就自动追加第3个单位（补全的单位与前面一个单位相同）
+    if (props.yFieldUnits.length < props.yFieldNames.length) {
+      let count = props.yFieldNames.length - props.yFieldUnits.length;
+      let arr = props.yFieldUnits;
+      for (let i = 0; i < count; i++) {
+        console.log("1111props.yFieldUnits:");
+        console.log(props.yFieldUnits[props.yFieldUnits.length - 1]);
+        arr.push(props.yFieldUnits[props.yFieldUnits.length - 1]);
+      }
+      // eslint-disable-next-line vue/no-mutating-props
+      props.yFieldUnits.value = arr;
+    }
+
+    // console.log("arr:");
+    // console.log(arr);
     for (let i = 0; i < arr.length; i++) {
       let obj = {};
       arr[i].forEach((item, index) => {
@@ -130,94 +124,69 @@ function showUIFromData(data) {
             console.log(
               `xFieldName_index找到了 ${index} ${item} ${props.xFieldName}`
             );
-          } else {
-            console.log(
-              `xFieldName_index没找到 ${index} ${item} ${props.xFieldName}`
-            );
           }
           // yFieldNames数据模版 ["身高","体重"]
-
-          // let a = ["a", "b", "c"];
-          // a.forEach((itema, indexa) => {
-          //   console.log("itema:" + itema);
-          //   console.log("indexa:" + indexa);
-          // });
           props.yFieldNames.forEach((yFieldName, indexa) => {
-            // console.log("itema:" + itema);
-            // console.log("indexa:" + indexa);
+            // indexa表示yFieldNames的index索引下标，yFieldName表示indexa下标对应的value值
             if (item.toString() === yFieldName) {
               //找到了，此时的index就是我们要传给X轴的那一列数据的列.序号
               yFieldName_indexs.push(index);
               console.log(
                 `yFieldName_indexs找到了 ${index} ${item} ${yFieldName}`
               );
-            } else {
-              console.log(
-                `yFieldName_indexs没找到 ${index} ${item} ${yFieldName}`
-              );
             }
           });
         }
 
         if (i > 0) {
-          // console.log("index:");
-          // console.log(index);
-          // console.log("item:");
-          // console.log(item);
-
           if (index == xFieldName_index) {
             xAxis_data_array.push(item);
           }
 
           // yFieldName_indexs数据模版 [2,3]
-          yFieldName_indexs.forEach((itemY2, itemY1) => {
-            console.log("itemY1~~");
-            console.log(itemY1);
-            console.log("itemY2~~");
-            console.log(itemY2);
-            console.log("-----------");
-            // if (index === 0) {
-            //   //第1个y轴字段名索引
-            //   yAxis_data_h.push(item);
-            // }
-            // if (index === 1) {
-            //   //第2个y轴字段名
-            //   yAxis_data_w.push(item);
-            // }
-          });
-          // for (number i=0;i<props.yFieldNames.length ;i++) {
-          //   item in props.yFieldNames
-          // }
-          if (index == 2) {
-            yAxis_data_h.push(item);
-          }
-          if (index == 3) {
-            yAxis_data_w.push(item);
-          }
+          yFieldName_indexs.forEach(
+            (yFieldName_index, yFieldName_indexs_index) => {
+              if (yFieldName_indexs_index === 0 && index === yFieldName_index) {
+                //index表示外层循环的索引，即第几列
+                //将数据塞入第1个y数组
+                yAxis_data_one.push(item);
+              }
+              if (yFieldName_indexs_index === 1 && index === yFieldName_index) {
+                ////将数据塞入第2个y数组
+                yAxis_data_two.push(item);
+              }
+              if (yFieldName_indexs_index === 2 && index === yFieldName_index) {
+                ////将数据塞入第3个y数组
+                yAxis_data_three.push(item);
+              }
+            }
+          );
         }
       });
       list.push(obj);
     }
 
     xAxis_data_value.value = xAxis_data_array; //x轴数据
-    yAxis_data_left_value.value = yAxis_data_h; //y轴数据 - 左边
-    yAxis_data_right_value.value = yAxis_data_w; //y轴数据 - 右边
+    yAxis_data_left_value.value = yAxis_data_one; //y轴数据 - 左边
+    yAxis_data_right_value.value = yAxis_data_two; //y轴数据 - 右边
 
-    console.log("readXlsxFile执行完了");
-    console.log("xmsl数据读取完成，开始刷新图标");
-    console.log(xAxis_data_array);
-    console.log(yAxis_data_h);
-    console.log(yAxis_data_w);
+    // console.log("readXlsxFile执行完了");
+    // console.log("xmsl数据读取完成，开始刷新图标");
+    // console.log(xAxis_data_array);
+    // console.log(yAxis_data_one);
+    // console.log(yAxis_data_two);
+    // console.log(yAxis_data_three);
+    // console.log(JSON.parse(JSON.stringify(props.yFieldUnits)));
     // 配置图表信息和展示数据，并调用updateChatCustom刷新图表
     conf = new SSJEchatConfig(
       "高中二班女子身高体重",
       xAxis_data_value.value,
-      [yAxis_data_left_value.value, yAxis_data_right_value.value],
-      [legend_left_value.value, legend_right_value.value],
-      ["ml", "斤"]
+      [yAxis_data_one, yAxis_data_two, yAxis_data_three],
+      props.yFieldNames,
+      props.yFieldUnits //["ml", "斤", "斤"]
     );
     // 更新图标
-    doubleHistogram.value.updateChat(conf);
+    doubleHistogramRef.value.updateChat(conf);
   }, 1);
 }
 

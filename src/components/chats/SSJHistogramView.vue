@@ -28,6 +28,7 @@ onMounted(() => {
  * @return {返回类型}
  */
 function updateChat(config) {
+  console.log("updateChat~~~~~~~~");
   let yAxis_arr = []; //用于存放yAxis配置，从for循环读取的
   let series_arr = []; //用于存放series配置，从for循环读取的
 
@@ -35,7 +36,7 @@ function updateChat(config) {
   for (let i = 0; i < config.yAxis_datas.length; i++) {
     let yAxis_json = {
       type: "value",
-      name: config.legend_datas[i], //legend_left,//props.legend_left,
+      name: "", //config.legend_datas[i], //这个用于在每个Y轴上方显示标题，如果不希望显示就赋值"空字符串"
       splitLine: { show: true },
       // nameLocation:"middle",
       // nameGap:170,
@@ -58,9 +59,11 @@ function updateChat(config) {
   }
 
   // 指定图表的配置项和数据
+  // tooltip作用：鼠标移动到上面会显示对应的数据信息
   let option = {
     title: {
       text: config.valueOf().title, //'高中二班女子身高体重'
+      position: "middle",
     },
     tooltip: {
       trigger: "axis",

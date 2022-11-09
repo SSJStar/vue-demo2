@@ -9,7 +9,7 @@
     <!--  选择X轴  -->
     <div style="display: inline-block">
       <el-select
-        v-model="value_x"
+        v-model="xFieldNameSelected"
         class="m-2"
         size="large"
         multiple
@@ -29,7 +29,7 @@
     <!--  选择Y轴  -->
     <div style="display: inline-block">
       <el-select
-        v-model="value_y"
+        v-model="yFieldNameSelected"
         class="m-3"
         size="large"
         multiple
@@ -39,6 +39,26 @@
       >
         <el-option
           v-for="item in y_options"
+          :key="item"
+          :label="item"
+          :value="item"
+        />
+      </el-select>
+    </div>
+
+    <!--  选择Y轴字段的单位  -->
+    <div style="display: inline-block">
+      <el-select
+        v-model="yFieldUnitSelected"
+        class="m-3"
+        size="large"
+        multiple
+        collapse-tags
+        collapse-tags-tooltip
+        placeholder="请选择Y轴显示数据的字段（按顺序）"
+      >
+        <el-option
+          v-for="item in yUnit_options"
           :key="item"
           :label="item"
           :value="item"
@@ -76,10 +96,17 @@
     />
 
     <!--  柱状图  -->
+    <!--    <BTChatView-->
+    <!--      v-show="isShowChart"-->
+    <!--      :xFieldName="xFieldNamesValue"-->
+    <!--      :yFieldNames="yFieldNamesValue"-->
+    <!--      ref="btChatRef"-->
+    <!--    ></BTChatView>-->
     <BTChatView
       v-show="isShowChart"
-      :xFieldName="xFieldNamesValue"
-      :yFieldNames="yFieldNamesValue"
+      :xFieldName="xFieldNameSelected"
+      :yFieldNames="yFieldNameSelected"
+      :yFieldUnits="yFieldUnitSelected"
       ref="btChatRef"
     ></BTChatView>
   </div>
@@ -111,11 +138,14 @@ let isShowRead = ref(true); //是否展示"读取文件xxx"，默认true
 let isShowExport = ref(false); //是否展示"导出按钮",默认false
 let isShowChart = ref(false); //是否展示"图标",默认false
 
-const value_x = ref(""); //x轴选择展示哪个字段
-const value_y = ref(""); //y轴选择展示哪几个字段
+const xFieldNameSelected = ref(""); //x轴选择展示哪个字段
+const yFieldNameSelected = ref(""); //y轴选择展示哪几个字段
+const yFieldUnitSelected = ref(""); //y轴选择展示的几个字段的单位
 
-const x_options: any = ref([]); //x轴下拉框数据
-const y_options: any = ref([]); //y轴下拉框数据
+const x_options: any = ref([]); //x轴下拉框（数据源）
+const y_options: any = ref([]); //y轴下拉框（数据源）
+const yUnit_options: any = ref([]); //y轴下拉框（数据源）
+
 // const btChatRef = ref(null);
 const btChatRef = ref<InstanceType<typeof BTChatView>>(); //标记图表组件
 
@@ -205,6 +235,8 @@ function afterGetContent(data: any) {
   const menuArray: any[] = arr[0];
   x_options.value = menuArray;
   y_options.value = menuArray;
+  //  单位
+  yUnit_options.value = ["cm", "m", "kg", "g", "分", "秒"];
 
   // 添加列表数据给listDataValue
   for (let i = 0; i < arr.length; i++) {
@@ -227,11 +259,11 @@ function afterGetContent(data: any) {
   listDataValue.splice(0, 1); //从第0个位置可以删除，删除总个数为1
   listData.value = listDataValue; //listDataValue赋值给响应式变量listData
 
-  console.log("listDataValue:");
-  console.log(listDataValue);
-
-  console.log("menuArray:");
-  console.log(menuArray);
+  // console.log("listDataValue:");
+  // console.log(listDataValue);
+  //
+  // console.log("menuArray:");
+  // console.log(menuArray);
 
   //展示或隐藏 导出按钮
   if (listData.value.length > 0) {
@@ -359,8 +391,6 @@ function showChart() {
   btChatRef.value.showUIFromData(dataPublic);
 }
 
-const activeIndex = ref("1");
-const activeIndex2 = ref("1");
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
