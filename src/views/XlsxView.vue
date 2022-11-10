@@ -4,67 +4,7 @@
     <!--    <h1 v-show="isShowRead" @click="readFileFunc">-->
     <!--      读取文件《高中二班女子800米成绩统计.xlsx》-->
     <!--    </h1>-->
-    <br />
-
-    <!--  选择X轴  -->
-    <div style="display: inline-block">
-      <el-select
-        v-model="xFieldNameSelected"
-        class="m-2"
-        size="large"
-        multiple
-        collapse-tags
-        collapse-tags-tooltip
-        placeholder="请选择X轴显示数据"
-      >
-        <el-option
-          v-for="item in x_options"
-          :key="item"
-          :label="item"
-          :value="item"
-        />
-      </el-select>
-    </div>
-
-    <!--  选择Y轴  -->
-    <div style="display: inline-block">
-      <el-select
-        v-model="yFieldNameSelected"
-        class="m-3"
-        size="large"
-        multiple
-        collapse-tags
-        collapse-tags-tooltip
-        placeholder="请选择Y轴显示数据"
-      >
-        <el-option
-          v-for="item in y_options"
-          :key="item"
-          :label="item"
-          :value="item"
-        />
-      </el-select>
-    </div>
-
-    <!--  选择Y轴字段的单位  -->
-    <div style="display: inline-block">
-      <el-select
-        v-model="yFieldUnitSelected"
-        class="m-3"
-        size="large"
-        multiple
-        collapse-tags
-        collapse-tags-tooltip
-        placeholder="请选择Y轴显示数据的字段（按顺序）"
-      >
-        <el-option
-          v-for="item in yUnit_options"
-          :key="item"
-          :label="item"
-          :value="item"
-        />
-      </el-select>
-    </div>
+    <!--    <br />-->
 
     <!--  导入文件  -->
     <el-upload
@@ -81,12 +21,6 @@
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
     </el-upload>
 
-    <!--  导出到电脑  -->
-    <div class="toolsView" v-show="isShowExport">
-      <el-button class="ExportView" @click="ExportXlsx">导出</el-button>
-      <el-button class="ChatView" @click="showChart">生成柱状图</el-button>
-    </div>
-
     <!--  列表  -->
     <TableView
       style="width: 100%; height: 250px"
@@ -95,16 +29,78 @@
       :list-data="listData"
     />
 
+    <!--  导出到电脑  -->
+    <div class="toolsView" v-show="isShowExport">
+      <el-button class="ExportView" @click="ExportXlsx">导出文件</el-button>
+
+      <!--  选择X轴  -->
+      <div style="display: inline-block; width: 180px">
+        <el-select
+          v-model="xFieldNameSelected"
+          class="m-2"
+          size="large"
+          multiple
+          collapse-tags
+          collapse-tags-tooltip
+          placeholder="请选择X轴字段"
+        >
+          <el-option
+            v-for="item in x_options"
+            :key="item"
+            :label="item"
+            :value="item"
+          />
+        </el-select>
+      </div>
+
+      <!--  选择Y轴  -->
+      <div style="display: inline-block; margin-left: 10px; width: 180px">
+        <el-select
+          v-model="yFieldNameSelected"
+          class="m-3"
+          size="large"
+          multiple
+          collapse-tags
+          collapse-tags-tooltip
+          placeholder="请选择Y轴字段"
+        >
+          <el-option
+            v-for="item in y_options"
+            :key="item"
+            :label="item"
+            :value="item"
+          />
+        </el-select>
+      </div>
+
+      <!--  选择Y轴字段的单位  -->
+      <div style="display: inline-block; margin-left: 10px; width: 180px">
+        <el-select
+          v-model="yFieldUnitSelected"
+          class="m-3"
+          size="large"
+          multiple
+          collapse-tags
+          collapse-tags-tooltip
+          placeholder="请选择Y轴字段单位（按顺序）"
+        >
+          <el-option
+            v-for="item in yUnit_options"
+            :key="item"
+            :label="item"
+            :value="item"
+          />
+        </el-select>
+      </div>
+
+      <el-button class="ChatView" @click="showChart">生成柱状图</el-button>
+    </div>
+
     <!--  柱状图  -->
-    <!--    <BTChatView-->
-    <!--      v-show="isShowChart"-->
-    <!--      :xFieldName="xFieldNamesValue"-->
-    <!--      :yFieldNames="yFieldNamesValue"-->
-    <!--      ref="btChatRef"-->
-    <!--    ></BTChatView>-->
     <BTChatView
+      class="btChartView"
       v-show="isShowChart"
-      :xFieldName="xFieldNameSelected"
+      :xFieldNames="xFieldNameSelected"
       :yFieldNames="yFieldNameSelected"
       :yFieldUnits="yFieldUnitSelected"
       ref="btChatRef"
@@ -138,9 +134,9 @@ let isShowRead = ref(true); //是否展示"读取文件xxx"，默认true
 let isShowExport = ref(false); //是否展示"导出按钮",默认false
 let isShowChart = ref(false); //是否展示"图标",默认false
 
-const xFieldNameSelected = ref(""); //x轴选择展示哪个字段
-const yFieldNameSelected = ref(""); //y轴选择展示哪几个字段
-const yFieldUnitSelected = ref(""); //y轴选择展示的几个字段的单位
+const xFieldNameSelected = ref([]); //x轴选择展示哪个字段
+const yFieldNameSelected = ref([]); //y轴选择展示哪几个字段
+const yFieldUnitSelected = ref([]); //y轴选择展示的几个字段的单位
 
 const x_options: any = ref([]); //x轴下拉框（数据源）
 const y_options: any = ref([]); //y轴下拉框（数据源）
@@ -385,10 +381,40 @@ const ExportXlsx = () => {
  * @return {void}
  */
 function showChart() {
-  xFieldNamesValue.value = "学号";
-  yFieldNamesValue.value = ["身高", "体重"];
-  isShowChart.value = true;
-  btChatRef.value.showUIFromData(dataPublic);
+  const validataResult = valiadataBeforeShowUIFromData(); //校验组件属性是否为空
+  if (validataResult) {
+    // xFieldNamesValue.value = "学号";
+    // yFieldNamesValue.value = ["身高", "体重"];
+    isShowChart.value = true;
+    btChatRef.value.showUIFromData(dataPublic);
+  }
+}
+
+/**
+ * 校验组件属性是否为空
+ *
+ * 作者: 小青龙
+ * 时间：2022/11/10 10:32:45
+ * @return {void}
+ */
+function valiadataBeforeShowUIFromData() {
+  if (xFieldNameSelected.value.length == 0) {
+    alert("X轴字段不能为空，请选择");
+    return false;
+  }
+  if (yFieldNameSelected.value.length == 0) {
+    alert("Y轴字段不能为空，请选择");
+    return false;
+  }
+  if (yFieldUnitSelected.value.length == 0) {
+    alert("Y轴字段单位不能为空，请选择");
+    return false;
+  }
+  if (yFieldUnitSelected.value.length > yFieldNameSelected.value.length) {
+    alert("'Y轴字段单位个数'不能大于'Y轴字段个数'");
+    return false;
+  }
+  return true;
 }
 
 const handleSelect = (key: string, keyPath: string[]) => {
@@ -401,6 +427,10 @@ const handleSelect = (key: string, keyPath: string[]) => {
 .XlsxViewClass {
   height: calc(100%);
   overflow-y: scroll;
+}
+
+.btChartView {
+  margin-top: 30px;
 }
 
 .toolsView {

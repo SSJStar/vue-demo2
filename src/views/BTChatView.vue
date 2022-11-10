@@ -32,14 +32,19 @@ let conf = new SSJEchatConfig(
   props.yFieldNames,
   ["ml", "斤"]
 );
+// let conf = new SSJEchatConfig("数据加载中", "", [], [], []);
 let histogram_config = ref(conf);
 
 /** 定义属性 */
 const props = defineProps({
-  xFieldName: { type: String }, //x轴 xAxis_value
-  yFieldNames: { type: Array }, //y轴 yAxisArray_value
-  yFieldUnits: { type: Array }, //y轴单位 yAxisArray_value
+  title: { type: String },
+  xFieldNames: { type: Array }, //x轴字段名，例如["姓名"]
+  yFieldNames: { type: Array }, //y轴字段名，例如["身高","体重","期末总成绩"]
+  yFieldUnits: { type: Array }, //y轴字段单位，例如["cm","kg","分"]
 });
+
+//用于获取xFieldNames里第一个字段名，只考虑X轴显示一条字段的情况，复杂情况不考虑
+let xFieldName = "";
 
 // 读取xlsx文件
 const XLSX = require("xlsx");
@@ -54,11 +59,27 @@ const XLSX = require("xlsx");
 function showUIFromData(data) {
   //模拟延迟加载 （setTimeout）
   setTimeout(function () {
+    //校验数据 （最好在展示本组件之前，先校验一遍）
+    if (props.xFieldNames.length == 0) {
+      alert("X轴字段不能为空，请选择");
+      return;
+    }
+    if (props.yFieldNames.length == 0) {
+      alert("Y轴字段不能为空，请选择");
+      return;
+    }
+    if (props.yFieldUnits.length == 0) {
+      alert("Y轴字段单位不能为空，请选择");
+      return;
+    }
+    // 获取X轴字段名
+    xFieldName = props.xFieldNames[0];
+
     let wb = XLSX.read(data, { type: "array" });
     let sheets = wb.Sheets;
     let content = transformSheets(sheets); // 整理xlsx返回的数据
-    console.log("props.xFieldName:");
-    console.log(props.xFieldName);
+    console.log("xFieldName:");
+    console.log(xFieldName);
     console.log("content:");
     console.log(content); //content内容是从表格，逐行读取
     let list = [];
@@ -91,9 +112,9 @@ function showUIFromData(data) {
       let count = props.yFieldNames.length - props.yFieldUnits.length;
       let arr = props.yFieldUnits;
       for (let i = 0; i < count; i++) {
-        console.log("1111props.yFieldUnits:");
-        console.log(props.yFieldUnits[props.yFieldUnits.length - 1]);
-        arr.push(props.yFieldUnits[props.yFieldUnits.length - 1]);
+        // console.log("1111props.yFieldUnits:");
+        // console.log(props.yFieldUnits[props.yFieldUnits.length - 1]);
+        arr.push(props.yFieldUnits[props.yFieldUnits.length - 1]); //下标是从0开始
       }
       // eslint-disable-next-line vue/no-mutating-props
       props.yFieldUnits.value = arr;
@@ -118,11 +139,11 @@ function showUIFromData(data) {
         // i=0表示第一行，这一行数据展示的所有列的字段名
         if (i == 0) {
           //此处的item就是第0行，第index列对应的字段名，我们需要进行匹配，并且找到最终需要赋值给xAxis_data_array的那一列序号
-          if (item.toString() === props.xFieldName.toString()) {
+          if (item.toString() === xFieldName.toString()) {
             //找到了，此时的index就是我们要传给X轴的那一列数据的列.序号
             xFieldName_index = index;
             console.log(
-              `xFieldName_index找到了 ${index} ${item} ${props.xFieldName}`
+              `xFieldName_index找到了 ${index} ${item} ${xFieldName}`
             );
           }
           // yFieldNames数据模版 ["身高","体重"]
@@ -177,11 +198,21 @@ function showUIFromData(data) {
     // console.log(yAxis_data_two);
     // console.log(yAxis_data_three);
     // console.log(JSON.parse(JSON.stringify(props.yFieldUnits)));
+    let yAxis_datas = [];
+    if (yAxis_data_one.length > 0) {
+      yAxis_datas.push(yAxis_data_one);
+    }
+    if (yAxis_data_two.length > 0) {
+      yAxis_datas.push(yAxis_data_two);
+    }
+    if (yAxis_data_three.length > 0) {
+      yAxis_datas.push(yAxis_data_three);
+    }
     // 配置图表信息和展示数据，并调用updateChatCustom刷新图表
     conf = new SSJEchatConfig(
-      "高中二班女子身高体重",
+      props.title,
       xAxis_data_value.value,
-      [yAxis_data_one, yAxis_data_two, yAxis_data_three],
+      yAxis_datas,
       props.yFieldNames,
       props.yFieldUnits //["ml", "斤", "斤"]
     );

@@ -45,9 +45,13 @@ function updateChat(config) {
       },
     };
     yAxis_arr.push(yAxis_json);
+    // console.log("开始渲染11");
+    // console.log(config.yAxis_datas);
+    // console.log(JSON.parse(JSON.stringify(config.legend_datas)));
 
     //只有yAxis_datas和legend_datas个数相等，图例才会显示，否则就没必要执行if代码块
     if (config.yAxis_datas.length === config.legend_datas.length) {
+      console.log("开始渲染Y轴");
       let series_json = {
         name: config.legend_datas[i],
         type: "bar",
@@ -57,7 +61,6 @@ function updateChat(config) {
       series_arr.push(series_json);
     }
   }
-
   // 指定图表的配置项和数据
   // tooltip作用：鼠标移动到上面会显示对应的数据信息
   let option = {
