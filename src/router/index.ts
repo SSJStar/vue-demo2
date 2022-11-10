@@ -71,6 +71,11 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/other/TestSSJ.vue"),
   },
+  {
+    path: "/pie",
+    name: "pie",
+    component: () => import("@/components/chats/SSJPieView.vue"),
+  },
 ];
 
 const router = createRouter({

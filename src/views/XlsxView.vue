@@ -123,6 +123,10 @@
       :yFieldUnits="yFieldUnitSelected"
       ref="btChatRef"
     ></BTChatView>
+
+    <div id="sSJPieView">
+      <SSJPieView mountViewID="sSJPieView" ref="pieViewRef" />
+    </div>
   </div>
 </template>
 
@@ -136,6 +140,7 @@ import { useDialog } from "@/components/servicedialog/demo/useDialog";
 import TableView from "@/views/List/TableView.vue";
 import { ref } from "vue";
 import BTChatView from "@/views/BTChatView.vue";
+import SSJPieView from "@/components/chats/SSJPieView.vue";
 import ssjTip from "@/components/servicedialog/ssj-dialog";
 
 const XLSX = require("xlsx");
@@ -157,6 +162,8 @@ const xFieldNameSelected = ref([]); //x轴选择展示哪个字段
 const yFieldNameSelected = ref([]); //y轴选择展示哪几个字段
 const yFieldUnitSelected = ref([]); //y轴选择展示的几个字段的单位
 const yChartTypeSelected = ref(); //选中的图表类型，line、scatter、bar、pie、radar
+
+let pieViewRef: any = ref(null);
 
 const x_options: any = ref([]); //x轴下拉框（数据源）
 const y_options: any = ref([]); //y轴下拉框（数据源）
@@ -336,34 +343,6 @@ function readFileFunc() {
     });
 }
 
-// 处理表格中的日期时间
-// function formatExcelDate(numb: number, format = "-") {
-//   // 如果numb为空则返回空字符串
-//   if (!numb) {
-//     return "";
-//   }
-//   let time = new Date(
-//     new Date("1900-1-1").getTime() + (numb - 1) * 3600 * 24 * 1000
-//   );
-//   const year = time.getFullYear() + "";
-//   const month = time.getMonth() + 1 + "";
-//   const date = time.getDate();
-//   if (format && format.length === 1) {
-//     return (
-//       year +
-//       format +
-//       (Number(month) < 10 ? "0" + month : month) +
-//       format +
-//       (date < 10 ? "0" + date : date)
-//     );
-//   }
-//   return (
-//     year +
-//     (Number(month) < 10 ? "0" + month : month) +
-//     (date < 10 ? "0" + date : date)
-//   );
-// }
-
 const { open } = useDialog();
 //将contentValue这个json变量，写入xlsx文件
 const ExportXlsx = () => {
@@ -427,6 +406,9 @@ const ExportXlsx = () => {
 function showChart() {
   console.log("yChartTypeSelected~~");
   console.log(yChartTypeSelected.value);
+
+  pieViewRef.value.getmain1();
+
   const validataResult = valiadataBeforeShowUIFromData(); //校验组件属性是否为空
   if (validataResult) {
     // xFieldNamesValue.value = "学号";
@@ -474,9 +456,10 @@ const handleSelect = (key: string, keyPath: string[]) => {
   height: calc(100%);
   overflow-y: scroll;
 }
-
+/*柱状图*/
 .btChartView {
   margin-top: 30px;
+  width: 100%;
 }
 
 .toolsView {
@@ -498,6 +481,11 @@ const handleSelect = (key: string, keyPath: string[]) => {
   /*background-color: orange;*/
 }
 
+#sSJPieView {
+  margin-top: 30px;
+  width: 400px;
+  height: 300px;
+}
 /*.el-menu--collapse .el-menu .el-submenu,*/
 /*.el-menu--popup {*/
 /*  min-width: 120px !important;*/
