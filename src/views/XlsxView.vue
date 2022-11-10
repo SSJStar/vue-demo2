@@ -93,6 +93,23 @@
         </el-select>
       </div>
 
+      <!--  图标类型  -->
+      <div style="display: inline-block; margin-left: 10px; width: 180px">
+        <el-select
+          v-model="yChartTypeSelected"
+          class="m-3"
+          size="large"
+          placeholder="请选择图表类型"
+        >
+          <el-option
+            v-for="item in yChartType_options"
+            :key="item.key"
+            :label="item.value"
+            :value="item.key"
+          />
+        </el-select>
+      </div>
+
       <el-button class="ChatView" @click="showChart">生成柱状图</el-button>
     </div>
 
@@ -100,6 +117,7 @@
     <BTChatView
       class="btChartView"
       v-show="isShowChart"
+      :title="fileNameSelected"
       :xFieldNames="xFieldNameSelected"
       :yFieldNames="yFieldNameSelected"
       :yFieldUnits="yFieldUnitSelected"
@@ -134,13 +152,38 @@ let isShowRead = ref(true); //是否展示"读取文件xxx"，默认true
 let isShowExport = ref(false); //是否展示"导出按钮",默认false
 let isShowChart = ref(false); //是否展示"图标",默认false
 
+const fileNameSelected = ref(""); //从电脑上选择的文件名，file["name"]
 const xFieldNameSelected = ref([]); //x轴选择展示哪个字段
 const yFieldNameSelected = ref([]); //y轴选择展示哪几个字段
 const yFieldUnitSelected = ref([]); //y轴选择展示的几个字段的单位
+const yChartTypeSelected = ref(); //选中的图表类型，line、scatter、bar、pie、radar
 
 const x_options: any = ref([]); //x轴下拉框（数据源）
 const y_options: any = ref([]); //y轴下拉框（数据源）
 const yUnit_options: any = ref([]); //y轴下拉框（数据源）
+const yChartType_options: any = [
+  //图表类型
+  {
+    key: "line",
+    value: "折线图",
+  },
+  {
+    key: "scatter",
+    value: "散点图",
+  },
+  {
+    key: "bar",
+    value: "柱状图",
+  },
+  {
+    key: "pie",
+    value: "饼图",
+  },
+  {
+    key: "radar",
+    value: "雷达图",
+  },
+];
 
 // const btChatRef = ref(null);
 const btChatRef = ref<InstanceType<typeof BTChatView>>(); //标记图表组件
@@ -172,6 +215,7 @@ function uploadChange(this: any, file: any, fileList: any) {
   console.log("fileList~~");
   console.log(fileList);
   console.log(this.uploadFiles);
+  fileNameSelected.value = file["name"]; //文件名传给 -》fileNameSelected
   let isLt2M = file.size / 1024 / 1024 <= 20;
   if (!isLt2M) {
     alert(`上传文件大小不能超过20MB!`);
@@ -381,6 +425,8 @@ const ExportXlsx = () => {
  * @return {void}
  */
 function showChart() {
+  console.log("yChartTypeSelected~~");
+  console.log(yChartTypeSelected.value);
   const validataResult = valiadataBeforeShowUIFromData(); //校验组件属性是否为空
   if (validataResult) {
     // xFieldNamesValue.value = "学号";

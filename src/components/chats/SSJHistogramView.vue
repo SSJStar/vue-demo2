@@ -36,8 +36,9 @@ function updateChat(config) {
   for (let i = 0; i < config.yAxis_datas.length; i++) {
     let yAxis_json = {
       type: "value",
+      axisLine: { show: true }, //y轴竖线
       name: "", //config.legend_datas[i], //这个用于在每个Y轴上方显示标题，如果不希望显示就赋值"空字符串"
-      splitLine: { show: true },
+      splitLine: { show: false }, //y轴横线（ show = false表示不显示分割线）
       // nameLocation:"middle",
       // nameGap:170,
       axisLabel: {
@@ -67,6 +68,7 @@ function updateChat(config) {
     title: {
       text: config.valueOf().title, //'高中二班女子身高体重'
       position: "middle",
+      left: "center", //让标题居中
     },
     tooltip: {
       trigger: "axis",
@@ -74,6 +76,7 @@ function updateChat(config) {
     },
     legend: {
       data: config.valueOf().legend_datas, //图例
+      right: 20,
     },
     xAxis: {
       data: config.valueOf().xAxis_data, //x_data,//props.xAxis_data,
@@ -111,7 +114,7 @@ function initChart() {
     props.config.legend_datas,
     props.config.unit_datas
   );
-  updateChat(conf);
+  // updateChat(conf);
 
   // 点击事件
   myChart.on("click", function (params) {

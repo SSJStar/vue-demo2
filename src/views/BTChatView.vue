@@ -25,14 +25,14 @@ let yAxis_data_left_value = ref([0]); //y轴数据 - 左边
 let yAxis_data_right_value = ref([0]); //y轴数据 - 右边
 
 // 定义配置数据，用于页面初始化SSJHistogramView传参数、updateChat刷新传参数
-let conf = new SSJEchatConfig(
-  "数据加载中",
-  xAxis_data_value.value,
-  [yAxis_data_left_value.value, yAxis_data_right_value.value],
-  props.yFieldNames,
-  ["ml", "斤"]
-);
-// let conf = new SSJEchatConfig("数据加载中", "", [], [], []);
+// let conf = new SSJEchatConfig(
+//   "数据加载中",
+//   xAxis_data_value.value,
+//   [yAxis_data_left_value.value, yAxis_data_right_value.value],
+//   props.yFieldNames,
+//   ["ml", "斤"]
+// );
+let conf = new SSJEchatConfig("数据加载中", [], [], [], []);
 let histogram_config = ref(conf);
 
 /** 定义属性 */
