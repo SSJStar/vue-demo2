@@ -481,10 +481,11 @@ const handleSelect = (key: string, keyPath: string[]) => {
   /*background-color: orange;*/
 }
 
+/* 饼图 */
 #sSJPieView {
   margin-top: 30px;
-  width: 400px;
-  height: 300px;
+  width: 800px;
+  height: 600px;
 }
 /*.el-menu--collapse .el-menu .el-submenu,*/
 /*.el-menu--popup {*/
