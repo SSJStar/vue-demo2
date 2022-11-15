@@ -20,7 +20,14 @@ const http = {
       url: url,
     }; /*同理也是传入用户需要发送到后台的参数，这些参数
             放在报文中，载体表达标准是JSON*/
-    if (params) config.data = params;
+    // if (params) config.data = params;
+    if (params) {
+      config.data = params;
+      // console.log("post - params ");
+      // console.log(params);
+      // console.log("post - config ");
+      // console.log(config);
+    }
     return request(config);
   },
 };

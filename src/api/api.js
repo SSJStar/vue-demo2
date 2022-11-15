@@ -15,7 +15,9 @@ export function verifyUserNameAPI(params) {
 
 // 获取注册验证码
 export function getRegisterCode(params) {
-  return http.post("/registerCode", params);
+  // console.log("getRegisterCode - params ");
+  // console.log(params);
+  return http.get("/registerCode", params);
 }
 
 // 注册

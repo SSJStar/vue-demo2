@@ -90,10 +90,11 @@ const proxy = getCurrentInstance().appContext;
 
 //登录按钮 - 点击
 function loginActionFunc() {
-  proxy.config.globalProperties.$loginState = true; //修改全局变量-登录状态
-  let n = "汤姆森.金";
-  router.push(`/layoutView?title=${n}`); //跳转布局页
-  return;
+  // proxy.config.globalProperties.$loginState = true; //修改全局变量-登录状态
+  // let n = "汤姆森.金";
+  // router.push(`/layoutView?title=${n}`); //跳转布局页
+  // return;
+
   // const  e = ref(uName)
   // console.log("点击了按钮:"+e.value)
   // //     let  uName = ref(null)
@@ -108,13 +109,14 @@ function loginActionFunc() {
     loginWithUNameAndPwd({
       username: loginInput.nameValue,
       password: loginInput.pwdValue,
-    }),
-      ((res) => {
+    })
+      .then((res) => {
         console.log("请求结束了\\n");
         console.log(res);
         alert("登录成功，即将跳转首页");
         router.push("/home");
-      }).catch((err) => {
+      })
+      .catch((err) => {
         if (err.message.includes("code 500")) {
           alert("500错误，请联系管理员");
         } else {
@@ -132,15 +134,18 @@ function loginActionFunc() {
   }
 }
 // import { SSJDialogParams } from "@/components/servicedialog/ssj-dialog-child.vue";
+
 //注册按钮-点击
 function registerActionFunc() {
   router.push("registerView");
   return;
 
   // eslint-disable-next-line no-unreachable
-  alert("注册模块，还没开始写");
+  // alert("注册模块，还没开始写");
 
-  getRegisterCode({ username: loginInput.nameValue })
+  // getRegisterCode({ username: loginInput.nameValue })
+  // eslint-disable-next-line no-unreachable
+  getRegisterCode({ username: "13396551780" })
     .then((res) => {
       console.log("请求结束了\\n");
       console.log(res);

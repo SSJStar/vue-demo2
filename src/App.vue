@@ -69,6 +69,7 @@ onMounted(() => {
   if (loginState === false) {
     console.log("请先登录---" + loginState);
     router.push("/loginView");
+    // router.push("/testSSJ");
   }
 });
 

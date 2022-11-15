@@ -77,3 +77,66 @@
 <!--  margin-right: 10px;-->
 <!--}-->
 <!--</style>-->
+
+<template>
+  <h1>hh</h1>
+</template>
+
+<script lang="ts" setup>
+import { onMounted } from "vue";
+
+onMounted(() => {
+  setTimeout(() => {
+    showFor(); //展示for循环
+
+    showArray(); //展示元组
+
+    let value = test("安徒生童话故事大全");
+    console.log(value);
+  }, 1);
+});
+
+// for循环
+function showFor() {
+  const nameArray = ["张三", "李四", "王五", "张龙", "赵虎"]; // 数据源
+
+  console.log("方式1打印-----常规for------->");
+  for (let i = 0; i < 5; i++) {
+    if (i < nameArray.length) {
+      console.log("value = " + nameArray[i]);
+    }
+  }
+
+  console.log("方式2打印-----array.forEach------->");
+  nameArray.forEach((value, index) => {
+    console.log("index = " + index + " value = " + value);
+    // console.log(`方式2打印index = ${index} value = ${value}`); //这样写也可以
+  });
+
+  console.log("方式3打印-----for...in------->");
+  for (let index in nameArray) {
+    console.log(`value = ${nameArray[index]}`);
+  }
+
+  console.log("方式4打印------for...of------>");
+  for (let value of nameArray) {
+    console.log(`value = ${value}`);
+  }
+}
+//元祖
+function showArray() {
+  let a1: [string, number];
+  let a2: [string, number] = ["哈哈", 1]; //正确
+  // let a3: [string, number] = ["哈哈", 1, "嘎嘎"]; //编译报错
+  a1 = ["哈哈", 1];
+  a1.push("嘿嘿"); //虽然越界，但是控制台不会报错，且自动把越界部分的数据，自动匹配已经设定好的类型（string或number）
+  a1.push("呼呼");
+  console.log("a1~" + a1);
+  console.log("~" + typeof "hh");
+}
+
+function test(bookName: any): string {
+  console.log("bookName is " + bookName);
+  return `《${bookName}》`;
+}
+</script>
