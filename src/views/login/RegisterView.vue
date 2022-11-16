@@ -285,25 +285,39 @@ const formJson = reactive({
 const formData = reactive({});
 const optionData = reactive({});
 const vFormRef = ref(null);
+//
+// function mobilePhone(val) {
+//   console.log("")
+// }
 
 // console.log(staticVars.LEFTMENU_FOLDONW);
 const submitForm = () => {
   // 第一步、获取注册验证码
-  getRegisterCode({ username: "13396551780" })
-    .then((res) => {
-      console.log("获取注册验证码请求结束了\\n");
-      console.log(res);
-    })
-    .catch((err) => {
-      // console.log("请求错误信息："+ err
-      if (err.message.includes("code 500")) {
-        alert("500错误，请联系管理员");
-      } else {
-        alert("其它错误：" + err.message);
-      }
-    });
-
+  vFormRef.value.getFormData().then((formData) => {
+    if (formData["input90602"] !== formData["input34654"]) {
+      alert("两次密码不一致");
+      return;
+    }
+    // console.log("手机号1：" + String(formData["input18546"]));
+    // alert("表单数据已经获取：" + JSON.stringify(formData));
+    // console.log("手机号：" + typeof formData["input18546"]);
+    // eslint-disable-next-line no-unreachable
+    getRegisterCode({ username: formData["input18546"] })
+      .then((res) => {
+        console.log("获取注册验证码请求结束了\\n");
+        console.log(res);
+      })
+      .catch((err) => {
+        // console.log("请求错误信息："+ err
+        if (err.message.includes("code 500")) {
+          alert("500错误，请联系管理员");
+        } else {
+          alert("其它错误：" + err.message);
+        }
+      });
+  });
   // 第二步、弹窗提示用户输入注册验证码
+  // eslint-disable-next-line no-unreachable
   let vars = {
     title: "验证码",
     subTitle: "请输入验证码",
@@ -315,7 +329,7 @@ const submitForm = () => {
       .then((formData) => {
         // Form Validation OK
         alert("表单数据已经获取：" + JSON.stringify(formData));
-
+        console.log("手机号：" + typeof formData["input18546"]);
         // console.log("手机号：" + JSON.stringify(formData["input18546"]));
         // console.log("密码：" + JSON.stringify(formData["input90602"]));
         // console.log("确认密码：" + JSON.stringify(formData["input34654"]));
@@ -328,8 +342,13 @@ const submitForm = () => {
         // });
         let params = {
           code: msg,
-          username: JSON.stringify(formData["input18546"]),
+          username: formData["input18546"],
+          pwd: formData["input90602"],
+          confirmPwd: formData["input34654"],
+          sex: formData["radio74205"],
+          birthday: formData["date54020"],
         };
+        console.log("打印注册参数:", params);
 
         doRegister(params)
           .then((res) => {
@@ -353,30 +372,5 @@ const submitForm = () => {
         ElMessage.error(error);
       });
   });
-  return;
-
-  // vFormRef.value
-  //   .getFormData()
-  //   .then((formData) => {
-  //     // Form Validation OK
-  //     alert("表单数据已经获取：" + JSON.stringify(formData));
-  //
-  //     // console.log("手机号：" + JSON.stringify(formData["input18546"]));
-  //     // console.log("密码：" + JSON.stringify(formData["input90602"]));
-  //     // console.log("确认密码：" + JSON.stringify(formData["input34654"]));
-  //     // validatorPhone(formData["input18546"]).then((value) => {
-  //     //   if (value) {
-  //     //     console.log("手机号校验通过   " + value);
-  //     //   } else {
-  //     //     console.log("手机号校验失败   " + value);
-  //     //   }
-  //     // });
-  //     let n = "Tom";
-  //     router.push(`/layoutView?title=${n}`);
-  //   })
-  //   .catch((error) => {
-  //     // Form Validation failed
-  //     ElMessage.error(error);
-  //   });
 };
 </script>
