@@ -29,6 +29,11 @@
         ></el-input>
       </div>
 
+      <!--忘记密码-->
+      <div class="forget-button-div">
+        <label @click="forgetPwdFunc">忘记密码</label>
+      </div>
+
       <!-- 图片验证码 -->
       <div class="el-input-div" style="margin-top: 20px">
         <!-- 输入框 -->
@@ -88,7 +93,13 @@ let identifyCode = ref("3212"); //当前随机数，初始值为3212，identifyC
 //获取上下文
 const proxy = getCurrentInstance().appContext;
 
-//登录按钮 - 点击
+/**
+ * 登录事件
+ *
+ * 作者: 小青龙
+ * 时间：2022/11/17 17:17:53
+ * @return {void}
+ */
 function loginActionFunc() {
   // proxy.config.globalProperties.$loginState = true; //修改全局变量-登录状态
   // let n = "汤姆森.金";
@@ -150,9 +161,26 @@ function loginActionFunc() {
     );
   }
 }
-// import { SSJDialogParams } from "@/components/servicedialog/ssj-dialog-child.vue";
 
-//注册按钮-点击
+/**
+ * 忘记密码事件
+ *
+ * 作者: 小青龙
+ * 时间：2022/11/17 17:17:20
+ * @return {void}
+ */
+function forgetPwdFunc() {
+  //跳转修改密码页面
+}
+
+/**
+ * 注册事件
+ *
+ * 作者: 小青龙
+ * 时间：2022/11/17 17:18:23
+ * @param 参数名 {参数类型}  描述信息
+ * @return {返回类型}
+ */
 function registerActionFunc() {
   router.push("registerView");
   return;
@@ -274,6 +302,19 @@ const makeCode = (o, l) => {
   width: 100%;
   padding: 0 20px 0 20px;
   box-sizing: border-box;
+}
+
+/*忘记密码*/
+.forget-button-div {
+  width: 100%;
+  height: 20px;
+  padding: 5px 20px 0 20px;
+  box-sizing: border-box;
+}
+.forget-button-div label {
+  float: right;
+  color: #dcdcdc; /*忘记密码 - 文字颜色*/
+  font-size: 14px;
 }
 
 /*el-input内部实际上也用到了input组件，所以这里的设置，对账号和密码这两个el-input也有效果*/
