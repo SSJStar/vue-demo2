@@ -347,13 +347,14 @@ const submitForm = () => {
               birthday: formData["date54020"],
             };
             console.log("打印注册参数:", params);
-            // 第三步、开始注册
+            // 第三步、开始注册 (code：0表示成功；-1表示失败)
             doRegister(params)
               .then((res) => {
                 console.log("注册请求结束了\\n");
                 console.log(res);
-                if (res["code"] && (res["code"] === 1 || res["code"] === "1")) {
+                if (res["code"] && (res["code"] === 0 || res["code"] === "0")) {
                   alert("注册成功");
+                  history.go(-1); //返回 =》登录页
                 } else {
                   alert("注册失败，" + res["desc"]);
                 }
@@ -371,7 +372,7 @@ const submitForm = () => {
             // router.push(`/layoutView?title=${n}`);
           });
           // eslint-disable-next-line no-dupe-else-if
-        } else if (res["code"] && res["code"] === -1) {
+        } else if (res["code"] && res["code"] === "-1") {
           alert("该手机号已经注册");
           console.log("该手机号已经注册！");
         } else {

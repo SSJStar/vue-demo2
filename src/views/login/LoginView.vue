@@ -113,8 +113,25 @@ function loginActionFunc() {
       .then((res) => {
         console.log("请求结束了\\n");
         console.log(res);
-        alert("登录成功，即将跳转首页");
-        router.push("/home");
+        if (res["code"] && res["code"] === "0") {
+          // 登录成功
+          alert("登录成功，即将跳转首页");
+          // json字符串 -> map
+          let userJson = JSON.parse(res["body"]);
+          // 取出用户名
+          let nickName = userJson["nickName"]; //"汤姆森.金";
+          console.log("打印nickName~~~");
+          console.log(userJson["nickName"]);
+          console.log("打印userId~~~");
+          console.log(userJson["userId"]);
+          if (nickName.length == 0) {
+            nickName = "未设置昵称";
+          }
+          router.push(`/layoutView?title=${nickName}`); //跳转布局页
+        } else if (res["code"] && res["code"] === "-1") {
+          // 登录失败
+          alert("登录失败：" + res["desc"]);
+        }
       })
       .catch((err) => {
         if (err.message.includes("code 500")) {
@@ -140,10 +157,6 @@ function registerActionFunc() {
   router.push("registerView");
   return;
 
-  // eslint-disable-next-line no-unreachable
-  // alert("注册模块，还没开始写");
-
-  // getRegisterCode({ username: loginInput.nameValue })
   // eslint-disable-next-line no-unreachable
   getRegisterCode({ username: "13396551780" })
     .then((res) => {
