@@ -80,8 +80,8 @@ import { getRegisterCode, loginWithUNameAndPwd } from "@/api/api";
 import { getCurrentInstance, ref } from "vue";
 import router from "../../router";
 import { ssjAlert } from "@/components/servicedialog/ssj-dialog";
-// import { aaa } from "@/components/servicedialog/ssj-dialog";
 import Tip from "@/components/servicedialog/ssj-dialog-child.vue";
+import UpdatePasswordView from "@/views/login/UpdatePasswordView.vue";
 
 // 定义一个对象，用来存放输入的账号、密码、验证码
 let loginInput = {
@@ -174,14 +174,17 @@ function loginActionFunc() {
  */
 const forgetPwdFunc = () => {
   let vars = {
-    component: Tip,
-    params: { title: "验证码已发送", subTitle: "请输入验证码" },
+    component: UpdatePasswordView,
+    params: { phone: loginInput.nameValue },
   };
-  // aaa();
   ssjAlert(vars).then((msg) => {
     if (msg.length == 0) {
       //点击了"取消"
       return;
+    } else {
+      console.log("msg----:");
+      console.log(msg);
+      console.log(`验证码----${msg.codeValue} 密码----${msg.pwdValue}`);
     }
   });
   // vFormRef.value.getFormData().then((formData) => {
