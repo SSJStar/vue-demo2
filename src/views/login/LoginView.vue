@@ -76,7 +76,12 @@
 <script setup>
 import { Avatar, Lock, Check } from "@element-plus/icons-vue";
 import imageValidate from "@/components/ssj-image-validate.vue"; //图形验证码组件
-import { getRegisterCode, loginWithUNameAndPwd } from "@/api/api";
+import {
+  doUpdatePwd,
+  getRegisterCode,
+  getUpdatePwdCode,
+  loginWithUNameAndPwd,
+} from "@/api/api";
 import { getCurrentInstance, ref } from "vue";
 import router from "../../router";
 import { ssjAlert } from "@/components/servicedialog/ssj-dialog";
@@ -177,103 +182,86 @@ const forgetPwdFunc = () => {
     component: UpdatePasswordView,
     params: { phone: loginInput.nameValue },
   };
-  ssjAlert(vars).then((msg) => {
-    if (msg.length == 0) {
-      //点击了"取消"
-      return;
-    } else {
-      console.log("msg----:");
-      console.log(msg);
-      console.log(`验证码----${msg.codeValue} 密码----${msg.pwdValue}`);
-    }
-  });
-  // vFormRef.value.getFormData().then((formData) => {
-  //   if (formData["input90602"] !== formData["input34654"]) {
-  //     alert("两次密码不一致");
+  // ssjAlert(vars).then((msg) => {
+  //   if (msg.length == 0) {
+  //     //点击了"取消"
   //     return;
+  //   } else {
+  //     console.log("msg----:");
+  //     console.log(msg);
+  //     console.log(`验证码----${msg.codeValue} 密码----${msg.pwdValue}`);
+  //     // let code = msg.codeValue;
+  //     // let pwd = msg.pwdValue;
   //   }
-  //   // 第一步、获取注册验证码
-  //   getRegisterCode({ username: formData["input18546"] })
-  //     .then((res) => {
-  //       console.log("获取注册验证码 - 请求结束了\\n");
-  //       console.log(res);
-  //       if (res["code"] && (res["code"] === 1 || res["code"] === "1")) {
-  //         // 第二步、弹窗提示用户输入注册验证码
-  //         let vars = {
-  //           title: "验证码已发送",
-  //           subTitle: "请输入验证码",
-  //         };
-  //         ssjTip(vars).then((msg) => {
-  //           if (msg.length == 0) {
-  //             //点击了"取消"
-  //             return;
-  //           }
-  //           console.log("ssjTip.then打印吧-----" + msg);
-  //           // Form Validation OK
-  //           alert("表单数据已经获取：" + JSON.stringify(formData));
-  //           console.log("手机号：" + typeof formData["input18546"]);
-  //           // console.log("手机号：" + JSON.stringify(formData["input18546"]));
-  //           // console.log("密码：" + JSON.stringify(formData["input90602"]));
-  //           // console.log("确认密码：" + JSON.stringify(formData["input34654"]));
-  //           // validatorPhone(formData["input18546"]).then((value) => {
-  //           //   if (value) {
-  //           //     console.log("手机号校验通过   " + value);
-  //           //   } else {
-  //           //     console.log("手机号校验失败   " + value);
-  //           //   }
-  //           // });
-  //           // params是post请求form表单参数
-  //           let params = {
-  //             code: msg,
-  //             username: formData["input18546"],
-  //             pwd: formData["input90602"],
-  //             confirmPwd: formData["input34654"],
-  //             sex: formData["radio74205"],
-  //             birthday: formData["date54020"],
-  //           };
-  //           console.log("打印注册参数:", params);
-  //           // 第三步、开始注册 (code：0表示成功；-1表示失败)
-  //           doRegister(params)
-  //             .then((res) => {
-  //               console.log("注册请求结束了\\n");
-  //               console.log(res);
-  //               if (res["code"] && (res["code"] === 0 || res["code"] === "0")) {
-  //                 alert("注册成功");
-  //                 history.go(-1); //返回 =》登录页
-  //               } else {
-  //                 alert("注册失败，" + res["desc"]);
-  //               }
-  //             })
-  //             .catch((err) => {
-  //               // console.log("请求错误信息："+ err
-  //               if (err.message.includes("code 500")) {
-  //                 alert("500错误，请联系管理员");
-  //               } else {
-  //                 alert("其它错误：" + err.message);
-  //               }
-  //             });
-  //
-  //           // let n = "Tom";
-  //           // router.push(`/layoutView?title=${n}`);
-  //         });
-  //         // eslint-disable-next-line no-dupe-else-if
-  //       } else if (res["code"] && res["code"] === "-1") {
-  //         alert("该手机号已经注册");
-  //         console.log("该手机号已经注册！");
-  //       } else {
-  //         alert("验证码发送失败");
-  //         console.log("验证码发送失败！");
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       // console.log("请求错误信息："+ err
-  //       if (err.message.includes("code 500")) {
-  //         alert("500错误，请联系管理员");
-  //       } else {
-  //         alert("其它错误：" + err.message);
-  //       }
-  //     });
   // });
+  console.log("获取 - 修改密码验证码 - 参数\\n");
+  console.log(loginInput.nameValue);
+  // 第一步、获取 - 修改密码的验证码
+  getUpdatePwdCode({ username: loginInput.nameValue })
+    .then((res) => {
+      console.log("获取 - 修改密码验证码 - 请求结束了\\n");
+      console.log(res);
+      if (res["code"] && (res["code"] === 1 || res["code"] === "1")) {
+        // 第二步、弹窗提示用户输入注册验证码
+        let vars = {
+          title: "验证码已发送",
+          subTitle: "请输入验证码",
+        };
+        ssjAlert(vars).then((msg) => {
+          if (msg.length == 0) {
+            //点击了"取消"
+            return;
+          }
+          let code = msg.codeValue; //验证码
+          let pwd = msg.pwdValue; //密码
+          // params是post请求form表单参数
+          let params = {
+            username: loginInput.nameValue,
+            code: code,
+            pwd: pwd,
+          };
+          console.log("打印注册参数:", params);
+          // 第三步、开始修改 (code：0表示成功；-1表示失败)
+          doUpdatePwd(params)
+            .then((res) => {
+              console.log("修改密码 - 请求结束了\\n");
+              console.log(res);
+              if (res["code"] && (res["code"] === 0 || res["code"] === "0")) {
+                alert("修改成功");
+                history.go(-1); //返回 =》登录页
+              } else {
+                alert("修改失败，" + res["desc"]);
+              }
+            })
+            .catch((err) => {
+              // console.log("请求错误信息："+ err
+              if (err.message.includes("code 500")) {
+                alert("500错误，请联系管理员");
+              } else {
+                alert("其它错误：" + err.message);
+              }
+            });
+
+          // let n = "Tom";
+          // router.push(`/layoutView?title=${n}`);
+        });
+        // eslint-disable-next-line no-dupe-else-if
+      } else if (res["code"] && res["code"] === "-1") {
+        alert("该手机号已经注册");
+        console.log("该手机号已经注册！");
+      } else {
+        alert("验证码发送失败");
+        console.log("验证码发送失败！");
+      }
+    })
+    .catch((err) => {
+      // console.log("请求错误信息："+ err
+      if (err.message.includes("code 500")) {
+        alert("500错误，请联系管理员");
+      } else {
+        alert("其它错误：" + err.message);
+      }
+    });
 };
 
 /**

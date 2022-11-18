@@ -29,3 +29,13 @@ export function doRegister(params) {
 export function loginWithUNameAndPwd(params) {
   return http.post("/loginPwd", params);
 }
+
+// 获取修改密码验证码
+export function getUpdatePwdCode(params) {
+  return http.get("/updatePwdCode", params);
+}
+
+// 获取修改密码验证码
+export function doUpdatePwd(params) {
+  return http.post("/updatePwdCode", params);
+}
