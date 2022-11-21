@@ -36,7 +36,7 @@ export type DialogType = {
 };
 // 页面中引入---函数式返回
 // export default function ssjTip(vars: any) {
-export function ssjTip(vars: any) {
+export function ssjTip(vars: DialogType) {
   return new Promise((resolve, reject) => {
     const tipInstance: VNode = createVNode(Tip, {
       close: (btnIndex: number, msg?: any) => {
@@ -52,6 +52,8 @@ export function ssjTip(vars: any) {
 
 // 页面中引入---函数式返回
 export function ssjAlert(vars: DialogType) {
+  console.log("请求参数：～～～");
+  console.log(vars.params);
   return new Promise((resolve, reject) => {
     const tipInstance: VNode = createVNode(vars.component, {
       close: (btnIndex: number, msg?: any) => {

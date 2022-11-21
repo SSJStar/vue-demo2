@@ -85,7 +85,6 @@ import {
 import { getCurrentInstance, ref } from "vue";
 import router from "../../router";
 import { ssjAlert } from "@/components/servicedialog/ssj-dialog";
-import Tip from "@/components/servicedialog/ssj-dialog-child.vue";
 import UpdatePasswordView from "@/views/login/UpdatePasswordView.vue";
 
 // 定义一个对象，用来存放输入的账号、密码、验证码
@@ -113,14 +112,6 @@ function loginActionFunc() {
   // let n = "汤姆森.金";
   // router.push(`/layoutView?title=${n}`); //跳转布局页
   // return;
-
-  // const  e = ref(uName)
-  // console.log("点击了按钮:"+e.value)
-  // //     let  uName = ref(null)
-  // console.log("账号:"+nameValue)
-  // console.log("密码:"+pwdValue.valueOf())
-
-  // eslint-disable-next-line no-unreachable
   console.log("输入的验证码:" + loginInput.codeInputValue);
 
   if (loginInput.codeInputValue.toString() === identifyCode.value.toString()) {
@@ -147,7 +138,10 @@ function loginActionFunc() {
             nickName = "未设置昵称";
           }
           router.push(`/layoutView?title=${nickName}`); //跳转布局页
-        } else if (res["code"] && res["code"] === "-1") {
+        } else if (
+          res["code"] &&
+          (res["code"] === "-1" || res["code"] === -1)
+        ) {
           // 登录失败
           alert("登录失败：" + res["desc"]);
         }
@@ -178,10 +172,10 @@ function loginActionFunc() {
  * @return {void}
  */
 const forgetPwdFunc = () => {
-  let vars = {
-    component: UpdatePasswordView,
-    params: { phone: loginInput.nameValue },
-  };
+  // let vars = {
+  //   component: UpdatePasswordView,
+  //   params: { phone: loginInput.nameValue },
+  // };
   // ssjAlert(vars).then((msg) => {
   //   if (msg.length == 0) {
   //     //点击了"取消"
@@ -194,6 +188,12 @@ const forgetPwdFunc = () => {
   //     // let pwd = msg.pwdValue;
   //   }
   // });
+
+  //非空判断
+  if (loginInput.nameValue.length === 0) {
+    alert("手机号不能为空");
+    return;
+  }
   console.log("获取 - 修改密码验证码 - 参数\\n");
   console.log(loginInput.nameValue);
   // 第一步、获取 - 修改密码的验证码
@@ -204,8 +204,11 @@ const forgetPwdFunc = () => {
       if (res["code"] && (res["code"] === 1 || res["code"] === "1")) {
         // 第二步、弹窗提示用户输入注册验证码
         let vars = {
-          title: "验证码已发送",
-          subTitle: "请输入验证码",
+          component: UpdatePasswordView, //弹窗 - 内容组件
+          params: {
+            title: "验证码已发送",
+            subTitle: "请输入验证码",
+          },
         };
         ssjAlert(vars).then((msg) => {
           if (msg.length == 0) {
@@ -220,7 +223,7 @@ const forgetPwdFunc = () => {
             code: code,
             pwd: pwd,
           };
-          console.log("打印注册参数:", params);
+          console.log("打印修改密码 - 请求参数:", params);
           // 第三步、开始修改 (code：0表示成功；-1表示失败)
           doUpdatePwd(params)
             .then((res) => {
@@ -228,7 +231,6 @@ const forgetPwdFunc = () => {
               console.log(res);
               if (res["code"] && (res["code"] === 0 || res["code"] === "0")) {
                 alert("修改成功");
-                history.go(-1); //返回 =》登录页
               } else {
                 alert("修改失败，" + res["desc"]);
               }
@@ -250,7 +252,7 @@ const forgetPwdFunc = () => {
         alert("该手机号已经注册");
         console.log("该手机号已经注册！");
       } else {
-        alert("验证码发送失败");
+        alert("验证码发送失败：" + res["desc"]);
         console.log("验证码发送失败！");
       }
     })

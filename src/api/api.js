@@ -37,5 +37,5 @@ export function getUpdatePwdCode(params) {
 
 // 获取修改密码验证码
 export function doUpdatePwd(params) {
-  return http.post("/updatePwdCode", params);
+  return http.post("/updatePwd", params);
 }

@@ -25,6 +25,8 @@ Axios.interceptors.request.use(
   (req) => {
     // 请求拦截处理
     console.log("这里是请求拦截器，我拦截了请求", req);
+    //设置请求头
+    req.headers["requestFrom"] = "vue";
     return req;
   },
   (err) => {

@@ -86,7 +86,16 @@ const props = defineProps<{
   params: any;
 }>();
 
+onMounted(() => {
+  // 此刻的props是没有值的，要在show()函数里进行操作
+  //清空数据，防止旧数据保留
+  formInput.codeValue = "";
+  formInput.pwdValue = "";
+  formInput.confirmPwdValue = "";
+});
+
 const show = () => {
+  console.log("show方法被执行～～～～～～");
   isShow.value = true;
   // titleValue.value = props.params["title"];
   // subTitleValue.value = props.params["subTitle"];
@@ -106,10 +115,6 @@ const hide = (btnIndex: number) => {
     props.close(btnIndex, "");
   } else if (btnIndex === 1) {
     props.close(btnIndex, formInput);
-    //清空数据,下次点弹窗旧数据旧不会保留
-    formInput.codeValue = "";
-    formInput.pwdValue = "";
-    formInput.confirmPwdValue = "";
   }
 };
 
@@ -140,10 +145,6 @@ const confirm = () => {
 defineExpose({
   hide,
   show,
-});
-
-onMounted(() => {
-  // 此刻的props是没有值的，要在show()函数里进行操作
 });
 </script>
 

@@ -15,10 +15,12 @@
 <script setup>
 import { ref, reactive } from "vue";
 // import { validatorPhone } from "@/statics/ssj-validate-rule"; //校验输入类型
-import { ElMessage } from "element-plus";
-import router from "@/router";
-import ssjTip from "@/components/servicedialog/ssj-dialog";
+// import { ElMessage } from "element-plus";
+// import router from "@/router";
+import { ssjAlert } from "@/components/servicedialog/ssj-dialog";
 import { doRegister, getRegisterCode } from "@/api/api";
+// import Tip from "@/views/login/UpdatePasswordView.vue";
+import Tip from "@/components/servicedialog/ssj-dialog-child.vue";
 // import { zhCn } from "element-plus/es/locale"; //引入element-plus中文样式(针对日历)
 // let localeValue = zhCn;
 // :locale="localeValue"
@@ -314,11 +316,18 @@ const submitForm = () => {
         console.log(res);
         if (res["code"] && (res["code"] === 1 || res["code"] === "1")) {
           // 第二步、弹窗提示用户输入注册验证码
+          // let vars = {
+          //   title: "验证码已发送",
+          //   subTitle: "请输入验证码",
+          // };
           let vars = {
-            title: "验证码已发送",
-            subTitle: "请输入验证码",
+            component: Tip, //弹窗 - 内容组件
+            params: {
+              title: "验证码已发送",
+              subTitle: "请输入验证码",
+            },
           };
-          ssjTip(vars).then((msg) => {
+          ssjAlert(vars).then((msg) => {
             if (msg.length == 0) {
               //点击了"取消"
               return;
