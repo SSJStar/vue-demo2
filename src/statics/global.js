@@ -6,9 +6,10 @@ const staticVars = {
   BASE_URL: "http://vue.wclimb.site/images/",
   SOCKET_DOMAIN: "https://xx.xx.com/filesystem/upload/",
   BACKGROUNBD_COLOR: "#545c64",
-  //定义方法
+
   run() {
     console.log("Are you ok? I'm fine,thank you.");
+    console.log("run打印this--", this);
   },
   readFile(file) {
     return new Promise((resolve) => {
@@ -22,3 +23,4 @@ const staticVars = {
 };
 
 export default staticVars;
+// export default staticVars;

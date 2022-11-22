@@ -13,8 +13,6 @@ const http = {
     return request(config);
   },
   post(url, params) {
-    // let ul = "/try/ajax/json_demo.json"
-    // ul = '/api' + ul
     const config = {
       method: "post",
       url: url,
@@ -23,10 +21,6 @@ const http = {
     // if (params) config.data = params;
     if (params) {
       config.data = params;
-      // console.log("post - params ");
-      // console.log(params);
-      // console.log("post - config ");
-      // console.log(config);
     }
     return request(config);
   },

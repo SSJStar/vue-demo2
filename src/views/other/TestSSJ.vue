@@ -1,99 +1,74 @@
-<!--&lt;!&ndash;333&ndash;&gt;-->
-<!--<template>-->
-<!--&lt;!&ndash;  <el-button text @click="dialogTableVisible = true"&ndash;&gt;-->
-<!--&lt;!&ndash;  >open a Table nested Dialog</el-button&ndash;&gt;-->
-<!--&lt;!&ndash;  >&ndash;&gt;-->
-
-<!--&lt;!&ndash;  <el-dialog v-model="dialogTableVisible" title="Shipping address">&ndash;&gt;-->
-<!--&lt;!&ndash;    <el-table :data="gridData">&ndash;&gt;-->
-<!--&lt;!&ndash;      <el-table-column property="date" label="Date" width="150" />&ndash;&gt;-->
-<!--&lt;!&ndash;      <el-table-column property="name" label="Name" width="200" />&ndash;&gt;-->
-<!--&lt;!&ndash;      <el-table-column property="address" label="Address" />&ndash;&gt;-->
-<!--&lt;!&ndash;    </el-table>&ndash;&gt;-->
-<!--&lt;!&ndash;  </el-dialog>&ndash;&gt;-->
-
-<!--  &lt;!&ndash; Form &ndash;&gt;-->
-<!--  <el-button text @click="dialogFormVisible = true">-->
-<!--    open a Form nested Dialog-->
-<!--  </el-button>-->
-
-<!--  <el-dialog v-model="dialogFormVisible" title="Shipping address">-->
-<!--    <el-form :model="form">-->
-<!--      <el-form-item label="Promotion name" :label-width="formLabelWidth">-->
-<!--        <el-input v-model="form.name" autocomplete="off" />-->
-<!--      </el-form-item>-->
-<!--&lt;!&ndash;      <el-form-item label="Zones" :label-width="formLabelWidth">&ndash;&gt;-->
-<!--&lt;!&ndash;        <el-select v-model="form.region" placeholder="Please select a zone">&ndash;&gt;-->
-<!--&lt;!&ndash;          <el-option label="Zone No.1" value="shanghai" />&ndash;&gt;-->
-<!--&lt;!&ndash;          <el-option label="Zone No.2" value="beijing" />&ndash;&gt;-->
-<!--&lt;!&ndash;        </el-select>&ndash;&gt;-->
-<!--&lt;!&ndash;      </el-form-item>&ndash;&gt;-->
-<!--    </el-form>-->
-<!--    <template #footer>-->
-<!--      <span class="dialog-footer">-->
-<!--        <el-button @click="dialogFormVisible = false">Cancel</el-button>-->
-<!--&lt;!&ndash;        <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button> &ndash;&gt;-->
-<!--        <el-button type="primary" @click="emitA">Confirm</el-button>-->
-
-<!--      </span>-->
-<!--    </template>-->
-<!--  </el-dialog>-->
-<!--</template>-->
-
-<!--<script lang="ts" setup>-->
-<!--import {reactive, ref, watch} from 'vue'-->
-
-<!--const dialogTableVisible = ref(false)-->
-<!--const dialogFormVisible = ref(true)-->
-<!--const formLabelWidth = '140px'-->
-
-<!--const emitA = () => {-->
-<!--  console.log('emitA&#45;&#45;'+ form.name + "   "+form.region)-->
-<!--}-->
-
-<!--const form = reactive({-->
-<!--  name: '',-->
-<!--  region: '',-->
-<!--  date1: '',-->
-<!--  date2: '',-->
-<!--  delivery: false,-->
-<!--  type: [],-->
-<!--  resource: '',-->
-<!--  desc: '',-->
-<!--})-->
-
-<!--</script>-->
-<!--<style scoped>-->
-<!--.el-button&#45;&#45;text {-->
-<!--  margin-right: 15px;-->
-<!--}-->
-<!--.el-select {-->
-<!--  width: 300px;-->
-<!--}-->
-<!--.el-input {-->
-<!--  width: 300px;-->
-<!--}-->
-<!--.dialog-footer button:first-child {-->
-<!--  margin-right: 10px;-->
-<!--}-->
-<!--</style>-->
-
 <template>
-  <h1>hh</h1>
+  <h1 onclick="gogo">hh</h1>
 </template>
 
 <script lang="ts" setup>
 import { onMounted } from "vue";
+// import testVars from "@/statics/Test.js";
+// import { eat, ssjTest } from "@/statics/Test.js";
+
+/** 枚举类型 */
+enum ErrorCode {
+  Up = 0,
+  Down = 2,
+  Left = 3,
+  Right = 4,
+}
+
+//TODO: 有哪几种函数
+
+//有名函数，又名"普通函数"
+function nameFunc(): boolean {
+  console.log("有名函数打印～～");
+  return true;
+}
+
+//匿名函数
+const anonymousFunc = function (p1: string, p2: number) {
+  console.log("匿名函数～～");
+};
+
+//箭头函数
+const arrowFunc = () => {
+  console.log("箭头函数～～");
+};
+
+//TODO：关于函数返回值
+
+//无返回值
+const noBack = (bookName: any) => {
+  console.log("没有返回值的函数");
+};
+
+//有返回值
+function havaBack(bookName: any): string {
+  console.log("有返回值的函数");
+  return `《${bookName}》`;
+}
+
+//TODO: 关于函数的参数
+
+//可选参数 ｜ 默认参数 ｜ 必须按参数
+//
+// name是必须按参数，age是可选参数，可选参数必须在"必须参数"和"默认参数"之后，
+// 比如function myFun(age?: number, sex = "男", name: string) {} 这样就是错误的
+function myFun(name: string, sex = "男", age?: number) {
+  console.log("name~~" + name);
+  console.log("sex~~" + sex);
+  console.log("age~~" + age);
+}
+
+//剩余参数
+// 剩余参数...parameters只能是最后一个参数
+function shengyu(name: string, ...parameters: any[]) {
+  parameters.forEach((item, index) => {
+    console.log(`forEach item--${item}  index--${index}`);
+  });
+}
 
 onMounted(() => {
-  setTimeout(() => {
-    showFor(); //展示for循环
-
-    showArray(); //展示元组
-
-    let value = test("安徒生童话故事大全");
-    console.log(value);
-  }, 1);
+  console.log("mount打印～～");
+  shengyu("赵飞", "张三", "李四", "王五");
 });
 
 // for循环
@@ -133,6 +108,15 @@ function showArray() {
   a1.push("呼呼");
   console.log("a1~" + a1);
   console.log("~" + typeof "hh");
+}
+
+const test2 = (bookName: any) => {
+  console.log("bookName参数是：" + bookName);
+};
+
+function test3(bookName: any): string {
+  console.log("bookName is " + bookName);
+  return `《${bookName}》`;
 }
 
 function test(bookName: any): string {
