@@ -15,6 +15,47 @@ enum ErrorCode {
   Right = 4,
 }
 
+/** 定义ZoonA类 */
+class ZoonA {
+  name: string;
+  age: number;
+
+  // 构造函数
+  constructor(name: string, age: number) {
+    this.name = "";
+    this.age = 0;
+  }
+  // 其它函数
+  menthodFather() {
+    console.log("这是父类方法");
+  }
+}
+/** 定义ZoonB类，继承ZoonA类 */
+class ZoonB extends ZoonA {
+  nickName: string;
+  runSpeed: number;
+
+  // 构造函数
+  constructor(name: string, age: number, nickName: string, runSpeed: number) {
+    super(name, age);
+    this.nickName = nickName;
+    this.runSpeed = runSpeed;
+  }
+
+  // 其它函数
+  mySingSong = (name: string) => {
+    console.log(`The song is ${name}`);
+  };
+}
+
+onMounted(() => {
+  let zoonB = new ZoonB("李太白", 30, "李白", 100);
+  zoonB.menthodFather();
+  zoonB.mySingSong("《青花瓷》");
+});
+
+//TODO: ---------- 函数相关 ----------
+
 //TODO: 有哪几种函数
 
 //有名函数，又名"普通函数"
@@ -66,10 +107,7 @@ function shengyu(name: string, ...parameters: any[]) {
   });
 }
 
-onMounted(() => {
-  console.log("mount打印～～");
-  shengyu("赵飞", "张三", "李四", "王五");
-});
+//TODO: ---------- 数组相关 ----------
 
 // for循环
 function showFor() {
@@ -98,6 +136,7 @@ function showFor() {
     console.log(`value = ${value}`);
   }
 }
+
 //元祖
 function showArray() {
   let a1: [string, number];
@@ -108,19 +147,5 @@ function showArray() {
   a1.push("呼呼");
   console.log("a1~" + a1);
   console.log("~" + typeof "hh");
-}
-
-const test2 = (bookName: any) => {
-  console.log("bookName参数是：" + bookName);
-};
-
-function test3(bookName: any): string {
-  console.log("bookName is " + bookName);
-  return `《${bookName}》`;
-}
-
-function test(bookName: any): string {
-  console.log("bookName is " + bookName);
-  return `《${bookName}》`;
 }
 </script>
