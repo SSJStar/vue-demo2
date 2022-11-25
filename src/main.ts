@@ -26,6 +26,16 @@ app.use(ElementPlus); //全局注册ElementPlus
 
 app.config.globalProperties.$loginState = false; //挂载全局静态变量对象$staticVars
 
+import instruction from "@/utils/instruction/customInstruction.js";
+app.use(instruction);
+
+// app.directive("myFocus", {
+//   mounted(el) {
+//     console.log("~~~~~~333~~~");
+//     el.focus();
+//   },
+// });
+
 app.use(router).mount("#app"); //mount方法返回的是根组件，而并且应用实例
 
 // app.use(showSSJDialog)

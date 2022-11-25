@@ -1,5 +1,11 @@
 <template>
-  <h1 onclick="gogo">hh</h1>
+  <h1 v-bg="'pink'">hh</h1>
+  <button @click="clickMe" v-preventReClick="3000">hh22</button>
+  <br />
+  {{ fo.grade > 90 ? "优秀" : "一般" }}
+  <br />
+  {{ show() }}
+  <button @click="changeDatav">点击改变数据</button>
 </template>
 
 <script lang="ts" setup>
@@ -7,6 +13,21 @@ import { onMounted } from "vue";
 // import testVars from "@/statics/Test.js";
 // import { eat, ssjTest } from "@/statics/Test.js";
 
+let fo = {
+  fname: "",
+  sex: "男",
+  grade: 80,
+};
+const show = () => {
+  if (fo.grade > 90) {
+    return "优秀";
+  } else {
+    return "一般";
+  }
+};
+const changeData = () => {
+  fo.grade = 95;
+};
 /** 枚举类型 */
 enum ErrorCode {
   Up = 0,
@@ -47,6 +68,11 @@ class ZoonB extends ZoonA {
     console.log(`The song is ${name}`);
   };
 }
+
+let cnt = 0;
+const clickMe = () => {
+  console.log("clickMe~" + cnt++);
+};
 
 onMounted(() => {
   let zoonB = new ZoonB("李太白", 30, "李白", 100);
