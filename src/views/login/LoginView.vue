@@ -6,7 +6,7 @@
 
     <div id="login-module-div">
       <h1 class="lmd-title">欢迎登录</h1>
-      <h2 class="lmd-subtitle">现在使用的框架是:vue3 + element-plus</h2>
+      <h2 class="lmd-subtitle">框架:vue3 + typeScript</h2>
 
       <!-- 账号 -->
       <div class="el-input-div" style="margin-top: 40px">
@@ -101,6 +101,25 @@ let identifyCode = ref("3212"); //当前随机数，初始值为3212，identifyC
 const proxy = getCurrentInstance().appContext;
 
 /**
+ * 非空校验，如果发现为空会alert弹窗提示
+ *
+ * 作者: 小青龙
+ * 时间：2022/11/30 10:43:28
+ * @param value {string}  需要校验的值
+ * @param errMessageWake {string}  如果内容为空，需要提醒的文字
+ * @return {boolean}
+ */
+const emptyValidate = (value: string, errMessageWake: string): boolean => {
+  if (value.length == 0) {
+    console.log(errMessageWake);
+    alert(errMessageWake);
+    return false;
+  } else {
+    return true;
+  }
+};
+
+/**
  * 登录事件
  *
  * 作者: 小青龙
@@ -113,54 +132,64 @@ function loginActionFunc() {
   // router.push(`/layoutView?title=${n}`); //跳转布局页
   // return;
   console.log("输入的验证码:" + loginInput.codeInputValue);
+  // 非空校验
 
-  if (loginInput.codeInputValue.toString() === identifyCode.value.toString()) {
-    //开始请求
-    loginWithUNameAndPwd({
-      username: loginInput.nameValue,
-      password: loginInput.pwdValue,
-    })
-      .then((res) => {
-        console.log("请求结束了\\n");
-        console.log(res);
-        if (res["code"] && res["code"] === "0") {
-          // 登录成功
-          alert("登录成功，即将跳转首页");
-          // json字符串 -> map
-          let userJson = JSON.parse(res["body"]);
-          // 取出用户名
-          let nickName = userJson["nickName"]; //"汤姆森.金";
-          console.log("打印nickName~~~");
-          console.log(userJson["nickName"]);
-          console.log("打印userId~~~");
-          console.log(userJson["userId"]);
-          if (nickName.length == 0) {
-            nickName = "未设置昵称";
-          }
-          router.push(`/layoutView?title=${nickName}`); //跳转布局页
-        } else if (
-          res["code"] &&
-          (res["code"] === "-1" || res["code"] === -1)
-        ) {
-          // 登录失败
-          alert("登录失败：" + res["desc"]);
-        }
+  // if (loginInput.nameValue.length == 0)
+  const emptyValidateRes =
+    emptyValidate(loginInput.nameValue, "用户名不能为空") &&
+    emptyValidate(loginInput.pwdValue, "密码不能为空");
+  if (emptyValidateRes) {
+    // 验证码校验
+    if (
+      loginInput.codeInputValue.toString() === identifyCode.value.toString()
+    ) {
+      //开始请求
+      loginWithUNameAndPwd({
+        username: loginInput.nameValue,
+        password: loginInput.pwdValue,
       })
-      .catch((err) => {
-        if (err.message.includes("code 500")) {
-          alert("500错误，请联系管理员");
-        } else {
-          alert("其它错误：" + err.message);
-        }
-      });
-    // eslint-disable-next-line no-unreachable
-  } else {
-    alert(
-      "您输入的验证码不对：" +
-        loginInput.codeInputValue +
-        "\t 应该是:" +
-        identifyCode.value
-    );
+        .then((res) => {
+          console.log("请求结束了\\n");
+          console.log(res);
+          if (res["code"] && res["code"] === "0") {
+            // 登录成功
+            alert("登录成功，即将跳转首页");
+            // json字符串 -> map
+            let userJson = JSON.parse(res["body"]);
+            // 取出用户名
+            let nickName = userJson["nickName"]; //"汤姆森.金";
+            console.log("打印nickName~~~");
+            console.log(userJson["nickName"]);
+            console.log("打印userId~~~");
+            console.log(userJson["userId"]);
+            if (nickName.length == 0) {
+              nickName = "未设置昵称";
+            }
+            router.push(`/layoutView?title=${nickName}`); //跳转布局页
+          } else if (
+            res["code"] &&
+            (res["code"] === "-1" || res["code"] === -1)
+          ) {
+            // 登录失败
+            alert("登录失败：" + res["desc"]);
+          }
+        })
+        .catch((err) => {
+          if (err.message.includes("code 500")) {
+            alert("500错误，请联系管理员");
+          } else {
+            alert("其它错误：" + err.message);
+          }
+        });
+      // eslint-disable-next-line no-unreachable
+    } else {
+      alert(
+        "您输入的验证码不对：" +
+          loginInput.codeInputValue +
+          "\t 应该是:" +
+          identifyCode.value
+      );
+    }
   }
 }
 
@@ -367,7 +396,7 @@ const makeCode = (o, l) => {
   );
 
   width: 35%;
-  height: 540px;
+  height: 580px;
   position: absolute;
   top: 50%;
   left: 50%;
