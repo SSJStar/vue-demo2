@@ -1,11 +1,5 @@
 <template>
   <div class="XlsxViewClass">
-    <!--  读取xlsx文件内容，并以列表展示 -->
-    <!--    <h1 v-show="isShowRead" @click="readFileFunc">-->
-    <!--      读取文件《高中二班女子800米成绩统计.xlsx》-->
-    <!--    </h1>-->
-    <!--    <br />-->
-
     <!--  导入文件  -->
     <el-upload
       class="upload-demo"
@@ -141,7 +135,7 @@ import TableView from "@/views/List/TableView.vue";
 import { ref } from "vue";
 import BTChatView from "@/views/BTChatView.vue";
 import SSJPieView from "@/components/chats/SSJPieView.vue";
-import ssjTip from "@/components/servicedialog/ssj-dialog";
+import ssjDialog from "@/components/servicedialog/ssj-dialog";
 
 const XLSX = require("xlsx");
 
@@ -346,23 +340,6 @@ function readFileFunc() {
 const { open } = useDialog();
 //将contentValue这个json变量，写入xlsx文件
 const ExportXlsx = () => {
-  // //创建一个input框
-  // const input = document.createElement("input");
-  // //将指定的DOM节点添加到body的末尾
-  // document.body.appendChild(input);
-  // //设置input框的value值为直播地址
-  // input.setAttribute("value", "哈哈哈");
-  // input.setAttribute(
-  //   "style",
-  //   "width:200px; height:50px; background-color: red"
-  // );
-  //
-  // const showtip =
-  //   getCurrentInstance()?.appContext.config.globalProperties.$loadingTip;
-  // showtip().show();
-  // return;
-
-  // eslint-disable-next-line no-unreachable
   if (contentValue === null) {
     alert("文件内容为空，导出失败");
     return;
@@ -391,7 +368,7 @@ const ExportXlsx = () => {
     title: "温馨提示",
     subTitle: "请输入新的昵称",
   };
-  ssjTip(vars).then((msg) => {
+  ssjDialog.ssjTip(vars).then((msg) => {
     console.log("ssjTip.then打印吧-----" + msg);
   });
 };

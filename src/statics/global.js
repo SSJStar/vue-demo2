@@ -30,4 +30,3 @@ const globalObj = {
   token: "",
 };
 export default { staticVars, globalObj };
-// export default staticVars;

@@ -314,22 +314,6 @@ const forgetPwdFunc = () => {
  */
 function registerActionFunc() {
   router.push("registerView");
-  return;
-
-  // eslint-disable-next-line no-unreachable
-  getRegisterCode({ username: "13396551780" })
-    .then((res) => {
-      console.log("请求结束了\\n");
-      console.log(res);
-    })
-    .catch((err) => {
-      // console.log("请求错误信息："+ err
-      if (err.message.includes("code 500")) {
-        alert("500错误，请联系管理员");
-      } else {
-        alert("其它错误：" + err.message);
-      }
-    });
 }
 
 //定义在方法外面，才有效
