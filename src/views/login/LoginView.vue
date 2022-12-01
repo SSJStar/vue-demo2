@@ -86,6 +86,7 @@ import { getCurrentInstance, ref } from "vue";
 import router from "../../router";
 import { ssjAlert } from "@/components/servicedialog/ssj-dialog";
 import UpdatePasswordView from "@/views/login/UpdatePasswordView.vue";
+import sessionStorageManager from "@/statics/sessionStorageManager.js";
 
 // 定义一个对象，用来存放输入的账号、密码、验证码
 let loginInput = {
@@ -109,7 +110,7 @@ const proxy = getCurrentInstance().appContext;
  * @param errMessageWake {string}  如果内容为空，需要提醒的文字
  * @return {boolean}
  */
-const emptyValidate = (value: string, errMessageWake: string): boolean => {
+const emptyValidate = (value, errMessageWake) => {
   if (value.length == 0) {
     console.log(errMessageWake);
     alert(errMessageWake);
@@ -127,22 +128,26 @@ const emptyValidate = (value: string, errMessageWake: string): boolean => {
  * @return {void}
  */
 function loginActionFunc() {
-  // proxy.config.globalProperties.$loginState = true; //修改全局变量-登录状态
+  // console.log("写入~~~");
+  // sessionStorageManager.setLoginState(true);
+  // setTimeout(() => {
+  //   console.log(`读取~~~ ${sessionStorageManager.getLoginState()}`);
+  // }, 1000);
+  // return;
   // let n = "汤姆森.金";
   // router.push(`/layoutView?title=${n}`); //跳转布局页
   // return;
-  console.log("输入的验证码:" + loginInput.codeInputValue);
-  // 非空校验
 
-  // if (loginInput.nameValue.length == 0)
+  // console.log("输入的验证码:" + loginInput.codeInputValue);
+
+  // 非空校验
+  // eslint-disable-next-line no-unreachable
   const emptyValidateRes =
-    emptyValidate(loginInput.nameValue, "用户名不能为空") &&
-    emptyValidate(loginInput.pwdValue, "密码不能为空");
+    emptyValidate(loginInput.nameValue.toString(), "用户名不能为空") &&
+    emptyValidate(loginInput.pwdValue.toString(), "密码不能为空");
   if (emptyValidateRes) {
     // 验证码校验
-    if (
-      loginInput.codeInputValue.toString() === identifyCode.value.toString()
-    ) {
+    if (loginInput.codeInputValue === identifyCode.value) {
       //开始请求
       loginWithUNameAndPwd({
         username: loginInput.nameValue,
@@ -165,6 +170,10 @@ function loginActionFunc() {
             if (nickName.length == 0) {
               nickName = "未设置昵称";
             }
+            // 缓存数据
+            sessionStorageManager.setLoginState(true);
+            sessionStorageManager.setUserName(loginInput.nameValue);
+            sessionStorageManager.setToken(userJson["accessToken"].toString());
             router.push(`/layoutView?title=${nickName}`); //跳转布局页
           } else if (
             res["code"] &&
@@ -330,7 +339,7 @@ const currentInstance = getCurrentInstance();
 function changeHandle(e) {
   // input事件
   // console.log("changeHandle1:"+ document.getElementById('inputUname').value)
-  console.log("changeHandle->nameValue:" + loginInput.nameValue + "\t e:" + e);
+  // console.log("changeHandle->nameValue:" + loginInput.nameValue + "\t e:" + e);
   currentInstance.proxy.$forceUpdate();
   loginInput.nameValue = e;
 }
@@ -346,9 +355,9 @@ function pwdChangeHandle(e) {
 
 //验证码-内容变化
 function codeChangeHandle(e) {
-  console.log(
-    "codeChangeHandle->pwdValue:" + loginInput.codeInputValue + "\t e:" + e
-  );
+  // console.log(
+  //   "codeChangeHandle->pwdValue:" + loginInput.codeInputValue + "\t e:" + e
+  // );
   currentInstance.proxy.$forceUpdate();
   loginInput.codeInputValue = e;
 }

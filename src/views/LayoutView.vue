@@ -49,10 +49,10 @@ export default {
 
 <script setup>
 import { getCurrentInstance, onMounted, provide, ref } from "vue";
-import staticVars from "@/statics/global";
+import global from "@/statics/global";
 import router from "@/router";
 import { useRoute } from "vue-router/dist/vue-router"; //弹窗
-
+import sessionStorageManager from "@/statics/sessionStorageManager.js"; //数据缓存管理
 let dialogRef = ref(null);
 let headNavRef = ref(null);
 
@@ -80,10 +80,11 @@ function showSSJDialog(title, subTitle) {
  * @return {void}
  */
 function showLoginVuew(showLogin) {
-  console.log("showLoginVuew~~" + showLogin);
-  router.go(-1); //后退、并刷新
-  router.go(0); //刷新
-  router.go(1); //前进
+  console.log("收到HeadNav通知，即将退出登录" + showLogin);
+  sessionStorageManager.signOut(); //清理缓存数据
+  // router.go(-1); //后退、并刷新
+  // router.go(0); //刷新
+  // router.go(1); //前进
   router.back(); //后退、不刷新
 }
 
@@ -94,14 +95,14 @@ provide("showSSJDialogKEY", showSSJDialog);
 provide("showLoginVueKEY", showLoginVuew);
 
 //菜单-展开宽度
-let foldOnW = staticVars.LEFTMENU_FOLDONW;
+let foldOnW = global.staticVars.LEFTMENU_FOLDONW;
 
 //菜单-收起宽度
-let foldOffW = staticVars.LEFTMENU_FOLDOFFW;
+let foldOffW = global.staticVars.LEFTMENU_FOLDOFFW;
 
 //我晕，样式里不能直接使用右边的，所以这里定义一个常量接收，然后再使用
-// 更诡异的是，直接使用staticVars.BACKGROUNBD_COLOR虽然会报错误，但是浏览器可以正常运行。。。
-const leftMenuBgColor = staticVars.BACKGROUNBD_COLOR;
+// 更诡异的是，直接使用global.staticVars.BACKGROUNBD_COLOR虽然会报错误，但是浏览器可以正常运行。。。
+const leftMenuBgColor = global.staticVars.BACKGROUNBD_COLOR;
 
 //响应式变量，要这么写
 let leftMenuWidth = ref("200px");
@@ -286,11 +287,12 @@ const listJson = {
 
 //页面加载完执行
 onMounted(() => {
-  const loginState =
-    getCurrentInstance().appContext.config.globalProperties.$loginState;
+  // const loginState =
+  //   getCurrentInstance().appContext.config.globalProperties.$global.globalObj
+  //     .loginState;
 
   const route = useRoute();
-  console.log("请先登录---" + loginState);
+  console.log("登录状态---" + sessionStorageManager.getLoginState());
   console.log("title22222:", route.query["title"]);
   // headNavRef.value.changeLoginName("王小健");
   headNavRef.value.changeLoginName(route.query["title"]);

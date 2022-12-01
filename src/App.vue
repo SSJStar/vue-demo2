@@ -16,7 +16,8 @@ export default {
 
 <script setup>
 import { getCurrentInstance, onMounted, provide, ref } from "vue";
-// import staticVars from "@/statics/global";
+import sessionStorageManager from "@/statics/sessionStorageManager.js";
+
 // import router from "@/router";
 // import Login from "@/views/login/LoginView";
 // import SSJDialog from "@/components/SSJDialog"; //弹窗
@@ -39,34 +40,16 @@ function showSSJDialog(title, subTitle) {
   dialogRef.value.show(true, title, subTitle);
 }
 
-/**
- *  声明provide方法
- *
- * 作者: 小青龙
- * 时间：2022/10/26 11:08:30
- * @param showLogin {boolean}  是否展示登录页面，true：展示
- * @return {void}
- */
-function showLoginVuew(showLogin) {
-  console.log("showLoginVuew~~" + showLogin);
-  loginPageHidden.value = !showLogin;
-}
-
 //用provide声明这个方法，子组件可以通过inject来访问，哪怕这两个组件直接隔了n层，有点像iOS里的「通知」
 provide("showSSJDialogKEY", showSSJDialog);
-
-//用provide声明这个方法，子组件可以通过inject来访问，哪怕这两个组件直接隔了n层，有点像iOS里的「通知」
-provide("showLoginVueKEY", showLoginVuew);
-
-let loginPageHidden = ref(true); //默认隐藏
 
 //页面加载完执行
 onMounted(() => {
   const loginState =
-    getCurrentInstance().appContext.config.globalProperties.$loginState;
-  loginPageHidden.value = loginState;
+    getCurrentInstance().appContext.config.globalProperties.$global.globalObj
+      .loginState;
 
-  if (loginState === false) {
+  if (sessionStorageManager.getLoginState() === false) {
     console.log("请先登录---" + loginState);
     router.push("/loginView");
     // router.push("/testSSJ");

@@ -1,3 +1,4 @@
+// 静态变量
 const staticVars = {
   //定义属性
   title: "this is global title",
@@ -22,5 +23,11 @@ const staticVars = {
   },
 };
 
-export default staticVars;
+//全局变量
+const globalObj = {
+  loginState: false,
+  userName: "",
+  token: "",
+};
+export default { staticVars, globalObj };
 // export default staticVars;
