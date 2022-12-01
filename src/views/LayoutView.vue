@@ -297,7 +297,16 @@ function showLoginVuew(showLogin) {
   // router.go(1); //前进
   // router.back(); //后退、不刷新
   // emit("sinOutLogin");
-  router.push({ path: "/loginView", replace: true });
+
+  // console.log(`length is ` + router.getRoutes().length);
+  // router.go(-(router.getRoutes().length - 1));
+  // router.matcher = createm
+  // router.push({ path: "/loginView", replace: true });
+  history.go(-(history.length - 1)); //清空历史记录
+  setTimeout(() => {
+    // 这里要加延迟，否则replace无效
+    router.replace("/loginView"); //跳转登录页
+  }, 100);
 }
 
 /**

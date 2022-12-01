@@ -174,7 +174,7 @@ function loginActionFunc() {
             sessionStorageManager.setLoginState(true);
             sessionStorageManager.setUserName(loginInput.nameValue);
             sessionStorageManager.setToken(userJson["accessToken"].toString());
-            router.push(`/layoutView?title=${nickName}`); //跳转布局页
+            router.replace(`/layoutView?title=${nickName}`); //跳转布局页，使用replace之后，点击返回按钮不会返回登录页
           } else if (
             res["code"] &&
             (res["code"] === "-1" || res["code"] === -1)
