@@ -56,38 +56,6 @@ import sessionStorageManager from "@/statics/sessionStorageManager.js"; //数据
 let dialogRef = ref(null);
 let headNavRef = ref(null);
 
-/**
- *  声明provide方法
- *
- * 作者: 小青龙
- * 时间：2022/10/26 11:09:30
- * @param title {string}  主标题
- * @param subTitle {string}  副标题
- * @return {void}
- */
-function showSSJDialog(title, subTitle) {
-  console.log("showSSJDialog~~");
-  // dialogRef.value.show(true, "正在导出文件", "文件名")
-  dialogRef.value.show(true, title, subTitle);
-}
-
-/**
- *  声明provide方法
- *
- * 作者: 小青龙
- * 时间：2022/10/26 11:08:30
- * @param showLogin {boolean}  是否展示登录页面，true：展示
- * @return {void}
- */
-function showLoginVuew(showLogin) {
-  console.log("收到HeadNav通知，即将退出登录" + showLogin);
-  sessionStorageManager.signOut(); //清理缓存数据
-  // router.go(-1); //后退、并刷新
-  // router.go(0); //刷新
-  // router.go(1); //前进
-  router.back(); //后退、不刷新
-}
-
 //用provide声明这个方法，子组件可以通过inject来访问，哪怕这两个组件直接隔了n层，有点像iOS里的「通知」
 provide("showSSJDialogKEY", showSSJDialog);
 
@@ -299,6 +267,40 @@ onMounted(() => {
 });
 
 /**
+ *  声明provide方法
+ *
+ * 作者: 小青龙
+ * 时间：2022/10/26 11:09:30
+ * @param title {string}  主标题
+ * @param subTitle {string}  副标题
+ * @return {void}
+ */
+function showSSJDialog(title, subTitle) {
+  console.log("showSSJDialog~~");
+  // dialogRef.value.show(true, "正在导出文件", "文件名")
+  dialogRef.value.show(true, title, subTitle);
+}
+
+/**
+ *  声明provide方法
+ *
+ * 作者: 小青龙
+ * 时间：2022/10/26 11:08:30
+ * @param showLogin {boolean}  是否展示登录页面，true：展示
+ * @return {void}
+ */
+function showLoginVuew(showLogin) {
+  console.log("收到HeadNav通知，即将退出登录" + showLogin);
+  sessionStorageManager.signOut(); //清理缓存数据
+  // router.go(-1); //后退、并刷新
+  // router.go(0); //刷新
+  // router.go(1); //前进
+  // router.back(); //后退、不刷新
+  // emit("sinOutLogin");
+  router.push({ path: "/loginView", replace: true });
+}
+
+/**
  * LeftMenu组件折叠动作，会给当前组件发送change指令，最终会调用这个方法
  *
  * 作者: 小青龙
@@ -377,6 +379,7 @@ function childSelectAction(index) {
 // }
 
 // let pageContext = getCurrentInstance().appContext;
+// defineExpose({show});
 </script>
 
 <style>

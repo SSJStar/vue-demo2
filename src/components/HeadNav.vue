@@ -36,9 +36,7 @@
 </template>
 
 <script setup>
-// import { useRoute } from "vue-router";
 import { inject, onMounted, ref } from "vue";
-import router from "@/router";
 
 // let navHidden = ref(true); //控制返回控件的显示或隐藏（根据navArray个数）
 // let navArray = ref([]);
@@ -76,7 +74,6 @@ let mouthInBox = false; //当前光标是否在列表上
 //   }
 // );
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function,no-redeclare
 onMounted(function () {
   console.log("onMounted被执行");
   // 加延迟是因为，直接获取到的userInfoDiv宽度不对，可能是组件没有加载完全
@@ -102,7 +99,7 @@ onMounted(function () {
       //     boxRight.value
       // );
     }
-    //到此，已经利用了，可以把它先隐藏起来
+    //到此，已经利用完了，可以把它先隐藏起来
     boxShow.value = false;
   }, 0);
 }, undefined);
