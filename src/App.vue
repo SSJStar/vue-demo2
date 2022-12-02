@@ -45,12 +45,12 @@ provide("showSSJDialogKEY", showSSJDialog);
 
 //页面加载完执行
 onMounted(() => {
-  const loginState =
-    getCurrentInstance().appContext.config.globalProperties.$global.globalObj
-      .loginState;
+  // const loginState =
+  //   getCurrentInstance().appContext.config.globalProperties.$global.globalObj
+  //     .loginState;
 
   if (sessionStorageManager.getLoginState() === false) {
-    console.log("请先登录---" + loginState);
+    console.log("请先登录---");
     router.push("/loginView");
     // router.push("/testSSJ");
   }

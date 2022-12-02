@@ -1,8 +1,8 @@
 <template>
   <div class="head-nav">
-    <label style="position: absolute; text-align: center">
-      <h1>Demo组件学习</h1>
-    </label>
+    <div style="position: absolute; text-align: center">
+      <label>Demo组件学习</label>
+    </div>
 
     <!--  头像 + 昵称  -->
     <div class="userInfoDiv" id="head-div" ref="userInfoDivRef">
@@ -37,7 +37,7 @@
 
 <script setup>
 import { inject, onMounted, ref } from "vue";
-
+import { staticVars } from "@/statics/global.js";
 // let navHidden = ref(true); //控制返回控件的显示或隐藏（根据navArray个数）
 // let navArray = ref([]);
 let nickNameVal = ref(""); //昵称
@@ -47,6 +47,12 @@ let userInfoDivRef = ref(null);
 let boxRight = ref("20px"); //box组件距离右边的值
 let mouthInBox = false; //当前光标是否在列表上
 // const route = useRoute();
+
+// 设置导航栏高度、背景颜色、字体大小、字体颜色
+let navgation_height = staticVars.NAVGATION_HEIGHT;
+let navgation_bgColor = staticVars.NAVGATION_BGCOLOR;
+let navgation_fontSize = staticVars.NAVGATION_TITLEFONTSIZE;
+let navgation_titleColor = staticVars.NAVGATION_TITLECOLOR;
 
 // // 监听函数监听路径的变化
 // watch(
@@ -158,12 +164,18 @@ defineExpose({ changeLoginName });
 <style>
 .head-nav {
   width: 100%;
-  height: 51px;
+  height: v-bind(navgation_height);
   overflow: hidden;
-  background-color: cadetblue;
+  background-color: v-bind(navgation_bgColor); /** cadetblue */
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* 标题 */
+.head-nav label {
+  font-size: v-bind(navgation_fontSize);
+  color: v-bind(navgation_titleColor);
 }
 
 /* 头像 + 昵称 */
@@ -185,7 +197,7 @@ defineExpose({ changeLoginName });
   height: 30px;
 }
 
-/* 列表 */
+/* 点击头像-列表 */
 .boxDiv {
   display: flex;
   top: 51px;

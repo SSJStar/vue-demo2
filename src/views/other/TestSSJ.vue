@@ -29,12 +29,12 @@ const changeData = () => {
   fo.grade = 95;
 };
 /** 枚举类型 */
-enum ErrorCode {
-  Up = 0,
-  Down = 2,
-  Left = 3,
-  Right = 4,
-}
+// enum ErrorCode {
+//   Up = 0,
+//   Down = 2,
+//   Left = 3,
+//   Right = 4,
+// }
 
 /** 定义ZoonA类 */
 class ZoonA {
@@ -43,8 +43,8 @@ class ZoonA {
 
   // 构造函数
   constructor(name: string, age: number) {
-    this.name = "";
-    this.age = 0;
+    this.name = name;
+    this.age = age;
   }
   // 其它函数
   menthodFather() {
@@ -83,7 +83,6 @@ onMounted(() => {
 //TODO: ---------- 函数相关 ----------
 
 //TODO: 有哪几种函数
-
 //有名函数，又名"普通函数"
 function nameFunc(): boolean {
   console.log("有名函数打印～～");

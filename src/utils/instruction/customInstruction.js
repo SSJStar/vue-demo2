@@ -19,6 +19,7 @@
 // };
 // export default registerDirective;
 
+/** 自定义指令 */
 export default {
   install(Vue) {
     // 防止重复点击
@@ -40,7 +41,8 @@ export default {
     //背景颜色
     Vue.directive("bg", {
       //修改css样式通常在beforeMount
-      beforeMount(el, binding, vnode) {
+      // beforeMount(el, binding, vnode) {
+      beforeMount(el, binding) {
         el.style.background = binding.value;
       },
     });

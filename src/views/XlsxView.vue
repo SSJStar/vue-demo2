@@ -128,8 +128,7 @@
 import axios from "axios";
 import transformSheets from "@/views/read_xlsx.js";
 // 弹窗需要用到useDialog跟自定义组件ChildDemo
-import ChildDemo from "@/components/servicedialog/demo/ChildDemo.vue";
-import { useDialog } from "@/components/servicedialog/demo/useDialog";
+// import { useDialog } from "@/components/servicedialog/demo/useDialog";
 // 表格组件
 import TableView from "@/views/List/TableView.vue";
 import { ref } from "vue";
@@ -189,8 +188,8 @@ const yChartType_options: any = [
 // const btChatRef = ref(null);
 const btChatRef = ref<InstanceType<typeof BTChatView>>(); //标记图表组件
 
-const xFieldNamesValue = ref<string>("");
-const yFieldNamesValue = ref<string[]>([]); //y坐标要展示的字段名，比如 ["身高","体重"]
+// const xFieldNamesValue = ref<string>("");
+// const yFieldNamesValue = ref<string[]>([]); //y坐标要展示的字段名，比如 ["身高","体重"]
 //由于设置了:auto-upload="false"，导致beforeUpload和uploadChange方法冲突，所以beforeUpload不会被执行
 // function beforeUpload(file: any) {
 //   const isText = "application/vnd.ms-excel";
@@ -323,27 +322,28 @@ function afterGetContent(data: any) {
  * 时间：2022/11/01 16:06:15
  * @return {void}
  */
-function readFileFunc() {
-  let url = "/高中二班女子800米成绩统计.xlsx"; //放在public目录下可以直接访问
-  //读取二进制excel文件,参考https://github.com/SheetJS/js-xlsx#utility-functions
-  axios
-    .get(url, { responseType: "arraybuffer" })
-    .then((res) => {
-      let data = new Uint8Array(res.data);
-      afterGetContent(data);
-    })
-    .catch((err) => {
-      console.log("err is:" + err);
-    });
-}
+// function readFileFunc() {
+//   let url = "/高中二班女子800米成绩统计.xlsx"; //放在public目录下可以直接访问
+//   //读取二进制excel文件,参考https://github.com/SheetJS/js-xlsx#utility-functions
+//   axios
+//     .get(url, { responseType: "arraybuffer" })
+//     .then((res) => {
+//       let data = new Uint8Array(res.data);
+//       afterGetContent(data);
+//     })
+//     .catch((err) => {
+//       console.log("err is:" + err);
+//     });
+// }
 
-const { open } = useDialog();
+// const { open } = useDialog();
 //将contentValue这个json变量，写入xlsx文件
 const ExportXlsx = () => {
   if (contentValue === null) {
     alert("文件内容为空，导出失败");
     return;
   }
+  // import ChildDemo from "@/components/servicedialog/demo/ChildDemo.vue";
   // open({
   //   component: ChildDemo,
   //   options: { title: "正在导出" },
@@ -421,10 +421,6 @@ function valiadataBeforeShowUIFromData() {
   }
   return true;
 }
-
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
 </script>
 
 <style>
@@ -535,6 +531,10 @@ const handleSelect = (key: string, keyPath: string[]) => {
 
 <!--const activeIndex = ref("1");-->
 <!--const activeIndex2 = ref("1");-->
+<!--const handleSelect = (key: string, keyPath: string[]) => {-->
+<!--console.log(key, keyPath);-->
+<!--};-->
+
 <!--const handleSelect = (key: string, keyPath: string[]) => {-->
 <!--console.log(key, keyPath);-->
 <!--};-->

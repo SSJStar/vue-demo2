@@ -48,8 +48,8 @@ export default {
 </script>
 
 <script setup>
-import { getCurrentInstance, onMounted, provide, ref } from "vue";
-import global from "@/statics/global";
+import { onMounted, provide, ref } from "vue";
+import { staticVars } from "@/statics/global";
 import router from "@/router";
 import { useRoute } from "vue-router/dist/vue-router"; //弹窗
 import sessionStorageManager from "@/statics/sessionStorageManager.js"; //数据缓存管理
@@ -63,14 +63,14 @@ provide("showSSJDialogKEY", showSSJDialog);
 provide("showLoginVueKEY", showLoginVuew);
 
 //菜单-展开宽度
-let foldOnW = global.staticVars.LEFTMENU_FOLDONW;
+let foldOnW = staticVars.LEFTMENU_FOLDONW;
 
 //菜单-收起宽度
-let foldOffW = global.staticVars.LEFTMENU_FOLDOFFW;
+let foldOffW = staticVars.LEFTMENU_FOLDOFFW;
 
 //我晕，样式里不能直接使用右边的，所以这里定义一个常量接收，然后再使用
-// 更诡异的是，直接使用global.staticVars.BACKGROUNBD_COLOR虽然会报错误，但是浏览器可以正常运行。。。
-const leftMenuBgColor = global.staticVars.BACKGROUNBD_COLOR;
+// 更诡异的是，直接使用staticVars.BACKGROUNBD_COLOR虽然会报错误，但是浏览器可以正常运行。。。
+const leftMenuBgColor = staticVars.BACKGROUNBD_COLOR;
 
 //响应式变量，要这么写
 let leftMenuWidth = ref("200px");
@@ -418,7 +418,7 @@ function childSelectAction(index) {
 
 .router-div {
   flex: 1;
-  height: calc(100% - 71px);
+  /*height: calc(100% - 51px);*/
   background-color: white;
 }
 

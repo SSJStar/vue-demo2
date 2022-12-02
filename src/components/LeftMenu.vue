@@ -341,7 +341,7 @@
     <el-aside :width="isCollapse ? props.foldOff_width : props.foldOn_width">
       <el-menu
         active-text-color="#ffd04b"
-        v-bind:background-color="global.staticVars.BACKGROUNBD_COLOR"
+        v-bind:background-color="staticVars.BACKGROUNBD_COLOR"
         class="el-menu-vertical-demo"
         default-active="4"
         text-color="#fff"
@@ -439,10 +439,10 @@
 <script setup>
 import { Location, Setting } from "@element-plus/icons-vue"; //引入图标
 import { onMounted, ref } from "vue";
-import global from "@/statics/global";
+import { staticVars } from "@/statics/global.js";
 onMounted(() => {
   console.log("333333:");
-  console.log(global.staticVars.BACKGROUNBD_COLOR);
+  console.log(staticVars.BACKGROUNBD_COLOR);
 });
 // 折叠还是展开
 let isCollapse = ref(false);
@@ -453,7 +453,7 @@ let displayValue = ref("block");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 let foldImageName = ref(require("/src/assets/menu/icon-menu-shouqi.png"));
 
-let foldIconColor = global.staticVars.BACKGROUNBD_COLOR;
+let foldIconColor = staticVars.BACKGROUNBD_COLOR;
 
 /* 在 <script setup> 中必须使用 defineProps 和 defineEmits API 来声明 props 和 emits ，
  * 它们具备完整的类型推断并且在 <script setup> 中是直接可用的：
@@ -476,7 +476,7 @@ const props = defineProps({
  * @return void
  */
 function goUrl(parent_id, title, index) {
-  alert(title + "，id是" + index);
+  // alert(title + "，id是" + index);
   //通知父视图，点击了哪个index
   emit("selected", index);
 }

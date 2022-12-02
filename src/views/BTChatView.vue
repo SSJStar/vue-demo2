@@ -147,7 +147,8 @@ function showUIFromData(data) {
             );
           }
           // yFieldNames数据模版 ["身高","体重"]
-          props.yFieldNames.forEach((yFieldName, indexa) => {
+          // props.yFieldNames.forEach((yFieldName, indexa) => {
+          props.yFieldNames.forEach((yFieldName) => {
             // indexa表示yFieldNames的index索引下标，yFieldName表示indexa下标对应的value值
             if (item.toString() === yFieldName) {
               //找到了，此时的index就是我们要传给X轴的那一列数据的列.序号

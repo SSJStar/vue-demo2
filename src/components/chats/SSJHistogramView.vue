@@ -5,7 +5,7 @@ import SSJEchatConfig from "@/components/chats/ssjChatClass"; //引入自定义�
 
 let myChart = null; //图表对象
 
-const emit = defineEmits(["click"]); //声明接口
+// const emit = defineEmits(["click"]); //声明接口
 
 const props = defineProps({
   //暴露属性
@@ -107,13 +107,13 @@ function initChart() {
   myChart = echarts.init(document.getElementById("main"));
 
   // 指定图表的配置项和数据,并显示图表。
-  let conf = new SSJEchatConfig(
-    props.config.title,
-    props.config.xAxis_data,
-    props.config.yAxis_datas,
-    props.config.legend_datas,
-    props.config.unit_datas
-  );
+  // let conf = new SSJEchatConfig(
+  //   props.config.title,
+  //   props.config.xAxis_data,
+  //   props.config.yAxis_datas,
+  //   props.config.legend_datas,
+  //   props.config.unit_datas
+  // );
   // updateChat(conf);
 
   // 点击事件

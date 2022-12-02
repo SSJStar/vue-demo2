@@ -9,7 +9,7 @@ import VForm3 from "vform3-builds"; //引入VForm3库
 import "vform3-builds/dist/designer.style.css"; //引入VForm3样式
 import ElementPlus from "element-plus"; //引入element-plus
 import "element-plus/dist/index.css"; //引入element-plus样式
-import globalObj from "@/statics/global.js";
+// import globalObj from "@/statics/global.js";
 // import zhCn from "element-plus/es/locale"; //引入element-plus中文样式(针对日历)
 
 const app = createApp(App); //创建应用实例
@@ -25,7 +25,7 @@ app.use(ElementPlus); //全局注册ElementPlus
 //     console.log("This is hello method")
 // }
 
-app.config.globalProperties.$global = globalObj; //挂载全局静态变量对象$staticVars
+// app.config.globalProperties.$global = globalObj; //挂载全局静态变量对象$staticVars
 
 import instruction from "@/utils/instruction/customInstruction.js";
 app.use(instruction);

@@ -1,5 +1,4 @@
 import {
-  App,
   Component,
   ComputedOptions,
   createVNode,
@@ -8,7 +7,7 @@ import {
   VNode,
 } from "vue";
 import Tip from "./ssj-dialog-child.vue";
-import component from "*.vue";
+// import component from "*.vue";
 import { DialogProps } from "element-plus";
 /*
 对象：Vue会自动注入到install 方法

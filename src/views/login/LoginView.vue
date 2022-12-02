@@ -76,12 +76,7 @@
 <script setup>
 import { Avatar, Lock, Check } from "@element-plus/icons-vue";
 import imageValidate from "@/components/ssj-image-validate.vue"; //图形验证码组件
-import {
-  doUpdatePwd,
-  getRegisterCode,
-  getUpdatePwdCode,
-  loginWithUNameAndPwd,
-} from "@/api/api";
+import { doUpdatePwd, getUpdatePwdCode, loginWithUNameAndPwd } from "@/api/api";
 import { getCurrentInstance, ref } from "vue";
 import router from "../../router";
 import { ssjAlert } from "@/components/servicedialog/ssj-dialog";
@@ -98,8 +93,6 @@ let loginInput = {
 // 图形验证码
 let identifyCodes = "1234567890abcdefghijklmnopqrstuvwxyz"; //随机数-数据源
 let identifyCode = ref("3212"); //当前随机数，初始值为3212，identifyCode用于存放随机数值
-//获取上下文
-const proxy = getCurrentInstance().appContext;
 
 /**
  * 非空校验，如果发现为空会alert弹窗提示

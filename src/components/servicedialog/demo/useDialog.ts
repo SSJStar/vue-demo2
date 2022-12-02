@@ -8,7 +8,7 @@ import {
   onUnmounted,
 } from "vue";
 
-import { ElDialog } from "element-plus";
+// import { ElDialog } from "element-plus";
 import ToastView from "@/components/servicedialog/ssj-dialog-child.vue";
 
 import type { App, Component, ComputedOptions, MethodOptions } from "vue";

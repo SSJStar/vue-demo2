@@ -74,10 +74,6 @@ let formInput = {
   pwdValue: "",
   confirmPwdValue: "",
 };
-
-const form = reactive({
-  inputValue: "",
-});
 // let titleValue = ref("");
 // let subTitleValue = ref("");
 
