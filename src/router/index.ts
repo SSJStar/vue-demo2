@@ -76,6 +76,16 @@ const routes = [
     name: "pie",
     component: () => import("@/components/chats/SSJPieView.vue"),
   },
+  {
+    path: "/lay",
+    name: "lay",
+    component: () => import("@/views/other/SSJLayoutTestViews.vue"),
+  },
+  {
+    path: "/wy",
+    name: "wy",
+    component: () => import("@/views/wymusic/WYMusicView.vue"),
+  },
 ];
 
 const router = createRouter({

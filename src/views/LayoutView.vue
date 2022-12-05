@@ -1,29 +1,27 @@
 <template>
-  <div id="app">
-    <div id="mainModule">
-      <!--  HeadNav（导航组件）  -->
-      <div>
-        <HeadNav ref="headNavRef"></HeadNav>
+  <div id="mainModule">
+    <!--  HeadNav（导航组件）  -->
+    <div>
+      <HeadNav ref="headNavRef"></HeadNav>
+    </div>
+
+    <div style="width: 100%; height: 100%; display: flex">
+      <!--  折叠菜单  -->
+      <div class="left">
+        <!--          <LeftMenu style="background-color: gray;  width: 200px;  height: 100%;" @change="childFoldAction" ref="leftmenuRef"></LeftMenu>-->
+        <LeftMenu
+          @change="childFoldAction"
+          @selected="childSelectAction"
+          ref="leftmenuRef"
+          v-bind:foldOn_width="foldOnW"
+          v-bind:foldOff_width="foldOffW"
+          v-bind:listJson="listJson"
+        ></LeftMenu>
       </div>
 
-      <div style="width: 100%; height: 100%; display: flex">
-        <!--  折叠菜单  -->
-        <div class="left">
-          <!--          <LeftMenu style="background-color: gray;  width: 200px;  height: 100%;" @change="childFoldAction" ref="leftmenuRef"></LeftMenu>-->
-          <LeftMenu
-            @change="childFoldAction"
-            @selected="childSelectAction"
-            ref="leftmenuRef"
-            v-bind:foldOn_width="foldOnW"
-            v-bind:foldOff_width="foldOffW"
-            v-bind:listJson="listJson"
-          ></LeftMenu>
-        </div>
-
-        <!--  router-view（路由）  -->
-        <div class="router-div">
-          <router-view />
-        </div>
+      <!--  router-view（路由）  -->
+      <div class="router-div">
+        <router-view />
       </div>
     </div>
   </div>
