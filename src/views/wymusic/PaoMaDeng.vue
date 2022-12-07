@@ -4,13 +4,13 @@
     style="width: 100%; padding-left: 10%; padding-right: 10%; display: flex"
   >
     <!--  跑马灯  -->
-    <el-carousel style="width: calc(80% - 100px)">
+    <el-carousel style="width: calc(80% - 250px)">
       <el-carousel-item v-for="item in 4" :key="item">
         <img :src="loadCarouselUrl(item)" alt="" />
       </el-carousel-item>
     </el-carousel>
     <!-- 下载 -->
-    <div style="width: 100px; background-color: #42b983"></div>
+    <div style="width: 250px; background-color: #42b983"></div>
   </div>
 </template>
 

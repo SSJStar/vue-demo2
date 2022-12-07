@@ -4,26 +4,35 @@
     <WYHeadNav></WYHeadNav>
     <!-- div1 跑马灯 -->
     <PaoMaDeng style="width: 100%"></PaoMaDeng>
-    <div
-      style="
-        display: flex;
-        padding-left: 10%;
-        padding-rigt: 10%;
-        width: 100%;
-        height: auto;
-      "
-    >
-      <div class="Row">
-        <!-- 左边这一列 -->
-        <div class="ColumnLeft">
-          <!-- 热门推荐 -->
-          <HotRecommend></HotRecommend>
-        </div>
-        <!-- 右边这一列 -->
-        <div class="ColumnRight"></div>
+    <!--    <div-->
+    <!--      style="-->
+    <!--        display: flex;-->
+    <!--        padding-left: 10%;-->
+    <!--        padding-rigt: 10%;-->
+    <!--        width: 100%;-->
+    <!--        height: auto;-->
+    <!--      "-->
+    <!--    >-->
+    <div class="Row">
+      <!-- 左边这一列 -->
+      <div class="ColumnLeft">
+        <!-- 热门推荐 -->
+        <HotRecommend></HotRecommend>
+        <!-- 新碟 -->
+        <NewDisc></NewDisc>
+        <!-- 热门推荐 -->
+        <SongList></SongList>
+      </div>
+      <!-- 右边这一列 -->
+      <div class="ColumnRight">
+        <!-- 入驻歌手 -->
+        <SettledSinger></SettledSinger>
+        <!-- 热门主播 -->
+        <hotAnchor></hotAnchor>
       </div>
     </div>
   </div>
+  <!--  </div>-->
 </template>
 
 <script setup lang="ts">
@@ -31,6 +40,10 @@ import WYHeadNav from "@/views/wymusic/WYHeadNav.vue";
 import { onMounted } from "vue";
 import HotRecommend from "@/views/wymusic/HotRecommend.vue";
 import PaoMaDeng from "@/views/wymusic/PaoMaDeng.vue";
+import SettledSinger from "@/views/wymusic/SettledSinger.vue";
+import NewDisc from "@/views/wymusic/NewDisc.vue";
+import SongList from "@/views/wymusic/SongList.vue";
+import HotAnchor from "@/views/wymusic/HotAnchor.vue";
 onMounted(() => {
   console.log("wy music");
 });
@@ -39,18 +52,25 @@ onMounted(() => {
 <style scoped>
 .Row {
   display: flex;
-  flex-direction: row;
+  background-color: #ffffff;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 .Row .ColumnLeft {
-  width: calc(100% - 250px);
+  width: calc(100% - 250px - 20px);
   display: flex;
   flex-direction: column;
-  background-color: #42b983;
+  background-color: darkgrey;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .Row .ColumnRight {
   display: flex;
   flex-direction: column;
-  width: 250px;
+  width: calc(250px - 20px);
+  padding-left: 10px;
+  padding-right: 10px;
   background-color: indianred;
 }
 .WYMusicView {
