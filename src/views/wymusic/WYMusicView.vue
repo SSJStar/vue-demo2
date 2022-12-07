@@ -1,34 +1,26 @@
 <template>
   <div class="WYMusicView">
+    <!-- 导航 -->
     <WYHeadNav></WYHeadNav>
-    <!-- 跑马灯 -->
-    <el-carousel height="150px" style="padding-left: 10%; padding-right: 10%">
-      <el-carousel-item v-for="item in 4" :key="item">
-        <h3 class="small justify-center" text="2xl">{{ item }}</h3>
-      </el-carousel-item>
-    </el-carousel>
-
-    <!-- 音乐列表 -->
-    <div style="padding-left: 10%; padding-right: 10%">
-      <div style="display: flow">
-        <div class="leftView" style="float: left">
-          <img
-            src="@/assets/wymusic/wymusic_remen.png"
-            style="width: 20px; height: 20px"
-            alt=""
-          />
-          <span style="width: 10px" />
-          <label style="font-size: 18px">热门推荐</label>
+    <!-- div1 跑马灯 -->
+    <PaoMaDeng style="width: 100%"></PaoMaDeng>
+    <div
+      style="
+        display: flex;
+        padding-left: 10%;
+        padding-rigt: 10%;
+        width: 100%;
+        height: auto;
+      "
+    >
+      <div class="Row">
+        <!-- 左边这一列 -->
+        <div class="ColumnLeft">
+          <!-- 热门推荐 -->
+          <HotRecommend></HotRecommend>
         </div>
-        <!-- 更多 -->
-        <div class="rightView" style="float: right">
-          更多
-          <img
-            src="@/assets/wymusic/wymusic_more.png"
-            style="width: 12px; height: 12px"
-            alt=""
-          />
-        </div>
+        <!-- 右边这一列 -->
+        <div class="ColumnRight"></div>
       </div>
     </div>
   </div>
@@ -37,12 +29,30 @@
 <script setup lang="ts">
 import WYHeadNav from "@/views/wymusic/WYHeadNav.vue";
 import { onMounted } from "vue";
+import HotRecommend from "@/views/wymusic/HotRecommend.vue";
+import PaoMaDeng from "@/views/wymusic/PaoMaDeng.vue";
 onMounted(() => {
   console.log("wy music");
 });
 </script>
 
 <style scoped>
+.Row {
+  display: flex;
+  flex-direction: row;
+}
+.Row .ColumnLeft {
+  width: calc(100% - 250px);
+  display: flex;
+  flex-direction: column;
+  background-color: #42b983;
+}
+.Row .ColumnRight {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  background-color: indianred;
+}
 .WYMusicView {
   width: 100%;
   height: 100%;
@@ -51,10 +61,10 @@ onMounted(() => {
   background-color: #999999;
 }
 
-.el-dropdown-link {
-  cursor: pointer;
-  color: var(--el-color-primary);
-  display: flex;
-  align-items: center;
-}
+/*.el-dropdown-link {*/
+/*  cursor: pointer;*/
+/*  color: var(--el-color-primary);*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*}*/
 </style>
