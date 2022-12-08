@@ -48,7 +48,8 @@ onMounted(() => {
   // const loginState =
   //   getCurrentInstance().appContext.config.globalProperties.$global.globalObj
   //     .loginState;
-
+  return;
+  // eslint-disable-next-line no-unreachable
   if (sessionStorageManager.getLoginState() === false) {
     console.log("请先登录---");
     router.push("/loginView");

@@ -61,7 +61,7 @@ onMounted(() => {
   width: calc(100% - 250px - 20px);
   display: flex;
   flex-direction: column;
-  background-color: darkgrey;
+  /*background-color: darkgrey;*/
   padding-left: 10px;
   padding-right: 10px;
 }

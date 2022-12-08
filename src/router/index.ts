@@ -5,7 +5,8 @@ const routes = [
   {
     path: "/",
     name: "homeView",
-    component: () => import("../views/MenuBodyView.vue"),
+    // component: () => import("../views/MenuBodyView.vue"),
+    component: () => import("@/views/wymusic/WYMusicView.vue"),
   },
   //注册
   {
