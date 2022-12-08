@@ -4,15 +4,6 @@
     <WYHeadNav></WYHeadNav>
     <!-- div1 跑马灯 -->
     <PaoMaDeng style="width: 100%"></PaoMaDeng>
-    <!--    <div-->
-    <!--      style="-->
-    <!--        display: flex;-->
-    <!--        padding-left: 10%;-->
-    <!--        padding-rigt: 10%;-->
-    <!--        width: 100%;-->
-    <!--        height: auto;-->
-    <!--      "-->
-    <!--    >-->
     <div class="Row">
       <!-- 左边这一列 -->
       <div class="ColumnLeft">
@@ -53,9 +44,9 @@ onMounted(() => {
 .Row {
   display: flex;
   background-color: #ffffff;
-  width: 80%;
-  margin-left: 10%;
-  margin-right: 10%;
+  width: 980px;
+  margin-left: calc((100% - 980px) * 0.5);
+  margin-right: calc((100% - 980px) * 0.5);
 }
 .Row .ColumnLeft {
   width: calc(100% - 250px - 20px);
@@ -76,7 +67,8 @@ onMounted(() => {
 .WYMusicView {
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow-y: scroll; /** 超出屏幕，可以滚动 */
+  /*overflow: hidden;*/
   position: absolute; /*不加这句，高度不能铺满*/
   background-color: #999999;
 }
