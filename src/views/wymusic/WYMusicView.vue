@@ -9,9 +9,9 @@
       <div class="ColumnLeft">
         <!-- 热门推荐 -->
         <HotRecommend></HotRecommend>
-        <!-- 新碟 -->
+        <!-- 新碟上架 -->
         <NewDisc></NewDisc>
-        <!-- 热门推荐 -->
+        <!-- 榜单 -->
         <SongList></SongList>
       </div>
       <!-- 右边这一列 -->
@@ -49,20 +49,22 @@ onMounted(() => {
   margin-right: calc((100% - 980px) * 0.5);
 }
 .Row .ColumnLeft {
-  width: calc(100% - 250px - 20px);
+  width: calc(100% - 250px - 40px);
   display: flex;
   flex-direction: column;
   /*background-color: darkgrey;*/
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 0 20px 0 20px;
+  border-left: 1px solid #ccc;
 }
 .Row .ColumnRight {
   display: flex;
   flex-direction: column;
-  width: calc(250px - 20px);
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: indianred;
+  width: calc(250px - 20px * 2);
+  padding-left: 20px;
+  padding-right: 20px;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  /*background-color: indianred;*/
 }
 .WYMusicView {
   width: 100%;
@@ -70,7 +72,7 @@ onMounted(() => {
   overflow-y: scroll; /** 超出屏幕，可以滚动 */
   /*overflow: hidden;*/
   position: absolute; /*不加这句，高度不能铺满*/
-  background-color: #999999;
+  background-color: #f5f5f5;
 }
 
 /*.el-dropdown-link {*/
