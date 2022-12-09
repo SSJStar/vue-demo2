@@ -38,10 +38,9 @@
         :style="{ 'margin-left': marLeft(item.index) }"
         v-for="item in rows"
         :key="item.index"
-        ref="itemDivRef"
       >
-        <img style="width: 100%; height: 140px" :src="item.src" />
-        <label>{{ item.title }}</label>
+        <img class="itemDiv-img" :src="item.src" />
+        <label class="itemDiv-label">{{ item.title }}</label>
       </div>
     </div>
   </div>
@@ -116,21 +115,26 @@ const menuList = [
 
 const rowItemsCount = menuList[0].length;
 
-const itemDivRef = ref(null);
+// const itemDivRef = ref(null);
 
+/**
+ * 获取item 的 margin-left间距
+ *
+ * 作者: 小青龙
+ * 时间：2022/12/09 11:04:19
+ * @param index {number}  item的下标索引
+ * @return {string}
+ */
 function marLeft(index) {
-  //calc((100% - 140px * 4) / (4 - 1))
-  // console.log("55555");
-  // console.log(`~~~~~~${itemDivRef.value.offsetWidth}`);
-  // return (itemDivRef.value.offsetWidth - 140 * 4) / (4 - 1) + "px";
-  return 10 + "px";
+  return index === 0 || index % 4 === 0 ? 0 : 50 + "px";
 }
 
 onMounted(() => {
-  setTimeout(() => {
-    console.log("6666");
-    console.log(`~~~~~~${itemDivRef.value.offsetWidth}`);
-  }, 100);
+  // setTimeout(() => {
+  //   console.log("6666");
+  //   console.log(itemDivRef.value[0]);
+  //   console.log(`~~~~~~${itemDivRef.value[0].offsetWidth}`);
+  // }, 100);
 });
 
 // 菜单 - 点击
@@ -150,23 +154,6 @@ function otherMenueClick(indexParamter) {
 </script>
 
 <style scoped>
-.listDiv {
-  background-color: bisque;
-  display: flex;
-  flex-direction: row;
-}
-.itemDiv {
-  /* 140表示图片宽度，rowItemsCount表示一行最多显示几个
-    100% - 上面两个，得到间距之和
-    以上计算结果，再除以 （rowItemsCount - 1）就是margin-left间距
-   */
-  width: 140px;
-}
-.listDiv label {
-  font-size: 12px;
-  background-color: #42b983;
-  margin: 5px;
-}
 .HotRecommend {
   display: flex;
   flex-direction: column;
@@ -176,12 +163,10 @@ function otherMenueClick(indexParamter) {
   float: left;
   /*background-color: #42b983;*/
 }
-
 .rightView {
   float: right;
   /*background-color: blanchedalmond;*/
 }
-
 /* 大标题 */
 .titleLabel {
   font-size: 18px;
@@ -193,5 +178,30 @@ function otherMenueClick(indexParamter) {
   padding-right: 5px;
   font-size: 12px;
   color: #666666;
+}
+
+/**** 列表 ****/
+.listDiv {
+  /*background-color: bisque;*/
+  display: flex;
+  flex-direction: row;
+}
+/* item模块 */
+.itemDiv {
+  /* 140表示图片宽度，rowItemsCount表示一行最多显示几个
+    100% - 上面两个，得到间距之和
+    以上计算结果，再除以 （rowItemsCount - 1）就是margin-left间距
+   */
+  width: 140px;
+}
+/* item模块 - 图片 */
+.itemDiv-img {
+  width: 100%;
+  height: 140px;
+}
+/* item模块 - 文字 */
+.itemDiv-label {
+  font-size: 12px;
+  /*background-color: #42b983;*/
 }
 </style>
